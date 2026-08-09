@@ -139,3 +139,58 @@ new behaviours, each individually justified, together adding up to an assistant 
 comments constantly. Whatever gets built needs one shared budget for how often it speaks,
 not ten independent ones.
 
+
+### Notice the prompting rabbit hole and break it
+- **From:** pulkit, 2026-08-09
+- **Why:** the signature failure of a beginner's first session. They prompt, it's wrong,
+  they rephrase, it's wrong differently, they rephrase again — "the feature that should
+  have taken minutes eats most of your afternoon." It's sticky because "you always feel the
+  end is within reach, and stopping feels dangerous." Novices are documented as iterating
+  on prompts without converging; experts decompose instead.
+- **What:** after two or three failed rounds on the same thing, stop and say so. Go back to
+  the last working state, break the problem smaller, and attack one piece. The signal is
+  repetition without new information — "still not working", "that's not what I meant".
+
+### Keep save points so there's always a way back
+- **From:** pulkit, 2026-08-09
+- **Why:** the top practitioner advice for exactly this failure is "save each point where
+  it got things right, so if something goes wrong you can go back to the last working
+  version." Beginners have one enormous uncommitted blob instead, so the only way back is
+  starting over.
+- **What:** commit automatically whenever something demonstrably works, with a real
+  message. Then "put it back how it was an hour ago" is always available, which is what
+  makes experimenting safe.
+
+### Get the actual error, don't guess from "it's not working"
+- **From:** pulkit, 2026-08-09
+- **Why:** a beginner's entire bug report is "it's not working" — they don't know that the
+  red text matters, or which part of it. Guessing from that is what starts the rabbit hole,
+  and guessing changes several files at once, which is what adds the second bug.
+- **What:** ask for what's actually on screen before changing anything. One question, and
+  it teaches the habit by needing it.
+
+### Decompose out loud, build one piece
+- **From:** pulkit, 2026-08-09
+- **Why:** novices "have difficulty identifying boundaries for components of their plans
+  and underspecify their plans" — the documented skill gap is decomposition, not syntax. A
+  senior turns "an app for tracking workouts with friends" into "first: record one workout
+  and still see it tomorrow." A beginner asks for all of it at once and gets 800 lines that
+  can't be judged.
+- **What:** say the breakdown in one line before starting, build the first piece, show it
+  working, then continue. The beginner absorbs the decomposition by watching it happen.
+
+### Name the stage, so effort goes to the right thing
+- **From:** pulkit, 2026-08-09
+- **Why:** experienced people make stage-dependent trade-offs — speed over polish before
+  product-market fit, quality over speed once there's traction. Beginners don't know which
+  stage they're in, so they polish a thing nobody has used, or ship something fragile to
+  people who depend on it.
+- **What:** one line when it's relevant — "nobody's used this yet, so rough is fine; worry
+  about that when someone complains."
+
+### Say the downside of each choice
+- **From:** pulkit, 2026-08-09
+- **Why:** the clearest tell of an experienced product person is that they name the cost of
+  the path they chose. Juniors present a decision as if it were free. Hearing "and the
+  downside is…" repeatedly is how someone learns that every choice has one.
+- **What:** whenever a real choice is made, one clause on what it costs. Not a paragraph.

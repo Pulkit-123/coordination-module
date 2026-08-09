@@ -49,6 +49,29 @@ workflow every time a new project starts.
 - `update` — explicit, manual pull of the latest templates/skill logic from this
   meta-repo. Not automatic on every invocation (predictability > silent drift).
 
+## Key decision: GitHub Issues as the discussion layer
+
+Markdown is a fine backlog but a bad conversation — you can't reply to one line of a
+file, and simultaneous edits conflict. GitHub Issues gives threading, 👍-as-voting,
+notifications, and phone access for free, so:
+
+- An idea can start as an issue (labelled `idea`) **or** as an `IDEAS.md` entry.
+- `team-collab sync` folds issues into `IDEAS.md`, matching on issue number so reruns
+  are safe. Triage then weighs reaction counts and comment threads, and treats closed
+  issues as already-decided rejects.
+- The dashboard links to a prefilled "post an idea" issue form.
+
+## Key decision: hosting and access control
+
+**No GitHub Pages.** Pages access control is Enterprise Cloud only — on Free/Pro any
+published Pages site is world-readable, even when built from a private repo. There is no
+free way to publish a restricted dashboard.
+
+Not needed anyway: **private repo + collaborators is free and unlimited**, and the
+markdown files render natively on github.com — formatted, mobile-friendly, and gated by
+the repo's own access rules. That *is* the private shareable dashboard, at zero cost.
+`dashboard.html` is the single-page local view after a `git pull`.
+
 ## Key decision: dashboard interactivity
 
 The "click a button and Claude reads/clarifies ideas" button on `dashboard.html`
@@ -66,8 +89,16 @@ manually or periodically" without any hosted infrastructure.
 - Auto-update of the skill on every invocation (deferred in favor of explicit
   `update` command).
 
+## One-word chat commands
+
+People shouldn't need to remember file names or markdown format to take part — that
+friction is what stops friends contributing. The dashboard lists these; the skill
+triggers on the bare words: `idea: <x>`, `triage`, `claim <x>`, `done`, `status`,
+`refresh`, `sync`.
+
 ## Status
 - [x] Architecture agreed
-- [ ] `team-collab` skill built (via skill-creator)
+- [x] `team-collab` skill built — init / triage / dashboard / sync / update + quick commands
+- [x] Dashboard generator tested (escaping, tables, remote/no-remote link cases)
 - [ ] First real project scaffolded with it
-- [ ] GitHub repo(s) created, friends added as collaborators
+- [ ] GitHub repo(s) created, friends added as collaborators — **nothing created yet**

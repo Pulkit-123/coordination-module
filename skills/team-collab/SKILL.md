@@ -125,7 +125,8 @@ what stops people contributing. Treat these as first-class:
 | `triage` / "what's next" | Run the `triage` flow below. |
 | `claim <thing>` / "claim task" | Add a row to the In-progress table of `TASKS.md` with their name, today's date, and a suggested branch name. Create the branch if the repo is clean. Regenerate the dashboard. |
 | `done` | Move their in-progress row to the Done section of `TASKS.md` with today's date. Regenerate the dashboard. |
-| `refresh` / "refresh dashboard" | Run the `dashboard` flow below. |
+| `refresh` / "refresh dashboard" | Run `sync` (if the repo is on GitHub), then the `dashboard` flow below. |
+| `sync` | Pull idea issues from GitHub into `IDEAS.md` — see below. |
 | `status` | Summarize in chat: what's in progress and by whom, top three priorities, anything blocked. Don't write files. |
 
 After any command that changes a markdown file, regenerate `dashboard.html` and offer to
@@ -133,6 +134,35 @@ commit and push — an update nobody pushes is invisible to the rest of the grou
 the most common way this workflow quietly stops working. Commit only when they agree.
 
 Infer the person's name from `git config user.name` rather than asking every time.
+
+### `sync` — GitHub Issues as the discussion layer
+
+Markdown files are a good backlog but a poor conversation: you can't reply to one line of
+a file, and two people editing it at once conflict. GitHub Issues already solves that —
+threading, reactions as lightweight voting, notifications, and it works from a phone. So
+ideas can arrive from two places, and `sync` folds the issue side into the file side.
+
+Requires the `gh` CLI. Check `gh auth status` first; if it's missing or the repo has no
+GitHub remote, say so plainly and carry on with the file-only workflow rather than failing.
+
+```bash
+gh issue list --label idea --state all --limit 200 \
+  --json number,title,body,author,createdAt,state,comments,reactionGroups
+```
+
+For each issue not already in `IDEAS.md`, append an entry in the normal template format,
+with `- **Issue:** #<number>` added so the file links back to the discussion. Match on
+issue number, not title, so re-running is safe and edited titles don't create duplicates.
+
+When triaging, weigh the discussion, not just the title: 👍 reactions signal support, and a
+long comment thread usually means either strong interest or an unresolved disagreement —
+check which, because they point in opposite directions. Closed issues mean the group
+already decided; list them under rejects with that as the reason rather than re-ranking
+them.
+
+If the user asks to post an idea *for discussion* rather than just log it, create the issue
+with `gh issue create --label idea` and let `sync` bring it back. Confirm before creating —
+an issue notifies everyone, so it's a message to the group, not a local edit.
 
 ### `update`
 

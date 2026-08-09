@@ -53,6 +53,26 @@ When a note actually saves them something, say so in one line — *"you chose Po
 week one because of the joins, so sticking with that."* That's the only visible payoff
 this has, and it costs nothing.
 
+### When something breaks
+
+Before debugging an error, check whether it's been solved before — in this project or any
+other. Beginners repeat mistakes across projects, not within them, because each repo's
+notes are stuck in that repo:
+
+```
+python3 ~/.claude/skills/team-collab/scripts/recall.py "<the error text>"
+```
+
+If a gotcha you record is about a tool rather than this project — a build quirk, a library
+trap — also append it to `~/.claude/known-issues.md` so it's there next time, in whatever
+project that turns out to be.
+
+### Before agreeing something is finished
+
+If a journey exists for it, the rules in it were agreed for this exact moment — the empty
+state, the failure case, the things that get skipped because the happy path works. Check
+them, mention only what genuinely isn't met, and don't recite the whole list.
+
 ### Preferences that follow the person, not the project
 
 If the same choice keeps recurring across their projects — always Postgres, always CLI

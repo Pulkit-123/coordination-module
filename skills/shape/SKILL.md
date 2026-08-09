@@ -137,6 +137,32 @@ Same for principles. Don't tell someone to define their empty state; just put th
 state in the draft. If they notice and say "oh, good catch", one short line is worth it —
 *"that one catches most people"* — and then move on.
 
+## When they say it's done
+
+The rules in the journey exist for exactly this moment. Someone builds a feature, tries it,
+it works, and they call it finished — then it breaks the first time a list is empty or a
+request fails, because those cases were written down and never implemented.
+
+So when someone says a feature is done and a journey exists for it:
+
+```bash
+python3 "$SKILL_DIR/scripts/check_done.py" journeys/<slug>.md
+```
+
+It lists the rules nobody ticked off, marks the ones with no trace in the code, and
+resurfaces assumptions and questions that were never resolved.
+
+**It cannot tell you whether a rule is actually met** — that needs reading the code, which
+is your job. Use its output as a shortlist, check each one properly, then say plainly which
+hold and which don't:
+
+> Mostly there. The empty list still renders a blank page though — the plan said it should
+> say "nothing to export yet". Want me to add that before we call it done?
+
+Keep it to the ones that genuinely aren't met. Reciting a checklist at someone who just
+finished something is the fastest way to make them stop writing plans at all. If everything
+holds, say so in a line and move on.
+
 ## Handing off to the build
 
 When the plan is agreed, put the first slice into `TASKS.md` and the rest into `IDEAS.md`,

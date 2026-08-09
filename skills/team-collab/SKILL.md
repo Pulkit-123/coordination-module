@@ -91,6 +91,48 @@ it. There's nobody to collide with.
 Never ask twice about the same thing. If they ignore it or say no, drop it for the session.
 If they say stop asking, stop entirely and record silently.
 
+## When something breaks: check whether they've solved it before
+
+This is the moment the tool is worth the most, because it's the moment they're stuck and
+will actually read what you say. **Whenever an error or a confusing failure comes up**, run
+this before you start debugging:
+
+```bash
+python3 "$SKILL_DIR/scripts/recall.py" "<the error text or symptom>"
+```
+
+It searches a global list of problems they've already hit — including ones from completely
+different projects, which is where this pays off. Beginners don't repeat mistakes within a
+project so much as across every project they build, because each repo's notes are trapped
+in that repo.
+
+If it matches, say so in a line and check whether it really is the same cause before
+applying the old fix — a similar message often has a different reason.
+
+### Adding to it
+
+When you record a gotcha in `CONTEXT.md`, ask one question: **is this about the project, or
+about the tool?**
+
+- *"our sync endpoint returns 200 on failure"* → project-specific, stays in `CONTEXT.md`
+- *"Vercel builds break on case-mismatched imports because Linux is case-sensitive"* →
+  happens anywhere, so also append it to `~/.claude/known-issues.md`
+
+Format, under a `## Known issues` heading:
+
+```markdown
+### <short title>  (<project>, YYYY-MM-DD)
+**Looks like:** <the symptom in the words it actually appears in>
+**Fix:** <what actually worked>
+```
+
+Write **Looks like** using the real error text, not a summary — that's what future
+searches match against. Only add things that genuinely cost time; a list of trivia is a
+list nobody benefits from.
+
+This file is personal and read in every project, so nothing sensitive: no credentials, no
+client names, no internal URLs.
+
 ## Preferences that follow the person between projects
 
 Some things aren't about the project at all — they're about the person. They reach for

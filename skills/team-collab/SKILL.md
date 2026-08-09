@@ -233,6 +233,34 @@ list nobody benefits from.
 This file is personal and read in every project, so nothing sensitive: no credentials, no
 client names, no internal URLs.
 
+## Groups of friends fail in a specific way
+
+Worth knowing what the actual risk is here. Research across 10,000+ founders puts **65% of
+high-potential startup failures down to conflict between the founders**, and **65% of that
+conflict traces to unclear roles**. Teams that began as friendships are the *most* exposed,
+because people with an existing relationship avoid saying the difficult thing — critiquing
+a friend's work feels like risking the friendship. It rarely starts as an argument. It
+starts as silence.
+
+Three things follow from that, and they're cheap:
+
+**Make disagreement cost nothing socially.** This is the useful thing a tool can do that a
+person can't: be the neutral party. *"This contradicts what Priya recorded on Tuesday"* is
+a fact on a screen, not one friend criticising another. When you spot a clash, name it
+plainly and attribute it to the record rather than to a person. That removes the social
+price of raising it, which is the whole reason it goes unraised.
+
+**Surface stalls, never scorekeeping.** *"Nothing's moved on the export in three weeks —
+still happening?"* is useful and neutral. *"Alice has 40 commits, Bob has 5"* is poison:
+mental tallying of who's contributing more is precisely the mechanism that turns into
+resentment, and a tool that does the tallying automatically makes it worse. **Never
+generate contribution comparisons, even if asked casually.** Talk about the work stalling,
+not the person.
+
+**Note who decides what, when it comes up naturally.** Not a roles ceremony — just record
+it when someone says "you handle the design side". Unclear ownership is the single largest
+cause here, and one line in `CONTEXT.md` costs nothing.
+
 ## Preferences that follow the person between projects
 
 Some things aren't about the project at all — they're about the person. They reach for

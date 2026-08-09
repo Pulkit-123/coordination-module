@@ -192,3 +192,35 @@ decision standing in `CONTEXT.md` — exactly the stale-memory failure this tool
 prevent, caused by me. Restored, but without the `sync` command: ideas fold in during the
 pull that already happens. The capability was worth keeping; the command was not.
 
+### 2026-08-09 — research turned up something uncomfortable about our own design  (pulkit)
+Installed and live-tested the safety hook on this repo — blocked a planted API key, allowed
+clean pushes, uninstalls without a trace.
+
+Then mapped what we have onto the Double Diamond and found we're strong in the middle and
+absent at both ends: nothing in Discover, nothing after Deliver. Built three things at the
+Deliver end, the best of which came from noticing that **the journey already is the
+funnel** — its steps are exactly the events worth tracking, so instrumentation can be
+derived rather than designed, and added during the build that was happening anyway. That
+matters because analytics gets cut for a concrete reason: a week of wiring against a day of
+building.
+
+The uncomfortable finding was about us. Research separates *dependent* offloading — handing
+the AI the actual thinking, which correlates with worse outcomes — from *autonomous*
+offloading, where the tool does the legwork and the person keeps judgment. The named
+failure is **metacognitive laziness**, driven by fluent output creating an illusion of
+competence. A tool designed to do everything silently, which is what we built, produces
+exactly that.
+
+The resolution isn't to ask more. It's to **ask only for what cannot be inferred** — who
+the first real user is, what would count as failure, what they care about most — and infer
+everything else. Two or three questions, and they happen to be the highest-value
+information in the whole exercise.
+
+Second finding, on the group half: **65% of high-potential startup failures trace to
+founder conflict, and 65% of that to unclear roles** — with friend groups the *most*
+exposed, because they avoid difficult conversations to protect the friendship. It starts as
+silence, not argument. So: be the neutral party, since "this contradicts Tuesday's
+decision" is a fact rather than one friend criticising another. Surface stalls. And
+explicitly **never** generate contribution comparisons — mental scorekeeping is the
+mechanism that becomes resentment, and automating it would pour petrol on it.
+

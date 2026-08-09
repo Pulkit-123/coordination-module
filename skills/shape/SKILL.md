@@ -69,6 +69,53 @@ enough that a wrong one jumps out.
 List them in the file under **Assumptions**, and put the two or three riskiest in the chat
 message. Everything else stays in the file for later.
 
+### Ask for what only they know — and nothing else
+
+There's a real hazard in doing all of this for someone. Research on AI and learning
+distinguishes **dependent offloading** — handing over the actual thinking, which correlates
+with worse outcomes — from **autonomous offloading**, where the tool does the legwork and
+the person keeps the judgment, which correlates with better ones. The named failure is
+*metacognitive laziness*: people stop setting goals, monitoring errors and reflecting,
+because the output reads so fluently that it produces an illusion of competence.
+
+A tool that silently decides everything produces exactly that. So the line isn't "ask less",
+it's **ask for precisely the things you cannot possibly infer, and infer everything else.**
+
+You can infer, so don't ask: what an empty screen should say, that failures need a message,
+that a form needs validation, what the conventional flow looks like, what to call things.
+
+You cannot infer, so do ask — briefly, once:
+
+- **Who is the first real person who'd use this?** Not "users" — a person they can name.
+- **What would make this a failure?** If nobody touches it in a fortnight, what would that
+  tell them?
+- **What matters more here, and what doesn't?** Their priorities aren't derivable from the
+  feature description.
+
+That's two or three questions in total, and they're the only parts genuinely theirs. It
+also happens to be the highest-value information in the whole exercise — everything else is
+convention you can supply.
+
+If they won't answer, drop it and carry on. Asking twice turns a useful question into an
+exam.
+
+### A note on the first user
+
+Most of discovery can't be automated and pretending otherwise would be dishonest. Talking
+to someone who might actually use the thing is real work, and no tool removes it.
+
+What you can do is make its absence visible exactly once, without turning it into a gate:
+
+> Who's the first person who'd actually use this — anyone you could show it to this week?
+
+If the honest answer is "just us", that's fine and worth saying plainly: it's a project for
+themselves, which is a perfectly good reason to build something. It's only worth flagging
+when they believe other people want it and haven't checked — **42% of startups fail for
+exactly that reason**, and asking friends "would you use this?" is the weakest signal there
+is. Someone actually turning up to use it is the strong one.
+
+Say it once. Never again.
+
 ### Ask only when you genuinely can't guess
 
 One or two questions maximum, and only when the answer changes the whole shape — is this
@@ -162,6 +209,45 @@ hold and which don't:
 Keep it to the ones that genuinely aren't met. Reciting a checklist at someone who just
 finished something is the fastest way to make them stop writing plans at all. If everything
 holds, say so in a line and move on.
+
+## Check what already exists — once, at the start
+
+Before drafting, one search on what's already out there. This is the cheapest piece of
+discovery there is and it costs the person nothing:
+
+> Three apps do roughly this. The recurring complaint about all of them is that setting up
+> takes twenty minutes before you see anything. Worth being the one that doesn't.
+
+Two useful outcomes and no bad one. Either nothing quite does it — encouraging, and now you
+know the gap — or several do, and the interesting question becomes what they get wrong.
+"This already exists" is almost never a reason to stop; it's a reason to aim at the part
+everyone complains about.
+
+Keep it to one search and two sentences. Don't produce a competitive analysis.
+
+## Tracking, added while building rather than never
+
+Analytics gets skipped for a concrete reason: wiring it up takes a week when the build took
+a day, so it gets cut, and the thing ships with no data and a vague sense that nobody's
+using it.
+
+The journey is already the funnel — the steps are the events. So derive them:
+
+```bash
+python3 "$SKILL_DIR/scripts/journey_events.py" journeys/<slug>.md
+```
+
+Add those lines **during the build that's happening anyway**, which makes the cost to the
+person zero. Use whatever the project already has — PostHog, Plausible, a row in their own
+database. The tool matters far less than being able to answer "did anyone get through this"
+in a fortnight.
+
+Track the failure branches too. Knowing eleven people started and two finished is mildly
+interesting; knowing nine of them hit the empty state is the thing that tells you what to
+fix.
+
+Don't exceed the handful the script suggests, and don't build anything to view it. A long
+event list becomes a dashboard nobody opens — the same failure as no data, with more work.
 
 ## Handing off to the build
 

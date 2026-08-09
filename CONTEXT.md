@@ -220,6 +220,43 @@ without it._
   it is cheap to hand over at the right moment.
 - **By:** pulkit
 
+### 2026-08-09 — ask only for what the model can't infer
+- **Chose:** infer conventions freely (empty states, validation, error messages); ask two
+  or three questions that are genuinely unanswerable from outside — who the first real user
+  is, what would count as failure, what they care about most
+- **Over:** asking a lot (friction) or asking nothing (looks efficient, isn't)
+- **Because:** research separates *dependent* offloading — handing over the thinking, which
+  correlates with worse outcomes — from *autonomous* offloading, where the tool does the
+  legwork and the person keeps judgment. The named failure is metacognitive laziness:
+  fluent output creates an illusion of competence and people stop setting goals and
+  monitoring errors. A tool that silently decides everything causes precisely that. The
+  questions we keep are also the highest-value information in the exercise.
+- **By:** pulkit
+
+### 2026-08-09 — derive tracking from the journey, add it during the build
+- **Chose:** turn the flowchart's steps into a handful of events, instrumented while the
+  feature is being built
+- **Over:** adding analytics later, or not at all
+- **Because:** instrumentation gets cut for a concrete reason — a week of wiring against a
+  day of building — so AI-built apps ship with no behavioural data and a vague sense nobody
+  is using them. The journey already *is* the funnel, so the events are derivable rather
+  than designed, which makes the cost to the person zero. Failure branches get tracked too:
+  knowing nine of eleven hit the empty state is what tells you what to fix.
+- **By:** pulkit
+
+### 2026-08-09 — surface stalls, never contribution comparisons
+- **Chose:** flag work that has stopped moving; refuse to generate per-person contribution
+  stats even if asked casually
+- **Over:** any form of activity dashboard or leaderboard
+- **Because:** 65% of high-potential startup failures trace to founder conflict, 65% of
+  that to unclear roles, and teams that began as friendships are the most exposed — they
+  avoid the difficult conversation to protect the friendship. Mental tallying of who
+  contributes more is the mechanism that becomes resentment; automating the tally would
+  accelerate it. The useful thing a tool can do instead is be the neutral party, so
+  "this contradicts Tuesday's decision" is a fact rather than one friend criticising
+  another.
+- **By:** pulkit
+
 ## Ideas we said no to (and why)
 
 `PRIORITIES.md` gets rewritten on every triage, so reject reasoning kept only there

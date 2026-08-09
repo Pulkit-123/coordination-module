@@ -1,0 +1,129 @@
+# coordination-module
+
+## Team collaboration workflow
+
+Several people work on this repo, each running their own Claude Code. These files keep
+that from turning into chaos. Read them before doing anything substantial.
+
+| File | What it's for |
+|---|---|
+| `JOURNAL.md` | The running conversation — reasoning, and arguments still open |
+| `CONTEXT.md` | Scope, decisions, gotchas — what the group has settled and learned |
+| `IDEAS.md` | Append-only backlog of feature ideas from anyone |
+| `TASKS.md` | Who is actively building what, right now |
+| `PRIORITIES.md` | Ranked build order — generated, do not hand-edit |
+| `dashboard.html` | Static readable snapshot of all of the above |
+
+### Before starting any work
+
+Check `TASKS.md` first. Someone else's Claude Code may be editing the same files at this
+moment, and git won't warn you about that until there's a conflict. If the work you're
+about to start isn't claimed, add a row claiming it before you begin.
+
+Work on a short-lived branch named in your claim (e.g. `feat/export-csv`). This isn't
+process ceremony — it's the thing that stops two agents from overwriting each other. Merge
+to `main` when the piece works; no formal review is required in this group unless the
+change is risky or touches shared foundations.
+
+### When you have a new idea
+
+Append it to `IDEAS.md` with your name and the date. Don't build it immediately and don't
+reorder `PRIORITIES.md` yourself — the whole point is that the group decides together what
+gets built next. Ideas are cheap to add and that's intentional.
+
+### When deciding what to build next
+
+Read `PRIORITIES.md`. It's regenerated from `IDEAS.md` by running `team-collab triage` in
+Claude Code, which ranks ideas, flags duplicates and contradictions, and raises clarifying
+questions. Because it's generated, hand-edits get wiped on the next triage — put your
+argument in `IDEAS.md` as a new entry instead, where it survives and gets weighed.
+
+### The goal: one shared mind, several people
+
+Aim for this to feel like a single agent that has been working on the project continuously
+and happens to talk to several people — not like separate agents who each know a fraction.
+Everything below serves that.
+
+The gap to close is that each person's chat history is private. What one person worked
+through in conversation is invisible to everyone else unless it's written down. So the
+files are the shared memory, and they only work if they're read at the start and written
+during.
+
+**At the start of a session, catch up before doing anything:** `git pull`, then read
+`JOURNAL.md` (what's happened and what's still being argued), `CONTEXT.md` (what's
+settled and why), and `TASKS.md` (who's mid-flight). Then tell the person what changed
+since they were last here — especially any open thread they should weigh in on. Someone
+returning after two days should not have to ask what they missed.
+
+If you're picking up work someone else started, their reasoning is in `JOURNAL.md`. Read
+it before second-guessing their approach.
+
+### Inherit what others have learned
+
+Read `CONTEXT.md` before making design choices or debugging. It holds what the rest of the
+group already worked out — decisions and their reasoning, dead ends someone already hit,
+and non-obvious details about how things work. The value of several people each running
+their own Claude Code only compounds if what one person learns reaches the others; without
+this file, everyone rediscovers the same walls independently.
+
+When you learn something durable, append it there — see below.
+
+Also check the **Scope** section before starting anything new: it says what the project
+is and isn't. Work that quietly drifts outside it is one of the easier ways for four
+people to end up building different products, since each person only ever sees their own
+slice and nothing feels wrong from inside it.
+
+Two people can also claim the same task, or record contradictory decisions, without git
+ever complaining — it keeps both sides so nothing is lost, which means nothing is flagged
+either. Skim `TASKS.md` and the decisions in `CONTEXT.md` for clashes when you pull, and
+say something when you spot one.
+
+### Record things as they come up — don't wait to be asked
+
+This workflow fails in one predictable way: something good gets discussed, nobody writes
+it down, and a week later the repo has no memory of it. So while working or talking:
+
+- Someone floats a feature → append it to `IDEAS.md` under their name, even if it's
+  dismissed straight away (log why — otherwise it gets re-proposed forever).
+- A real discussion happens — options weighed, a tradeoff argued, a direction changed →
+  add a `JOURNAL.md` entry with the alternatives considered, not just the outcome. This
+  is the one people skip, and it's the one that matters most: a conclusion without its
+  reasoning gets reversed by accident six weeks later.
+- A question comes up that isn't settled → open a thread in `JOURNAL.md` with the
+  positions so far. Other people can then arrive with the argument already loaded
+  instead of starting it again.
+- Starting real work → claim it in `TASKS.md` **before** the first edit.
+- Finished → move the row to Done. Blocked → mark it and say what it's waiting on.
+- A decision gets made ("Postgres, not SQLite") → append it to `CONTEXT.md` with the
+  reasoning, or it gets relitigated next month.
+- You hit a dead end, or discover a trap → `CONTEXT.md` gotchas, so the next person
+  doesn't spend the same afternoon on it.
+
+Use judgment: log what someone would want to find later, not every passing thought — an
+unreadable backlog is as useless as an empty one. Say in one line what you recorded, so
+people can correct it if you captured it wrong.
+
+### Publishing changes
+
+After changing any coordination file, commit and push it — an update nobody else can see
+is the same as no update. Regenerate the dashboard first so it matches.
+
+Coordination files (`IDEAS.md`, `CONTEXT.md`, `JOURNAL.md`, `TASKS.md`, and the
+generated `PRIORITIES.md` / `dashboard.html`) can be
+pushed straight to `main`; they're append-mostly and the whole point is visibility. Expect
+push rejections when several people are active — pull with `--rebase` and retry rather
+than force-pushing.
+
+**Code is different.** Work on the branch named in your task claim and let the human
+decide when to merge. Nobody's half-finished refactor should land on everyone else's
+`main`.
+
+### Keeping the dashboard current
+
+`dashboard.html` is a static snapshot, not a live page. Regenerate it with
+`team-collab dashboard` after meaningful changes to the markdown files, and commit it.
+Whoever pulls next sees the update.
+
+---
+
+<!-- Project-specific instructions (architecture, conventions, commands) go below. -->

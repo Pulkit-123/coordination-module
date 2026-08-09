@@ -19,6 +19,16 @@ SIMILAR = 0.72
 
 STOP = {"the", "a", "an", "to", "for", "of", "and", "in", "on", "add", "make", "up"}
 
+# Too generic to work as a scope exclusion — they appear in almost any software
+# idea, so matching on them produces noise rather than signal. The distinctive
+# words in the same sentence ("spec-driven", "multi-tenant") carry the meaning.
+GENERIC = {
+    "development", "software", "application", "app", "tool", "toolkit", "system",
+    "platform", "project", "product", "service", "framework", "feature", "cycle",
+    "solution", "replacement", "thing", "stuff", "code", "codebase", "workflow",
+    "process", "management", "multi", "manager", "engine", "library", "package", "module",
+}
+
 
 def stem(w):
     # Crude, deliberately: "notifications" and "notification" must collide, but
@@ -247,13 +257,23 @@ def check_scope(context_md, ideas_md, tasks_md, out):
         return
 
     # Words the project explicitly excludes, e.g. "not multi-tenant SaaS".
+    #
+    # Only distinctive words are usable here. A scope saying "not a spec-driven
+    # development framework" yields "development", which appears in almost any
+    # software idea — matching on it buries the real signal in noise. Keep the
+    # words that actually name a category ("spec-driven", "multi-tenant", "chat")
+    # and drop the ones that describe software in general.
+    # Tokenize the exclusions with norm(), the same function used on the titles
+    # being compared. Using a different pattern here silently breaks matching:
+    # norm() splits "multi-tenant" into two words, so an exclusion list holding
+    # the joined form never matches anything.
     excluded = set()
     for line in nots:
         tail = re.split(r"\bis not\b|\bnot a\b|\bnot\b", line, maxsplit=1, flags=re.I)
         if len(tail) > 1:
-            for w in re.findall(r"[a-z][a-z-]{3,}", tail[1].lower()):
-                if w not in STOP and w not in ("replacement", "app"):
-                    excluded.add(stem(w))
+            for w in norm(tail[1]).split():
+                if len(w) > 3 and w not in GENERIC:
+                    excluded.add(w)
 
     for src, label in ((ideas_md, "idea"), (tasks_md, "task")):
         titles = headings(src) if label == "idea" else [r[1] for r in task_rows(src)]

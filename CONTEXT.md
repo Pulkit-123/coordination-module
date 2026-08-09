@@ -1,0 +1,173 @@
+# Shared understanding — coordination-module
+
+What the group has figured out. Every person's Claude Code reads this on opening the repo,
+so knowledge one person gained becomes knowledge everyone has — that's the whole point.
+
+`IDEAS.md` is what we might build. This is what we now know. Append here whenever
+something is learned the hard way, decided with reasoning, or would make a newcomer say
+"I wish someone had told me."
+
+**Keep entries short and dated.** Delete or amend entries that turn out to be wrong —
+stale context is worse than none, because people act on it confidently.
+
+## Scope
+
+**coordination-module is** a set of Claude Code skills that let a small trusted group build
+a shared project when each person runs their own Claude Code — keeping ideas, decisions,
+reasoning, and task claims in plain markdown so nobody works from a stale picture.
+
+**coordination-module is not** a spec-driven development framework (see the open thread on
+spec-kit in `JOURNAL.md`), not a hosted service or web app, not a chat tool, and not a
+replacement for GitHub Issues — it links to Issues rather than reimplementing them.
+
+The guiding constraint is footprint: plain files, plain git, no server, no API keys, no
+build step. A friend should clone and be productive in a minute. Reject anything that
+breaks that unless the payoff is very large.
+
+## Decisions
+
+Things settled, with the reasoning — so they don't get relitigated every month.
+
+### 2026-08-09 — dashboard is a static snapshot, not a live page
+- **Chose:** `dashboard.html` regenerated locally from the markdown files, with buttons
+  that tell you which word to type into your own Claude Code
+- **Over:** a live page whose buttons call an LLM API directly
+- **Because:** live means a hosted API key, a backend, and per-call billing — a large jump
+  in cost, complexity, and risk for a group who are all already running Claude Code
+  locally. The static page gets the same outcome with none of that.
+- **By:** pulkit
+
+### 2026-08-09 — no GitHub Pages; private repo instead
+- **Chose:** no Pages at all; view coordination files natively on github.com, and open
+  `dashboard.html` locally after a pull
+- **Over:** publishing the dashboard via GitHub Pages
+- **Because:** Pages access control is GitHub Enterprise Cloud only. On Free and Pro
+  *every* Pages site is world-readable, even when built from a private repo — there is no
+  free way to restrict one. And it isn't needed: private repos with unlimited
+  collaborators are free, and markdown renders natively in the GitHub web UI, which is
+  already mobile-friendly and gated by the repo's own permissions.
+- **By:** pulkit
+
+### 2026-08-09 — GitHub Issues as the discussion layer
+- **Chose:** ideas can start as an `idea`-labelled issue; `team-collab sync` folds them
+  into `IDEAS.md`, matching on issue number so reruns are safe
+- **Over:** building comment/threading features into the dashboard
+- **Because:** markdown is a good backlog but a bad conversation — you can't reply to one
+  line of a file, and simultaneous edits collide. Issues already give threading,
+  👍-as-voting, notifications, and phone access, for free.
+- **By:** pulkit
+
+### 2026-08-09 — tooling repo public, project repos private
+- **Chose:** this repo public; each actual app in its own private repo
+- **Over:** keeping everything private, or everything public
+- **Because:** the tooling is generic and useful to other teams, and contains no project
+  data. Access control comes free: the skills run locally under each person's own git
+  credentials, so a non-collaborator's push simply fails. No permission layer to build.
+- **By:** pulkit
+
+### 2026-08-09 — `merge=union` on append-only files
+- **Chose:** `.gitattributes` sets `merge=union` for `IDEAS.md`, `CONTEXT.md`,
+  `JOURNAL.md`, `TASKS.md`
+- **Over:** letting git conflict normally
+- **Because:** two people appending at the same moment collide at end-of-file and git's
+  rebase silently keeps only one. Verified, not theoretical — see Gotchas. Losing
+  someone's contribution is the fastest way to make them stop contributing.
+- **By:** pulkit
+
+### 2026-08-09 — generated files are rebuilt, never merged
+- **Chose:** `publish.sh` auto-resolves conflicts in `dashboard.html` and `PRIORITIES.md`
+  by taking either side and regenerating
+- **Over:** treating them like any other file
+- **Because:** they differ on every machine, so they conflicted on every concurrent push
+  and deadlocked everyone but the first pusher. Rebuilding always yields the correct
+  result, so a human should never be asked to resolve one.
+- **By:** pulkit
+
+## Ideas we said no to (and why)
+
+`PRIORITIES.md` gets rewritten on every triage, so reject reasoning kept only there
+vanishes. It belongs here instead — otherwise the same idea gets proposed, debated, and
+rejected again every few weeks, which wears people down faster than almost anything else.
+
+Not permanent: if circumstances change, reverse it deliberately and note what changed.
+
+### Live/real-time coordination backend  (proposed by pulkit, decided 2026-08-09)
+- **Verdict:** deferred until the file-based flow proves genuinely insufficient
+- **Because:** needs hosting, auth, and ongoing cost. Explicitly not a priority; the
+  static-snapshot flow covers the actual need today.
+
+### Restricting who can view a GitHub Pages dashboard  (proposed by pulkit, decided 2026-08-09)
+- **Verdict:** rejected — not possible on a free plan
+- **Because:** Pages access control is Enterprise Cloud only. Superseded by using a private
+  repo, which achieves the same goal for free.
+
+### Auto-updating the skill on every invocation  (proposed by pulkit, decided 2026-08-09)
+- **Verdict:** rejected in favour of an explicit `update` command
+- **Because:** a tool that silently rewrites itself mid-task is impossible to reason about.
+  Predictability beats freshness here.
+
+### Four small skills for the dashboard actions  (proposed by pulkit, decided 2026-08-09)
+- **Verdict:** rejected; one skill answering to several bare trigger words instead
+- **Because:** several tiny skills with near-identical descriptions mis-trigger against
+  each other. Keep skill count low and trigger surface wide.
+
+## Gotchas and dead ends
+
+Things tried that didn't work, and traps in the codebase or its dependencies. This section
+saves the most time — it stops the second and third person rediscovering the same wall.
+
+**Read this section before changing anything in `publish.sh` or `.gitattributes`.** All
+three entries below were found by stress-testing four simulated collaborators, and all
+three pass silently at two people while breaking badly at four.
+
+### Generated files deadlocked everyone but the first pusher  (pulkit, 2026-08-09)
+`dashboard.html` was marked `-merge`. Because it's generated, it differs on every machine,
+so it conflicted on *every* concurrent push and aborted the rebase — three of four people
+were permanently blocked and their ideas never reached the repo. Fix: `publish.sh` treats
+`GENERATED_FILES` as auto-resolvable and rebuilds them after rebasing. Never hand a
+generated-file conflict to a person.
+
+### `git rebase --skip` silently deleted a whole commit  (pulkit, 2026-08-09)
+The first attempt at the fix above called `git rebase --skip` whenever the rebase got
+stuck. That discards the **entire commit**, not just the conflicting file — an entire
+recorded decision vanished. Fix: only skip after confirming the commit is genuinely empty
+(`git diff --cached --quiet HEAD`).
+
+### Two people appending at once lost one entry  (pulkit, 2026-08-09)
+"Append-only means low conflict" is wrong for end-of-file appends: both sides touch the
+same spot and rebase keeps one. Fix: `merge=union`. Without `.gitattributes` committed and
+present in the clone, this protection silently does not apply.
+
+### Union-merge hides the collisions it prevents  (pulkit, 2026-08-09)
+The cost of never losing data is that git reports success to everyone and never mentions
+the clash — two people can claim the same task, or record contradictory decisions, with no
+warning at all. That's why `scripts/check_collisions.py` exists. It is **lexical only**:
+it cannot tell that "push notifications when a plan changes" and "alert members if the plan
+is updated" are one feature. Semantic duplicates and scope drift need the model's
+judgment, and `SKILL.md` instructs it accordingly.
+
+### `CLAUDE.md` and `.gitattributes` must be committed by `publish.sh`  (pulkit, 2026-08-09)
+An early version committed only the data files. A fresh clone then arrived with no workflow
+brief and no merge protection — the entire mechanism missing for everyone but the author.
+Both are now in `SOURCE_FILES`.
+
+## How things work
+
+**Three layers of memory, deliberately separated.** `IDEAS.md`/`TASKS.md` hold *state*
+(what exists, who's on it). `CONTEXT.md` holds *conclusions* (what's settled and why).
+`JOURNAL.md` holds *reasoning and live arguments*. The third is the one that normally
+evaporates, and it's what someone needs in order to disagree intelligently rather than
+re-tread settled ground.
+
+**Why capture is the mechanism, not bookkeeping.** Each person's chat history is private,
+so reasoning that happened in one conversation is invisible to everyone else. The files are
+the only shared memory. That's why sessions start with a catch-up read and why the skill
+records as it goes rather than waiting to be asked.
+
+**Two skills, not many.** `team-collab` does the workflow; `why` explains history. Skill
+count is kept deliberately low because similar descriptions mis-trigger against each other.
+Prefer adding a trigger word or subcommand to an existing skill over creating a new one.
+
+**The skill is installed from this repo.** `~/.claude/skills/` holds working copies;
+`skills/` here is canonical. `scripts/update_skill.sh` syncs canonical → installed. Edit
+here, not in `~/.claude/skills/`, or your change gets overwritten on the next update.

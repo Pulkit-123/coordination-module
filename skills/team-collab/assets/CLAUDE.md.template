@@ -2,16 +2,17 @@
 
 ## Team collaboration workflow
 
-Several people work on this repo, each running their own Claude Code. These four files
-keep that from turning into chaos. Read them before doing anything substantial.
+Several people work on this repo, each running their own Claude Code. These files keep
+that from turning into chaos. Read them before doing anything substantial.
 
 | File | What it's for |
 |---|---|
+| `JOURNAL.md` | The running conversation — reasoning, and arguments still open |
+| `CONTEXT.md` | Scope, decisions, gotchas — what the group has settled and learned |
 | `IDEAS.md` | Append-only backlog of feature ideas from anyone |
-| `CONTEXT.md` | What the group has learned — decisions, gotchas, how things work |
 | `TASKS.md` | Who is actively building what, right now |
 | `PRIORITIES.md` | Ranked build order — generated, do not hand-edit |
-| `dashboard.html` | Static readable snapshot of all three |
+| `dashboard.html` | Static readable snapshot of all of the above |
 
 ### Before starting any work
 
@@ -67,6 +68,16 @@ this file, everyone rediscovers the same walls independently.
 
 When you learn something durable, append it there — see below.
 
+Also check the **Scope** section before starting anything new: it says what the project
+is and isn't. Work that quietly drifts outside it is one of the easier ways for four
+people to end up building different products, since each person only ever sees their own
+slice and nothing feels wrong from inside it.
+
+Two people can also claim the same task, or record contradictory decisions, without git
+ever complaining — it keeps both sides so nothing is lost, which means nothing is flagged
+either. Skim `TASKS.md` and the decisions in `CONTEXT.md` for clashes when you pull, and
+say something when you spot one.
+
 ### Record things as they come up — don't wait to be asked
 
 This workflow fails in one predictable way: something good gets discussed, nobody writes
@@ -97,7 +108,8 @@ people can correct it if you captured it wrong.
 After changing any coordination file, commit and push it — an update nobody else can see
 is the same as no update. Regenerate the dashboard first so it matches.
 
-Coordination files (`IDEAS.md`, `TASKS.md`, `PRIORITIES.md`, `dashboard.html`) can be
+Coordination files (`IDEAS.md`, `CONTEXT.md`, `JOURNAL.md`, `TASKS.md`, and the
+generated `PRIORITIES.md` / `dashboard.html`) can be
 pushed straight to `main`; they're append-mostly and the whole point is visibility. Expect
 push rejections when several people are active — pull with `--rebase` and retry rather
 than force-pushing.

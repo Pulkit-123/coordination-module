@@ -10,6 +10,17 @@ something is learned the hard way, decided with reasoning, or would make a newco
 **Keep entries short and dated.** Delete or amend entries that turn out to be wrong —
 stale context is worse than none, because people act on it confidently.
 
+## Scope
+
+What this project is, and — more usefully — what it isn't. Everything else is measured
+against this. Without the "isn't" half there's nothing to notice drift against, and drift
+is invisible to each person individually: everyone only sees their own slice.
+
+**<project> is** ...
+**<project> is not** ...
+
+_Fill this in early. Two honest lines beat a paragraph._
+
 ## Decisions
 
 Things settled, with the reasoning — so they don't get relitigated every month.

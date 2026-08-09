@@ -180,6 +180,43 @@ flagging any open thread that wants their view. A person coming back after two d
 shouldn't have to ask what they missed — and an agent that skips this will confidently
 contradict a decision made yesterday.
 
+Then run the collision check, which finds the clashes git hides:
+
+```bash
+python3 "$SKILL_DIR/scripts/check_collisions.py"
+```
+
+## The semantic pass — the part only you can do
+
+Union-merge keeps both sides of a simultaneous edit, so nobody's work is lost. The cost is
+that git then reports success to everyone and never mentions the clash. `check_collisions.py`
+catches the lexical cases: same task claimed twice, contradictory `Chose:` lines, stale
+claims, near-identical titles, known tension pairs, scope words.
+
+It cannot catch the ones that matter most, because they need comprehension rather than
+string comparison. Do these yourself whenever you catch up or triage — they are the
+difference between a group that compounds and four people quietly diverging:
+
+- **The same idea in different words.** "Push notifications when a plan changes" and
+  "Alert members if the plan is updated" share no significant words and are one feature.
+  People working separately converge on the same need constantly, and each assumes theirs
+  is new. Say so plainly and propose merging them, crediting both.
+- **Ideas that quietly contradict.** Not just the obvious pairs — one person's "let anyone
+  join by link" and another's "invite-only, approval required" are each reasonable and
+  jointly impossible. Surface the tension and let the group choose; don't pick for them.
+- **Work drifting from what the project is.** Read the Scope section of `CONTEXT.md`, then
+  ask whether a new idea or in-flight task actually belongs. Someone building an
+  admin-billing console for a four-friends planning app is not being careless — they've
+  lost sight of the edges, which is easy when everyone sees only their own slice. Raise it
+  as a question ("does this still fit what we said Huddl is?"), because sometimes the
+  answer is that the scope moved and should be rewritten.
+- **Decisions being reversed by accident.** A new idea that assumes SQLite when the group
+  chose Postgres. Point at the decision and its reasoning rather than silently going along.
+
+If a project has no Scope section, offer to write one — two lines on what it is and, more
+importantly, what it isn't. Without the second half there's nothing to measure drift
+against.
+
 ## Capture as you go (this is the part that makes it work)
 
 The workflow fails in a specific, predictable way: people discuss something good in chat,

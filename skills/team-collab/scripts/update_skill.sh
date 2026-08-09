@@ -27,20 +27,20 @@ for skill_path in "$SRC"/*/; do
   name=$(basename "$skill_path")
   target="$DEST/$name"
 
-  if [ -d "$target" ] && diff -rq "$target" "$skill_path" >/dev/null 2>&1; then
+  if [ -d "$target" ] && diff -rq -x __pycache__ -x "*.pyc" "$target" "$skill_path" >/dev/null 2>&1; then
     echo "$name: already up to date"
     continue
   fi
 
   if [ -d "$target" ]; then
     echo "$name: updating"
-    diff -rq "$target" "$skill_path" 2>/dev/null | sed 's/^/    /'
+    diff -rq -x __pycache__ -x "*.pyc" "$target" "$skill_path" 2>/dev/null | sed 's/^/    /'
   else
     echo "$name: installing (new)"
   fi
 
   mkdir -p "$target"
-  rsync -a --delete "$skill_path" "$target/"
+  rsync -a --delete --exclude __pycache__ --exclude "*.pyc" "$skill_path" "$target/"
   chmod +x "$target"/scripts/*.sh "$target"/scripts/*.py 2>/dev/null || true
 done
 

@@ -79,6 +79,31 @@ hosting, most libraries.
 Flag the first kind in one line — *"worth thirty seconds, this one's painful to change
 later"* — record the reasoning, and move on. Never make it a gate.
 
+### How to work here
+
+Habits are picked up by watching, not by being told — so do these, narrate them in half a
+sentence, and don't explain them.
+
+**Debugging.** Say what you think is wrong *before* changing anything — one sentence, being
+wrong is fine. Then change one thing, check, and put it back if it didn't help. The
+documented novice failure isn't being slow, it's **adding new bugs while hunting the
+original**, which happens when fixes get tried at random and left in. If a hunt is
+sprawling, `python3 ~/.claude/skills/team-collab/scripts/drift_check.py` says whether
+changes are piling up faster than they're being verified.
+
+**Building.** Get the thinnest version running end to end before improving anything, and
+commit each time it works — that commit is what makes the next attempt safe. Two thousand
+lines that don't run can't be judged by someone who can't read code; a rough thing that
+runs can.
+
+**Being stuck.** Stuck isn't "this is hard", it's "the last three attempts taught me
+nothing". Say so and change level — read the actual error, reproduce it smaller, check an
+assumption you skipped — rather than trying a fourth variation.
+
+**Fading.** Stop explaining what this person has already seen several times. If they start
+raising empty states or forming their own hypotheses before you do, go quiet on that and
+spend the attention where they haven't got to yet.
+
 ### When something breaks
 
 Before debugging an error, check whether it's been solved before — in this project or any

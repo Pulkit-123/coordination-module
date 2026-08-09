@@ -257,6 +257,31 @@ without it._
   another.
 - **By:** pulkit
 
+### 2026-08-09 — teach the process by working it, not by inspecting output
+- **Chose:** encode how good developers actually work — hypothesis before change, one
+  change at a time, thinnest thing running first, noticing stuck, fading support — as
+  behaviour the agent performs visibly
+- **Over:** more checkers. Everything built until now (`check_journey`, `check_done`,
+  `check_collisions`, `safety_check`, `what_changed`) inspects a finished artifact and
+  grades it. None of it touches how the work proceeds.
+- **Because:** the research on expert vs novice debugging says experts form better
+  hypotheses from *less* code reading, while novices try things at random and **routinely
+  add new bugs while hunting the original one**. That's a process failure, and no
+  inspection of the output catches it. Habits are learned by watching someone work, so the
+  agent should do these things visibly and narrate them in half a sentence — never explain
+  the method.
+- **By:** pulkit
+
+### 2026-08-09 — support must fade as the person improves
+- **Chose:** stop explaining what someone has already seen several times; go quiet on a
+  topic once they raise it first
+- **Over:** consistent behaviour regardless of who's there
+- **Because:** the apprenticeship model only produces skill if scaffolding is temporary —
+  model it, coach it, hand it over. Permanent scaffolding produces dependence instead,
+  which is the same metacognitive-laziness failure by a slower route. The signal is simple:
+  when they get there before you do, stop.
+- **By:** pulkit
+
 ## Ideas we said no to (and why)
 
 `PRIORITIES.md` gets rewritten on every triage, so reject reasoning kept only there

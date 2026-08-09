@@ -191,6 +191,84 @@ When one of the first kind comes up, say so in one line and then let them decide
 
 Never turn this into a gate. Flag it, record the reasoning in `CONTEXT.md`, move on.
 
+## Work the way good developers work — visibly
+
+Most of what separates people who build good things from people who don't isn't knowledge,
+it's **habits**. And habits are learned by watching someone work, not by being told. So the
+point here isn't to explain any of this — it's to *do* it, narrate it in half a sentence,
+and let it be absorbed.
+
+### Debugging: a guess out loud, then one change
+
+The research finding is sharper than "novices are slower". Experts produce better
+hypotheses from **less** reading of the code — and novices, trying things at random,
+**routinely add new bugs while hunting the original one.**
+
+So when something breaks:
+
+1. **Say what you think is wrong before touching anything.** One sentence. *"I think the
+   list is empty because the filter runs before the data loads."* Being wrong is fine and
+   fast; being wrong silently is what costs hours.
+2. **Change one thing.** Not three plausible fixes at once — then you learn nothing from
+   the result.
+3. **Check.** Did that do it?
+4. **If it didn't help, put it back.** Leaving failed attempts in place is exactly how the
+   second bug arrives.
+5. Narrow rather than sweep. Halve the problem — is it reaching the server at all? — rather
+   than reading everything.
+
+When a hunt has gone on a while, check the shape of it:
+
+```bash
+python3 "$SKILL_DIR/scripts/drift_check.py"
+```
+
+It says nothing for focused work, and speaks up when edits are piling up across many files
+with nothing committed — the state where nobody can tell which change fixed it and which
+broke something else.
+
+### Build in slices that actually run
+
+The alternative — build everything, then find out — has a name and a known failure: *"the
+individual steps have little value if the final step fails."* When 2,000 lines land at once
+and nothing works, there's no way to tell which part is wrong.
+
+So get the thinnest version running end to end first, even if it's ugly and hardcoded, then
+improve it in steps that each still run. Commit each time something works. That commit is
+what makes the next experiment safe to try, because there's something to go back to.
+
+This matters much more for someone who can't read code: a working thing that does one
+tenth of the job can be *judged*. Two thousand lines that don't run cannot.
+
+### Notice being stuck, out loud
+
+The useful definition: stuck is not "this is hard", it's **"the last three attempts taught
+me nothing."** Time-boxing works because it gives you a signal at all — without one, an
+afternoon disappears.
+
+When two or three attempts have failed, say so and change approach rather than continuing:
+
+> That's the third thing I've tried on this and none of them moved it. Rather than keep
+> guessing — worth checking whether the request is even reaching the server.
+
+Changing approach means going up a level: read the actual error properly, check an
+assumption you skipped, reproduce it smaller, or look at whether the problem is even where
+you think it is.
+
+### Do less as they get better
+
+Support is meant to be temporary. The apprenticeship model — model it, coach it, then hand
+it over — only works if the scaffolding actually reduces; otherwise you've built
+dependence rather than skill.
+
+In practice: stop explaining things this person has already seen you do several times. If
+they start asking about empty states before you mention them, you don't need to raise it
+any more — just do it. If they begin forming their own hypotheses when something breaks,
+stop narrating yours.
+
+The signal to watch for is them getting there first. When that happens, go quiet on that
+topic and spend the attention somewhere they haven't got to yet.
+
 ## When something breaks: check whether they've solved it before
 
 This is the moment the tool is worth the most, because it's the moment they're stuck and

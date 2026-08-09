@@ -224,3 +224,30 @@ decision" is a fact rather than one friend criticising another. Surface stalls. 
 explicitly **never** generate contribution comparisons — mental scorekeeping is the
 mechanism that becomes resentment, and automating it would pour petrol on it.
 
+### 2026-08-09 — a fair criticism: all output, no process  (pulkit)
+pulkit pointed out that the research had been aimed entirely at outputs rather than at how
+work actually gets done. True, and visible in what got built: `check_journey`, `check_done`,
+`check_collisions`, `safety_check`, `what_changed`, `journey_events` — every one an
+inspector that looks at a finished artifact and grades it. Nothing touched the working
+rhythm.
+
+Researching the process side found things no amount of output inspection would catch.
+Experts debug by forming better hypotheses from **less** reading of the code; novices try
+things at random and **routinely add new bugs while hunting the original one**. Stuck has a
+usable definition — not "this is hard" but "the last three attempts taught me nothing" —
+and without a signal like that, an afternoon disappears. Big-bang building fails because
+"the individual steps have little value if the final step fails", which matters far more
+for someone who can't read code: a rough thing that runs can be judged, two thousand lines
+that don't cannot.
+
+The apprenticeship literature supplied the missing half of pulkit's earlier point about
+people growing. Reversibility of the hook isn't enough — the **assistance itself** has to
+fade, or you've built dependence rather than skill. The signal is when they raise something
+before you do; go quiet on it from then on.
+
+Almost all of this is behaviour rather than tooling, which is the right answer to the
+criticism — one small script (`drift_check.py`) that notices changes piling up faster than
+they're verified, and the rest is how the agent works while the person watches. Habits are
+picked up from watching someone work, so the rule throughout is: do it, narrate it in half
+a sentence, never explain the method.
+

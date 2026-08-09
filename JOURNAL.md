@@ -120,3 +120,37 @@ works on paper:
   generalised to `team-collab` — files changing silently on disk is invisible work, so
   anything worth reading gets opened rather than just mentioned.
 
+### 2026-08-09 — cut roughly half of it  (pulkit)
+pulkit pushed hard on a question the build had been dodging: why would an impatient
+beginner install this at all? Explicitly ruled out "it improves quality" and "it boosts
+productivity" as answers nobody acts on. The honest conclusion was that he wouldn't — he'd
+never open a dashboard, never type `triage`, never learn a command.
+
+So the dashboard (728 lines), `PRIORITIES.md`, the triage flow and the whole command table
+were deleted — about 1,100 lines. Every one of them required the user to do something
+extra, which is the single reliable way to guarantee a tool goes unused. Ranking five ideas
+for four friends is also a ten-second job done in your head.
+
+The pitch inverted: **memory, not coordination.** "Claude Code forgets your project between
+sessions" is a pain felt daily, alone, on day one — whereas coordination needs friends,
+invites and weeks before it pays off, and the old install was six steps before anything
+good happened. Coordination is now a side effect of the notes living in a shared repo.
+
+`shape` changed from interviewing to drafting: write the whole flow from one sentence, show
+it, ask "what's wrong?". Correcting a draft costs seconds. The refinement pulkit added is
+that the draft must be a *mirror, not a substitute* — extend only where convention makes it
+obvious (a list implies an empty state), and leave genuine product decisions visibly
+guessed rather than quietly invented, or the person nods along at something they never
+thought about. If they don't know, they won't answer, and that's fine.
+
+Also added cross-project preferences in `~/.claude/CLAUDE.md`, so recurring habits stop
+being relearned per project — asked once before first use, since it changes behaviour
+everywhere.
+
+Two real bugs found while doing this. The dashboard's mermaid never actually rendered:
+`startOnLoad` hooks `DOMContentLoaded`, which has already fired by the time an `await
+import()` resolves, so nothing drew — an earlier claim that it was "verified" had only
+checked the HTML contained a script tag, not that a diagram appeared. And emptying
+`GENERATED_FILES` broke `publish.sh` outright, because `set -u` errors on expanding an
+empty array in macOS bash 3.2; the fix was deleting the mechanism rather than patching it.
+

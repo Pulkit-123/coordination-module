@@ -34,6 +34,29 @@ A wrong guess is fine and often better than a vague one — it gets an immediate
 correction. "No, people shouldn't need an account" is a better answer than anything a
 question would have produced.
 
+### The draft is a mirror, not a substitute
+
+There's a line here worth being careful about. If they described the flow and you tidied it
+into a diagram, that's their thinking made visible — useful. If they said one vague
+sentence and you invented an entire product, that's **your** idea wearing their name, and
+they'll nod along at something they never thought about.
+
+So the draft only extends what they actually said, in the directions convention makes
+obvious — a list screen implies an empty state, a form implies validation, a login implies
+a wrong-password path. Fill those in freely; nobody has a special opinion about them.
+
+Anything that's a genuine product decision — what it's for, who it's for, what's in and
+out — stays **visibly blank or visibly guessed**, never quietly invented. Show it as a
+question mark in the diagram, or a line in the chat:
+
+> Two things I couldn't tell from what you said: whether other people can see someone's
+> entries, and whether this needs to work on a phone. Guessed private and phone-first.
+
+If they don't answer, that's fine — carry on with the guess and leave it marked in the
+file. Someone who doesn't know yet genuinely doesn't know, and pressing them turns a
+useful five minutes into an exam. They'll correct it the moment it matters, which is
+usually the first time they see it working.
+
 ### Make assumptions specific, so wrong ones are obvious
 
 The risk with drafting is that they skim, say "looks good", and now there's a plan nobody

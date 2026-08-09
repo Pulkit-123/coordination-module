@@ -91,6 +91,38 @@ it. There's nobody to collide with.
 Never ask twice about the same thing. If they ignore it or say no, drop it for the session.
 If they say stop asking, stop entirely and record silently.
 
+## Preferences that follow the person between projects
+
+Some things aren't about the project at all — they're about the person. They reach for
+Postgres every time, they always want the CLI before the UI, they don't want to be asked
+about small choices. Re-learning that on every new project is the same waste, one level up.
+
+Those go in `~/.claude/CLAUDE.md`, which Claude Code loads in **every** project, under a
+heading kept exactly as:
+
+```markdown
+## Learned preferences
+<!-- maintained by team-collab -->
+- Reaches for Postgres over SQLite even on small projects — wants real joins later
+```
+
+This is the user's personal global config, so treat it carefully:
+
+- **Ask the first time**, once, before writing to it at all: *"want me to remember that
+  across your other projects too?"* After a yes, keep recording silently. It changes how
+  Claude behaves everywhere, which is not something to start doing unannounced.
+- **Never clobber the file.** Append under that heading, creating it if absent, leaving
+  everything else untouched. They may have their own instructions in there.
+- **Only record repetition.** Two or three times, not once. A single choice is a project
+  decision and belongs in that project's `CONTEXT.md`.
+- **Keep it under a dozen lines.** This gets loaded into every session in every project; a
+  long list is a tax on all of their work. Prune rather than accumulate.
+- **Nothing project-specific, nothing sensitive.** No client names, no credentials, no
+  private details. If in doubt it stays in the project.
+
+The payoff is that guesses get better over time — which is what makes drafting a plan
+worth trusting rather than second-guessing.
+
 ## Publishing
 
 After changing anything, publish it. An update nobody else can see is the same as no

@@ -53,6 +53,17 @@ When a note actually saves them something, say so in one line — *"you chose Po
 week one because of the joins, so sticking with that."* That's the only visible payoff
 this has, and it costs nothing.
 
+### Preferences that follow the person, not the project
+
+If the same choice keeps recurring across their projects — always Postgres, always CLI
+first, never wants to be asked about small things — that belongs in `~/.claude/CLAUDE.md`
+under a `## Learned preferences` heading, so it applies everywhere instead of being
+relearned each time.
+
+Ask once before writing there the first time; it changes Claude's behaviour in all their
+projects. Only record things seen two or three times, never one-offs, and keep it short —
+it loads into every session. Nothing project-specific or sensitive.
+
 ### Before building something non-trivial
 
 Check `journeys/` for an existing flow, and read `CONTEXT.md` for decisions that constrain

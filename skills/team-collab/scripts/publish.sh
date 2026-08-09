@@ -1,112 +1,64 @@
 #!/usr/bin/env bash
-# Commit and push the coordination files, surviving the race where several
-# people's Claude Code push at the same time.
+# Commit and push the project's notes, surviving the case where someone else
+# pushed first.
 #
-# Only ever touches the coordination files — never code. Code goes through a
-# branch so half-finished work can't land on everyone else's main.
+# Only touches the notes — never code. Code goes through a branch so nobody's
+# half-finished work lands on everyone else's main.
 #
-# CLAUDE.md and .gitattributes are included deliberately: without the first,
-# friends who clone get no workflow brief; without the second, union-merge is off
-# and simultaneous idea entries get silently dropped.
+# CLAUDE.md and .gitattributes are included deliberately: without the first, a
+# friend who clones gets no brief and none of this works for them; without the
+# second, union-merge is off and simultaneous entries get silently dropped.
 set -uo pipefail
 
-SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+FILES=(CLAUDE.md .gitattributes CONTEXT.md JOURNAL.md IDEAS.md TASKS.md)
+for j in journeys/*.md; do [ -e "$j" ] && FILES+=("$j"); done
 
-# Hand-written files: a conflict here is real and needs a human.
-SOURCE_FILES=(CLAUDE.md .gitattributes IDEAS.md CONTEXT.md JOURNAL.md TASKS.md)
-# Journey files live in a directory, so glob them in rather than naming each one.
-for j in journeys/*.md; do [ -e "$j" ] && SOURCE_FILES+=("$j"); done
-# Nothing is generated any more — the dashboard was removed because nobody opened
-# it. Kept as an empty list so the conflict-resolution path below still compiles.
-GENERATED_FILES=()
-
-MSG="${1:-coordination: update}"
+MSG="${1:-notes: update}"
 
 if ! git rev-parse --git-dir >/dev/null 2>&1; then
-  echo "not a git repo — skipping publish"; exit 0
+  echo "not a git repo — skipping"; exit 0
 fi
 
 TRACKED=()
-for f in "${SOURCE_FILES[@]}" "${GENERATED_FILES[@]}"; do
-  [ -f "$f" ] && TRACKED+=("$f")
-done
-[ ${#TRACKED[@]} -eq 0 ] && { echo "no coordination files found"; exit 0; }
+for f in "${FILES[@]}"; do [ -f "$f" ] && TRACKED+=("$f"); done
+if [ ${#TRACKED[@]} -eq 0 ]; then
+  echo "no notes files here"; exit 0
+fi
 
 git add -- "${TRACKED[@]}"
 if git diff --cached --quiet -- "${TRACKED[@]}"; then
-  echo "no coordination changes to publish"; exit 0
+  echo "nothing to publish"; exit 0
 fi
 
 git commit -q -m "$MSG" -- "${TRACKED[@]}" || { echo "commit failed"; exit 1; }
 echo "committed: $MSG"
 
 if ! git remote | grep -q .; then
-  echo "no remote configured — committed locally only"; exit 0
+  echo "no remote — committed locally only"; exit 0
 fi
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-is_generated() {
-  local f="$1"
-  for g in "${GENERATED_FILES[@]}"; do [ "$f" = "$g" ] && return 0; done
-  return 1
-}
-
-# Resolve a rebase that stopped on conflicts. Generated files are rebuilt rather
-# than merged; anything else is a genuine disagreement and stops the run.
-resolve_rebase() {
-  while true; do
-    local conflicts unresolved=""
-    conflicts=$(git diff --name-only --diff-filter=U)
-    [ -z "$conflicts" ] && return 0
-
-    while IFS= read -r f; do
-      [ -z "$f" ] && continue
-      if is_generated "$f"; then
-        git checkout --ours -- "$f" 2>/dev/null || true
-        git add -- "$f" 2>/dev/null || true
-      else
-        unresolved="$unresolved $f"
-      fi
-    done <<< "$conflicts"
-
-    if [ -n "$unresolved" ]; then
-      echo "  genuine conflict in:$unresolved"
-      return 1
-    fi
-
-    # Only skip when the commit genuinely has nothing left in it (our change was
-    # already applied upstream). Skipping a non-empty commit silently deletes
-    # someone's work — verified the hard way, so check before skipping.
-    if git diff --cached --quiet HEAD 2>/dev/null; then
-      git rebase --skip >/dev/null 2>&1 || return 1
-    elif ! GIT_EDITOR=true git rebase --continue >/dev/null 2>&1; then
-      echo "  rebase could not continue"
-      return 1
-    fi
-  done
-}
-
-# With four people active, several rounds of "someone pushed first" is normal.
+# `merge=union` means the append-only notes never conflict — both sides survive.
+# So a conflict reaching here is structural, usually two people rewriting the same
+# journey, which is exactly the case a person should look at rather than have
+# silently merged.
 for attempt in 1 2 3 4 5 6; do
   if git push -q origin "$BRANCH" 2>/dev/null; then
     echo "pushed to origin/$BRANCH"
     exit 0
   fi
-  echo "push rejected (attempt $attempt) — rebasing on latest…"
-
+  echo "someone pushed first (attempt $attempt) — rebasing…"
   if ! git pull --rebase -q origin "$BRANCH" 2>/dev/null; then
-    if ! resolve_rebase; then
-      git rebase --abort 2>/dev/null
-      echo
-      echo "CONFLICT: someone edited the same lines you did. Not force-pushing —"
-      echo "your work is safe in the last local commit. Resolve by hand, or ask"
-      echo "Claude Code to merge the two versions."
-      exit 1
-    fi
+    CONFLICTS=$(git diff --name-only --diff-filter=U | tr '\n' ' ')
+    git rebase --abort 2>/dev/null
+    echo
+    echo "CONFLICT in: ${CONFLICTS:-unknown}"
+    echo "Someone changed the same lines. Not force-pushing — your work is safe in"
+    echo "the last local commit. Ask Claude Code to merge the two versions."
+    exit 1
   fi
-
 done
 
-echo "still couldn't push after 6 tries — the repo is unusually busy, try again shortly"
+echo "still couldn't push after 6 tries — try again shortly"
 exit 1

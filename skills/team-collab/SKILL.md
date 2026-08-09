@@ -246,6 +246,29 @@ rather than mid-task, ignore passing small talk, and if someone says stop asking
 silently for the rest of the session. An assistant that prompts constantly gets ignored,
 and the record rots anyway.
 
+## Show what you wrote — don't let files change invisibly
+
+These files are the whole product, and they're easy to miss: someone asks a question, a
+markdown file quietly changes on disk, and they have no idea anything happened. That
+undermines trust in the record, which is the one thing it can't afford.
+
+When you write something worth looking at, open it in the side panel:
+
+```
+SendUserFile(files=["PRIORITIES.md"], display="render", status="normal")
+```
+
+Markdown renders there properly — tables as tables, mermaid diagrams drawn.
+
+**Show** after triage rewrites `PRIORITIES.md`, after a journey is created or substantially
+changed, after a first-time `init` (show the dashboard), and whenever a summary is long
+enough that reading it in chat is worse than seeing the page.
+
+**Don't show** for a one-line idea append, a status field flipping to done, or anything
+where the sentence *"logged that under gotchas"* already tells the whole story. A panel
+that pops up constantly gets ignored exactly like an assistant that asks too many
+questions — same failure, different surface.
+
 ## Capture as you go (this is the part that makes it work)
 
 The workflow fails in a specific, predictable way: people discuss something good in chat,

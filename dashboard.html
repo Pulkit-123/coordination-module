@@ -39,12 +39,23 @@ hr { border:0; border-top:1px solid var(--line); margin:1.2rem 0; }
 table { border-collapse:collapse; width:100%; font-size:.9rem; }
 th,td { border:1px solid var(--line); padding:.45rem .6rem; text-align:left; }
 th { background:rgba(127,127,127,.1); font-weight:600; }
+pre.code { background:rgba(127,127,127,.10); border:1px solid var(--line); border-radius:6px;
+  padding:.7rem .9rem; overflow-x:auto; font-size:.85em; margin:.7rem 0; }
+pre.code code { background:none; padding:0; }
+.mermaid-wrap { margin:1rem 0; overflow-x:auto; border:1px solid var(--line);
+  border-radius:6px; background:rgba(127,127,127,.05); padding:.9rem; }
+/* Shown as source until mermaid loads; replaced by the rendered SVG if it does.
+   Offline this stays visible and readable, which is the intended fallback. */
+pre.mermaid { margin:0; font-size:.82em; white-space:pre; color:var(--muted);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+pre.mermaid[data-processed] { color:inherit; }
+.mermaid-wrap svg { max-width:100%; height:auto; display:block; margin:0 auto; }
 .missing { color:var(--muted); font-style:italic; }
 footer { color:var(--muted); font-size:.8rem; text-align:center; margin-top:2rem; }
 </style></head>
 <body><div class="wrap">
 <h1>Coordination Module — team dashboard</h1>
-<div class="sub">Snapshot generated 2026-08-09 16:14</div>
+<div class="sub">Snapshot generated 2026-08-09 18:12</div>
 <div class="note">
 <strong>Just talk to your own Claude Code with this repo open.</strong>
 Say what you mean — "I'll take the CSV export", "that's working now", "it'd be nice if…" —
@@ -117,15 +128,11 @@ other people's updates.</span>
 <p>Rough or half-formed ideas are welcome. <code>team-collab triage</code> will ask you clarifying</p>
 <p>questions rather than silently dropping them.</p>
 <p><strong>Format:</strong></p>
-<p>```</p>
-<h4>&lt;short title&gt;</h4>
-<ul>
-<li><strong>From:</strong> &lt;your name&gt;</li>
-<li><strong>Date:</strong> YYYY-MM-DD</li>
-<li><strong>What:</strong> one or two sentences on the idea</li>
-<li><strong>Why:</strong> the problem it solves (optional, but it&#x27;s what decides priority)</li>
-</ul>
-<p>```</p>
+<pre class='code'><code>### &lt;short title&gt;
+- **From:** &lt;your name&gt;
+- **Date:** YYYY-MM-DD
+- **What:** one or two sentences on the idea
+- **Why:** the problem it solves (optional, but it&#x27;s what decides priority)</code></pre>
 <hr>
 <h4>SDLC toolkit — skills for the whole product development cycle</h4>
 <ul>
@@ -163,12 +170,17 @@ other people's updates.</span>
 <p><strong>Keep entries short and dated.</strong> Delete or amend entries that turn out to be wrong —</p>
 <p>stale context is worse than none, because people act on it confidently.</p>
 <h3>Scope</h3>
-<p><strong>coordination-module is</strong> a set of Claude Code skills that let a small trusted group build</p>
-<p>a shared project when each person runs their own Claude Code — keeping ideas, decisions,</p>
-<p>reasoning, and task claims in plain markdown so nobody works from a stale picture.</p>
-<p><strong>coordination-module is not</strong> a spec-driven development framework (see the open thread on</p>
-<p>spec-kit in <code>JOURNAL.md</code>), not a hosted service or web app, not a chat tool, and not a</p>
-<p>replacement for GitHub Issues — it links to Issues rather than reimplementing them.</p>
+<p><strong>coordination-module is</strong> a set of Claude Code skills for a small trusted group building</p>
+<p>a shared project where each person runs their own Claude Code. Two halves: working out</p>
+<p><strong>what</strong> to build (the user&#x27;s flow, the spec, what to build first), and keeping everyone</p>
+<p>aligned <strong>while</strong> building it (ideas, decisions, reasoning, task claims) — all in plain</p>
+<p>markdown so nobody works from a stale picture.</p>
+<p><strong>coordination-module is not</strong> a hosted service or web app, not a chat tool, not a</p>
+<p>replacement for GitHub Issues (it links to them rather than reimplementing them), and</p>
+<p>covers only the front half of the development cycle — testing, review and deployment are</p>
+<p>left to Claude Code&#x27;s existing capabilities.</p>
+<p>_Scope revised 2026-08-09 — it previously excluded spec work entirely. See the decision</p>
+<p>below; the earlier wording is in git history._</p>
 <p>The guiding constraint is footprint: plain files, plain git, no server, no API keys, no</p>
 <p>build step. A friend should clone and be productive in a minute. Reject anything that</p>
 <p>breaks that unless the payoff is very large.</p>
@@ -290,6 +302,57 @@ other people's updates.</span>
 <ul>
 <li><strong>By:</strong> pulkit</li>
 </ul>
+<h4>2026-08-09 — scope widened to cover shaping work, and spec-kit not adopted</h4>
+<ul>
+<li><strong>Chose:</strong> add a <code>shape</code> skill covering discovery → user journey → spec → first slice,</li>
+</ul>
+<p>in this repo, reversing &quot;not a spec-driven development framework&quot;</p>
+<ul>
+<li><strong>Over:</strong> (a) leaving scope as it was, (b) depending on GitHub spec-kit, (c) covering the</li>
+</ul>
+<p>full cycle including test and deploy</p>
+<ul>
+<li><strong>Because:</strong> the front half is where quality is actually lost — getting the idea out of</li>
+</ul>
+<p>someone&#x27;s head is the hard part, and Claude Code already handles the back half well.</p>
+<p>spec-kit was not adopted because journey-first makes it unnecessary rather than something</p>
+<p>to bridge to: it starts from writing a spec, which is exactly the blank page that stops</p>
+<p>beginners. The full cycle was rejected as the BMAD failure mode — a ~2-month learning</p>
+<p>curve for a tool meant to save time.</p>
+<ul>
+<li><strong>By:</strong> pulkit</li>
+</ul>
+<h4>2026-08-09 — user journey as the primary artifact, not the spec</h4>
+<ul>
+<li><strong>Chose:</strong> a mermaid <code>flowchart</code> per feature in <code>journeys/&lt;slug&gt;.md</code>, with the spec</li>
+</ul>
+<p>derived from it</p>
+<ul>
+<li><strong>Over:</strong> a written spec as the starting point, and over mermaid&#x27;s <code>journey</code> type</li>
+<li><strong>Because:</strong> &quot;walk me through what the person does&quot; is answerable by anyone; &quot;write a</li>
+</ul>
+<p>spec&quot; is not. Mermaid&#x27;s <code>journey</code> type was rejected on inspection — its grammar is only</p>
+<p><code>title</code>, <code>section</code>, <code>Task: score: actor</code>, so it <strong>cannot branch at all</strong> and therefore</p>
+<p>can&#x27;t express the error and empty states the whole exercise exists to surface. It also</p>
+<p>only adds an emotion score, which is the one dimension deliberately cut.</p>
+<ul>
+<li><strong>By:</strong> pulkit</li>
+</ul>
+<h4>2026-08-09 — dashboard may load mermaid from a CDN</h4>
+<ul>
+<li><strong>Chose:</strong> pull the mermaid renderer from a CDN, only on pages that contain a diagram,</li>
+</ul>
+<p>with the diagram source left visible as the offline fallback</p>
+<ul>
+<li><strong>Over:</strong> strict &quot;no external requests&quot;, or vendoring ~2.5MB of JS into the repo</li>
+<li><strong>Because:</strong> a render-only library with no keys, no backend and no cost is a different</li>
+</ul>
+<p>risk from the API-key-plus-billing case the original rule was written against. It</p>
+<p>degrades cleanly: offline you see readable source, not a broken page. Pages without a</p>
+<p>diagram still get no script at all.</p>
+<ul>
+<li><strong>By:</strong> pulkit</li>
+</ul>
 <h3>Ideas we said no to (and why)</h3>
 <p><code>PRIORITIES.md</code> gets rewritten on every triage, so reject reasoning kept only there</p>
 <p>vanishes. It belongs here instead — otherwise the same idea gets proposed, debated, and</p>
@@ -380,61 +443,10 @@ other people's updates.</span>
 <p>debate is the single most valuable thing to hand another person, because it&#x27;s where they</p>
 <p>can actually contribute. Move a thread to <code>CONTEXT.md</code> decisions once it settles, leaving</p>
 <p>a one-line pointer here.</p>
-<h4>Should we build a full SDLC toolkit, or bridge to GitHub spec-kit?  (opened by pulkit, 2026-08-09)</h4>
-<p>The idea: extend beyond coordination into a complete toolkit for the whole product</p>
-<p>development cycle — planning, specs, architecture, task breakdown, implementation,</p>
-<p>testing, deployment — aimed at people new to software who don&#x27;t yet know what good process</p>
-<p>looks like.</p>
-<p><strong>Research done before deciding (so nobody has to redo it):</strong></p>
-<ul>
-<li>**[GitHub spec-kit](https://github.com/github/spec-kit) — 126k stars, GitHub-official,</li>
-</ul>
-<p>works with 30+ agents including Claude Code.** Provides exactly this lifecycle:</p>
-<p><code>constitution → specify → clarify → plan → tasks → implement → analyze → converge</code>.</p>
-<p>Learning curve reported as 1–2 days.</p>
-<ul>
-<li><strong>[BMAD-METHOD v4](https://bmadcodes.com/bmad-method/)</strong> — agent personas (Analyst, PM,</li>
-</ul>
-<p>Architect, Dev, QA) with structured handoffs. Criticized for a ~2-month learning curve</p>
-<p>and heavy token cost; one benchmark clocked a CRM dashboard at 5.5 hours with BMAD vs</p>
-<p>12 minutes with a lightweight alternative. Called overkill for small tasks.</p>
-<ul>
-<li><strong>OpenSpec</strong> — lightweight, but its dominant community complaint is spec drift: specs</li>
-</ul>
-<p>&quot;keep drifting until you have duplication and contradictions.&quot;</p>
-<ul>
-<li><strong>Agent OS, Kiro</strong> — similar space, multi-agent orchestration.</li>
-<li><strong>Anthropic&#x27;s official marketplace</strong> has no SDLC plugin — only a document suite, example</li>
-</ul>
-<p>skills, and an API-docs skill. Claude Code&#x27;s built-in plan mode covers some of this.</p>
-<p><strong>Two observations that shape the argument:</strong></p>
-<p>1. The documented top failure of the spec-driven tools — drift into duplication and</p>
-<p>contradictions — is precisely what this module already detects</p>
-<p>(<code>check_collisions.py</code>, <code>CONTEXT.md</code>, <code>JOURNAL.md</code>).</p>
-<p>2. Every one of these frameworks assumes <strong>one</strong> developer orchestrating agents. None</p>
-<p>handle several people each running their own agent. That&#x27;s this module&#x27;s actual</p>
-<p>differentiator, and rebuilding a spec pipeline would trade a unique asset for a worse</p>
-<p>copy of a 126k-star tool.</p>
-<ul>
-<li><strong>pulkit:</strong> wants the full cycle covered so beginners have good defaults, and expects it</li>
-</ul>
-<p>to be &quot;a lot of small small things.&quot;</p>
-<ul>
-<li><strong>Counter-position:</strong> don&#x27;t rebuild. Bridge to spec-kit for the per-feature lifecycle and</li>
-</ul>
-<p>build only the thin layer connecting it to the coordination files, plus 2–3 skills</p>
-<p>filling genuine gaps. Also: &quot;a lot of small skills&quot; is a known hazard — several tiny</p>
-<p>skills with similar descriptions mis-trigger against each other, which already came up</p>
-<p>over the dashboard buttons.</p>
-<ul>
-<li><strong>Leaning (not decided):</strong> thin bridge, teaching-oriented so it explains <em>why</em> each step</li>
-</ul>
-<p>matters, first cut 3–4 skills covering the biggest gaps.</p>
-<ul>
-<li><strong>Still unresolved:</strong> whether to take a dependency on spec-kit at all, and which gaps</li>
-</ul>
-<p>are genuinely worth a skill. Deferred deliberately — ship and actually use the</p>
-<p>coordination tool first, then decide from real experience rather than speculation.</p>
+<p><em>None open.</em></p>
+<p>Recently settled: <strong>SDLC toolkit vs spec-kit</strong> — resolved 2026-08-09 in favour of a</p>
+<p>journey-first <code>shape</code> skill covering the front half only; spec-kit not adopted. Reasoning</p>
+<p>and the research behind it are in <code>CONTEXT.md</code> decisions and the log entry below.</p>
 <h3>Log</h3>
 <p>Newest at the bottom. One short entry per meaningful exchange — what was discussed, what</p>
 <p>options were weighed, what was chosen or left open. Include the alternatives that were</p>
@@ -489,6 +501,44 @@ other people's updates.</span>
 <p>feature is an assistant that asks about everything and gets tuned out. The structural</p>
 <p>insight was that these rules belong in <code>CLAUDE.md</code> rather than <code>SKILL.md</code>, because</p>
 <p><code>CLAUDE.md</code> loads every session while a skill only fires when its description matches.</p>
+<h4>2026-08-09 — journeys, and the questions people can&#x27;t answer  (pulkit)</h4>
+<p>Settled the SDLC thread by reframing it: the <strong>user journey</strong>, not the spec, is the primary</p>
+<p>artifact. Rejected spec-kit as a dependency — it starts from writing a spec, which is the</p>
+<p>blank page that stops beginners, so journey-first makes it unnecessary rather than</p>
+<p>something to bridge to. Rejected the full cycle in favour of the front half, on the</p>
+<p>grounds that Claude Code already covers testing and review and that equal-depth phases are</p>
+<p>what made BMAD unusable.</p>
+<p>Grounded the method in existing practice rather than inventing one: Patton&#x27;s story mapping</p>
+<p>for the backbone and walking skeleton, job stories instead of personas (personas don&#x27;t</p>
+<p>explain causality and invite invented demographics), Hurff&#x27;s UI Stack plus three Nielsen</p>
+<p>heuristics as the per-step checklist, happy → alternate → exception as the <em>order</em> of</p>
+<p>questioning, and Example Mapping to turn the map into rules. Cut as enterprise overhead:</p>
+<p>emotion rows, personas with photos, &quot;thoughts&quot; rows sourced from research nobody did.</p>
+<p>Mermaid&#x27;s <code>journey</code> type was investigated and rejected on a hard fact: its grammar has no</p>
+<p>branching, so it structurally cannot express the failure states the exercise exists to</p>
+<p>find. <code>flowchart TD</code> instead — happy path as trunk, failures as labelled branches, which</p>
+<p>makes a trunk-with-no-branches visibly unfinished.</p>
+<p>Three refinements came from thinking about how this fails in practice rather than how it</p>
+<p>works on paper:</p>
+<ul>
+<li><strong>Never announce the process.</strong> Naming phases turns an exciting idea into paperwork.</li>
+</ul>
+<p>Ask &quot;who opens this, and what just happened to them?&quot; rather than &quot;let&#x27;s begin the</p>
+<p>discovery phase&quot; — same information, completely different response.</p>
+<ul>
+<li><strong>A question someone can&#x27;t answer is worse than one you answer for them.</strong> Added an</li>
+</ul>
+<p>escalation ladder — ask, then offer options to react to, then propose a default and mark</p>
+<p>it as an <em>assumption</em> rather than a decision. Frustrating someone in a domain they don&#x27;t</p>
+<p>know makes everything after it shallow.</p>
+<ul>
+<li><strong>Show the diagram as it grows</strong>, in the side panel, drafting a wrong first version</li>
+</ul>
+<p>deliberately: correcting a sketch is far easier than producing one from nothing. Also</p>
+<p>generalised to <code>team-collab</code> — files changing silently on disk is invisible work, so</p>
+<p>anything worth reading gets opened rather than just mentioned.</p>
 </section>
 <footer>Generated by team-collab · edit the markdown files, not this page</footer>
-</div></body></html>
+</div>
+
+</body></html>

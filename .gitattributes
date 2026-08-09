@@ -6,6 +6,11 @@ CONTEXT.md merge=union
 JOURNAL.md merge=union
 TASKS.md merge=union
 
+# Journey files are edited in place, not appended to. Union-merging a flowchart
+# duplicates nodes and produces a diagram that renders as nonsense, so these
+# conflict normally on purpose — two people rewriting the same flow should talk.
+journeys/*.md -merge=union
+
 # Generated files: never merge them, just rebuild. Whoever runs triage/dashboard next
 # regenerates from the markdown, so a textual merge would only create noise.
 PRIORITIES.md -merge

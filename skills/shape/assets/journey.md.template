@@ -1,0 +1,90 @@
+# {{FEATURE_NAME}}
+
+- **Status:** shaping · ready to build · building · done
+- **Started:** {{DATE}} by {{AUTHOR}}
+
+## What this is for
+
+**When** <the situation someone is in>,
+**I want to** <what they're trying to do>,
+**so I can** <the outcome they actually want>.
+
+**Not in scope:** <the things this deliberately does not cover — write these down, they
+prevent the feature quietly growing>
+
+## The flow
+
+Happy path down the trunk, everything that can go wrong branching off it. A trunk with no
+branches means the journey isn't finished yet.
+
+```mermaid
+flowchart TD
+    Start([Where they begin]) --> Step1[What they do first]
+    Step1 --> Step2[What happens next]
+    Step2 --> Done([What success looks like])
+```
+
+## Step by step
+
+Repeat this block per step. Delete the prompts that genuinely don't apply — but delete
+them because you thought about them, not because they're tedious.
+
+### 1. <step name>
+
+- **Arrives here when:** <what triggers this step>
+- **They do:** <the action>
+- **System does:** <the response>
+- **Empty:** <what they see when there's nothing yet>
+- **One / many:** <does it hold up with a single item, and with hundreds>
+- **Slow:** <what's shown while waiting>
+- **They can get it wrong by:** <mistake> → **prevented by:** <how, if possible>
+- **System can fail by:** <failure> → **we show:** <message that says what to do next>
+- **Allowed to do this:** <who>
+- **First time they've seen it:** <anything different on first run>
+
+## Rules
+
+Acceptance criteria. Plain checklist — the thing must do all of these to be finished.
+
+- [ ] <rule>
+- [ ] <rule>
+
+Use Given/When/Then only for rules that genuinely span several steps:
+
+> **Given** <starting state> **when** <action> **then** <result>
+
+## Examples
+
+One concrete line per rule, with real values. Concrete beats abstract — "a 12MB upload
+shows 'Files must be under 10MB'" is worth more than "validates file size".
+
+- <example>
+
+## Assumptions
+
+Answers that were filled in with a sensible default rather than actually decided — usually
+because it wasn't worth stopping the conversation over, or it was too early to know.
+
+These are **not** decisions. They're here so they stay visible and cheap to overturn; an
+assumption that quietly hardens into a requirement is how features end up subtly wrong.
+
+- <what was assumed> — <why that default> — _revisit when: <what would settle it>_
+
+## Open questions
+
+Things nobody can answer yet. Leave them here rather than guessing — a guess written as a
+requirement is indistinguishable from a decision later.
+
+- [ ] <question> — <who might know>
+
+**Lots of questions means this isn't understood well enough to build yet.**
+**Lots of rules means it's too big — split it into separate journeys.**
+
+## First slice
+
+The walking skeleton: the thinnest path that runs end to end and still delivers a complete
+outcome. Not the first third of the steps — a thin version of all of them.
+
+- <what's in the first slice>
+
+**Deferred to later:** <what's deliberately left out of v1>

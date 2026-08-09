@@ -15,51 +15,11 @@ debate is the single most valuable thing to hand another person, because it's wh
 can actually contribute. Move a thread to `CONTEXT.md` decisions once it settles, leaving
 a one-line pointer here.
 
-### Should we build a full SDLC toolkit, or bridge to GitHub spec-kit?  (opened by pulkit, 2026-08-09)
+_None open._
 
-The idea: extend beyond coordination into a complete toolkit for the whole product
-development cycle — planning, specs, architecture, task breakdown, implementation,
-testing, deployment — aimed at people new to software who don't yet know what good process
-looks like.
-
-**Research done before deciding (so nobody has to redo it):**
-
-- **[GitHub spec-kit](https://github.com/github/spec-kit) — 126k stars, GitHub-official,
-  works with 30+ agents including Claude Code.** Provides exactly this lifecycle:
-  `constitution → specify → clarify → plan → tasks → implement → analyze → converge`.
-  Learning curve reported as 1–2 days.
-- **[BMAD-METHOD v4](https://bmadcodes.com/bmad-method/)** — agent personas (Analyst, PM,
-  Architect, Dev, QA) with structured handoffs. Criticized for a ~2-month learning curve
-  and heavy token cost; one benchmark clocked a CRM dashboard at 5.5 hours with BMAD vs
-  12 minutes with a lightweight alternative. Called overkill for small tasks.
-- **OpenSpec** — lightweight, but its dominant community complaint is spec drift: specs
-  "keep drifting until you have duplication and contradictions."
-- **Agent OS, Kiro** — similar space, multi-agent orchestration.
-- **Anthropic's official marketplace** has no SDLC plugin — only a document suite, example
-  skills, and an API-docs skill. Claude Code's built-in plan mode covers some of this.
-
-**Two observations that shape the argument:**
-
-1. The documented top failure of the spec-driven tools — drift into duplication and
-   contradictions — is precisely what this module already detects
-   (`check_collisions.py`, `CONTEXT.md`, `JOURNAL.md`).
-2. Every one of these frameworks assumes **one** developer orchestrating agents. None
-   handle several people each running their own agent. That's this module's actual
-   differentiator, and rebuilding a spec pipeline would trade a unique asset for a worse
-   copy of a 126k-star tool.
-
-- **pulkit:** wants the full cycle covered so beginners have good defaults, and expects it
-  to be "a lot of small small things."
-- **Counter-position:** don't rebuild. Bridge to spec-kit for the per-feature lifecycle and
-  build only the thin layer connecting it to the coordination files, plus 2–3 skills
-  filling genuine gaps. Also: "a lot of small skills" is a known hazard — several tiny
-  skills with similar descriptions mis-trigger against each other, which already came up
-  over the dashboard buttons.
-- **Leaning (not decided):** thin bridge, teaching-oriented so it explains *why* each step
-  matters, first cut 3–4 skills covering the biggest gaps.
-- **Still unresolved:** whether to take a dependency on spec-kit at all, and which gaps
-  are genuinely worth a skill. Deferred deliberately — ship and actually use the
-  coordination tool first, then decide from real experience rather than speculation.
+Recently settled: **SDLC toolkit vs spec-kit** — resolved 2026-08-09 in favour of a
+journey-first `shape` skill covering the front half only; spec-kit not adopted. Reasoning
+and the research behind it are in `CONTEXT.md` decisions and the log entry below.
 
 ## Log
 
@@ -124,4 +84,39 @@ confirmation first. Added explicit anti-nag rules, since the obvious failure of 
 feature is an assistant that asks about everything and gets tuned out. The structural
 insight was that these rules belong in `CLAUDE.md` rather than `SKILL.md`, because
 `CLAUDE.md` loads every session while a skill only fires when its description matches.
+
+### 2026-08-09 — journeys, and the questions people can't answer  (pulkit)
+Settled the SDLC thread by reframing it: the **user journey**, not the spec, is the primary
+artifact. Rejected spec-kit as a dependency — it starts from writing a spec, which is the
+blank page that stops beginners, so journey-first makes it unnecessary rather than
+something to bridge to. Rejected the full cycle in favour of the front half, on the
+grounds that Claude Code already covers testing and review and that equal-depth phases are
+what made BMAD unusable.
+
+Grounded the method in existing practice rather than inventing one: Patton's story mapping
+for the backbone and walking skeleton, job stories instead of personas (personas don't
+explain causality and invite invented demographics), Hurff's UI Stack plus three Nielsen
+heuristics as the per-step checklist, happy → alternate → exception as the *order* of
+questioning, and Example Mapping to turn the map into rules. Cut as enterprise overhead:
+emotion rows, personas with photos, "thoughts" rows sourced from research nobody did.
+
+Mermaid's `journey` type was investigated and rejected on a hard fact: its grammar has no
+branching, so it structurally cannot express the failure states the exercise exists to
+find. `flowchart TD` instead — happy path as trunk, failures as labelled branches, which
+makes a trunk-with-no-branches visibly unfinished.
+
+Three refinements came from thinking about how this fails in practice rather than how it
+works on paper:
+
+- **Never announce the process.** Naming phases turns an exciting idea into paperwork.
+  Ask "who opens this, and what just happened to them?" rather than "let's begin the
+  discovery phase" — same information, completely different response.
+- **A question someone can't answer is worse than one you answer for them.** Added an
+  escalation ladder — ask, then offer options to react to, then propose a default and mark
+  it as an *assumption* rather than a decision. Frustrating someone in a domain they don't
+  know makes everything after it shallow.
+- **Show the diagram as it grows**, in the side panel, drafting a wrong first version
+  deliberately: correcting a sketch is far easier than producing one from nothing. Also
+  generalised to `team-collab` — files changing silently on disk is invisible work, so
+  anything worth reading gets opened rather than just mentioned.
 

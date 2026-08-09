@@ -14,6 +14,8 @@ SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Hand-written files: a conflict here is real and needs a human.
 SOURCE_FILES=(CLAUDE.md .gitattributes IDEAS.md CONTEXT.md JOURNAL.md TASKS.md)
+# Journey files live in a directory, so glob them in rather than naming each one.
+for j in journeys/*.md; do [ -e "$j" ] && SOURCE_FILES+=("$j"); done
 # Regenerated from the files above. A conflict here is meaningless — rebuilding
 # always produces the correct result, so never make a person resolve one. This
 # matters more than it sounds: leaving these to git blocked everyone but the

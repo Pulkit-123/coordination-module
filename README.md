@@ -30,7 +30,13 @@ No server, no API keys, no build step, no accounts. Plain files and plain git.
 | `IDEAS.md` | Append-only backlog, attributed |
 | `TASKS.md` | Who is building what, right now |
 | `PRIORITIES.md` | Ranked build order (generated) |
+| `journeys/*.md` | One per feature: the flow, the spec, open questions |
 | `dashboard.html` | Static single-page view (generated) |
+
+**`shape`** — works out *what* to build, before any code. Walks through the user's flow
+step by step, turning it into a mermaid diagram, acceptance rules and a first slice in
+`journeys/<slug>.md`. Built on established practice (Patton's story mapping, job stories,
+Hurff's UI Stack, Example Mapping) rather than an invented methodology.
 
 **`why`** — answers "why was this rejected / decided / dropped?" by tracing those files
 *and their git history*, including reasoning that was later edited out or deleted.
@@ -57,6 +63,7 @@ what they want — no commands to memorize:
 | `done` | Moves your task to finished |
 | `status` / `catch me up` | What changed, who's on what, what needs your view |
 | `why was offline mode dropped?` | Traces the decision and its reasoning |
+| `help me plan the export feature` | Shapes it into a journey, spec and tasks |
 
 ## How access works
 

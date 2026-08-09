@@ -12,13 +12,19 @@ stale context is worse than none, because people act on it confidently.
 
 ## Scope
 
-**coordination-module is** a set of Claude Code skills that let a small trusted group build
-a shared project when each person runs their own Claude Code — keeping ideas, decisions,
-reasoning, and task claims in plain markdown so nobody works from a stale picture.
+**coordination-module is** a set of Claude Code skills for a small trusted group building
+a shared project where each person runs their own Claude Code. Two halves: working out
+**what** to build (the user's flow, the spec, what to build first), and keeping everyone
+aligned **while** building it (ideas, decisions, reasoning, task claims) — all in plain
+markdown so nobody works from a stale picture.
 
-**coordination-module is not** a spec-driven development framework (see the open thread on
-spec-kit in `JOURNAL.md`), not a hosted service or web app, not a chat tool, and not a
-replacement for GitHub Issues — it links to Issues rather than reimplementing them.
+**coordination-module is not** a hosted service or web app, not a chat tool, not a
+replacement for GitHub Issues (it links to them rather than reimplementing them), and
+covers only the front half of the development cycle — testing, review and deployment are
+left to Claude Code's existing capabilities.
+
+_Scope revised 2026-08-09 — it previously excluded spec work entirely. See the decision
+below; the earlier wording is in git history._
 
 The guiding constraint is footprint: plain files, plain git, no server, no API keys, no
 build step. A friend should clone and be productive in a minute. Reject anything that
@@ -104,6 +110,40 @@ Things settled, with the reasoning — so they don't get relitigated every month
   other people's time. Paired with anti-nag rules (never ask twice, batch at natural
   pauses, stop if told to), because an assistant that prompts constantly gets ignored and
   the record rots anyway.
+- **By:** pulkit
+
+### 2026-08-09 — scope widened to cover shaping work, and spec-kit not adopted
+- **Chose:** add a `shape` skill covering discovery → user journey → spec → first slice,
+  in this repo, reversing "not a spec-driven development framework"
+- **Over:** (a) leaving scope as it was, (b) depending on GitHub spec-kit, (c) covering the
+  full cycle including test and deploy
+- **Because:** the front half is where quality is actually lost — getting the idea out of
+  someone's head is the hard part, and Claude Code already handles the back half well.
+  spec-kit was not adopted because journey-first makes it unnecessary rather than something
+  to bridge to: it starts from writing a spec, which is exactly the blank page that stops
+  beginners. The full cycle was rejected as the BMAD failure mode — a ~2-month learning
+  curve for a tool meant to save time.
+- **By:** pulkit
+
+### 2026-08-09 — user journey as the primary artifact, not the spec
+- **Chose:** a mermaid `flowchart` per feature in `journeys/<slug>.md`, with the spec
+  derived from it
+- **Over:** a written spec as the starting point, and over mermaid's `journey` type
+- **Because:** "walk me through what the person does" is answerable by anyone; "write a
+  spec" is not. Mermaid's `journey` type was rejected on inspection — its grammar is only
+  `title`, `section`, `Task: score: actor`, so it **cannot branch at all** and therefore
+  can't express the error and empty states the whole exercise exists to surface. It also
+  only adds an emotion score, which is the one dimension deliberately cut.
+- **By:** pulkit
+
+### 2026-08-09 — dashboard may load mermaid from a CDN
+- **Chose:** pull the mermaid renderer from a CDN, only on pages that contain a diagram,
+  with the diagram source left visible as the offline fallback
+- **Over:** strict "no external requests", or vendoring ~2.5MB of JS into the repo
+- **Because:** a render-only library with no keys, no backend and no cost is a different
+  risk from the API-key-plus-billing case the original rule was written against. It
+  degrades cleanly: offline you see readable source, not a broken page. Pages without a
+  diagram still get no script at all.
 - **By:** pulkit
 
 ## Ideas we said no to (and why)

@@ -8,6 +8,7 @@ that from turning into chaos. Read them before doing anything substantial.
 | File | What it's for |
 |---|---|
 | `JOURNAL.md` | The running conversation — reasoning, and arguments still open |
+| `journeys/*.md` | One per feature: the user's flow, the spec, and open questions |
 | `CONTEXT.md` | Scope, decisions, gotchas — what the group has settled and learned |
 | `IDEAS.md` | Append-only backlog of feature ideas from anyone |
 | `TASKS.md` | Who is actively building what, right now |
@@ -24,6 +25,15 @@ Work on a short-lived branch named in your claim (e.g. `feat/export-csv`). This 
 process ceremony — it's the thing that stops two agents from overwriting each other. Merge
 to `main` when the piece works; no formal review is required in this group unless the
 change is risky or touches shared foundations.
+
+### Before building a feature, shape it
+
+If a feature isn't obvious, work out what it should do before writing code — say
+something like "help me plan this" and the `shape` skill walks through the user's flow,
+turning it into a diagram, acceptance rules, and tasks in `journeys/<slug>.md`.
+
+Read the journey file first if one exists. It records the failure and empty states someone
+already thought through, which is the part most easily missed when reading only the code.
 
 ### When you have a new idea
 
@@ -98,6 +108,19 @@ know a command exists.** Read intent from ordinary conversation:
 
 These are examples of a pattern, not a lookup table — match the meaning, not the wording.
 Someone describing what they're about to go build *is* a claim, however they phrase it.
+
+### Show people the files you change
+
+These markdown files are the actual product, and they're easy to miss — a file changes on
+disk and nobody notices anything happened. Open the ones worth looking at in the side
+panel rather than only mentioning them, so the work is visible as it happens:
+`SendUserFile(files=["PRIORITIES.md"], display="render")`. Markdown renders there with
+tables and mermaid diagrams drawn.
+
+Do it for things worth reading — a fresh triage, a new or substantially changed journey,
+the dashboard after setup. Don't do it for a one-line idea append or a status flipping to
+done, where saying so in a sentence is already the full story. A panel that opens
+constantly gets ignored just as fast as an assistant that asks too many questions.
 
 ### Ask before anything other people will see; just do the harmless things
 

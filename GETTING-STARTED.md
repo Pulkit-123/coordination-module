@@ -57,6 +57,7 @@ they're for:
 | File | In plain words |
 |---|---|
 | `IDEAS.md` | The wish list. Anything anyone thinks of. |
+| `journeys/` | One file per feature: how it works, drawn as a diagram. |
 | `TASKS.md` | Who is doing what right now. |
 | `PRIORITIES.md` | What to build next, in order. |
 | `CONTEXT.md` | What you've decided, and mistakes you already made. |
@@ -110,6 +111,23 @@ You don't need those exact words. Say it however you say it.
 **Why does it ask sometimes but not others?** If it only affects the notes, it just does
 it and tells you. If it tells your *friends* something — like "I'm working on this" or
 "this is finished" — it asks first, because getting that wrong wastes their time.
+
+### Planning something new
+
+If you're about to build a feature and aren't sure what it should do, just say so —
+*"help me plan the export screen"*, or even *"I want to build a habit tracker"*.
+
+Claude walks you through it by asking about the person using it: what they do first, what
+they see when there's nothing there yet, what happens when it breaks. It draws the flow as
+a diagram in the side panel as you talk, so you can see it taking shape and spot what's
+missing.
+
+**You don't have to know all the answers.** Say "I don't know" or "you decide" and it'll
+suggest something sensible, note it as an assumption, and move on. The point is to catch
+the things people usually forget — not to test you.
+
+It saves everything to `journeys/<name>.md`, and turns the first chunk into tasks when
+you're ready.
 
 ### Four things worth typing on purpose
 

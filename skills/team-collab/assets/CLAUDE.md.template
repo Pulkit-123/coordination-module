@@ -8,6 +8,7 @@ keep that from turning into chaos. Read them before doing anything substantial.
 | File | What it's for |
 |---|---|
 | `IDEAS.md` | Append-only backlog of feature ideas from anyone |
+| `CONTEXT.md` | What the group has learned — decisions, gotchas, how things work |
 | `TASKS.md` | Who is actively building what, right now |
 | `PRIORITIES.md` | Ranked build order — generated, do not hand-edit |
 | `dashboard.html` | Static readable snapshot of all three |
@@ -35,6 +36,48 @@ Read `PRIORITIES.md`. It's regenerated from `IDEAS.md` by running `team-collab t
 Claude Code, which ranks ideas, flags duplicates and contradictions, and raises clarifying
 questions. Because it's generated, hand-edits get wiped on the next triage — put your
 argument in `IDEAS.md` as a new entry instead, where it survives and gets weighed.
+
+### Inherit what others have learned
+
+Read `CONTEXT.md` before making design choices or debugging. It holds what the rest of the
+group already worked out — decisions and their reasoning, dead ends someone already hit,
+and non-obvious details about how things work. The value of several people each running
+their own Claude Code only compounds if what one person learns reaches the others; without
+this file, everyone rediscovers the same walls independently.
+
+When you learn something durable, append it there — see below.
+
+### Record things as they come up — don't wait to be asked
+
+This workflow fails in one predictable way: something good gets discussed, nobody writes
+it down, and a week later the repo has no memory of it. So while working or talking:
+
+- Someone floats a feature → append it to `IDEAS.md` under their name, even if it's
+  dismissed straight away (log why — otherwise it gets re-proposed forever).
+- Starting real work → claim it in `TASKS.md` **before** the first edit.
+- Finished → move the row to Done. Blocked → mark it and say what it's waiting on.
+- A decision gets made ("Postgres, not SQLite") → append it to `CONTEXT.md` with the
+  reasoning, or it gets relitigated next month.
+- You hit a dead end, or discover a trap → `CONTEXT.md` gotchas, so the next person
+  doesn't spend the same afternoon on it.
+
+Use judgment: log what someone would want to find later, not every passing thought — an
+unreadable backlog is as useless as an empty one. Say in one line what you recorded, so
+people can correct it if you captured it wrong.
+
+### Publishing changes
+
+After changing any coordination file, commit and push it — an update nobody else can see
+is the same as no update. Regenerate the dashboard first so it matches.
+
+Coordination files (`IDEAS.md`, `TASKS.md`, `PRIORITIES.md`, `dashboard.html`) can be
+pushed straight to `main`; they're append-mostly and the whole point is visibility. Expect
+push rejections when several people are active — pull with `--rebase` and retry rather
+than force-pushing.
+
+**Code is different.** Work on the branch named in your task claim and let the human
+decide when to merge. Nobody's half-finished refactor should land on everyone else's
+`main`.
 
 ### Keeping the dashboard current
 

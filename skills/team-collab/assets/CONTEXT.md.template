@@ -1,0 +1,56 @@
+# Shared understanding — {{PROJECT_NAME}}
+
+What the group has figured out. Every person's Claude Code reads this on opening the repo,
+so knowledge one person gained becomes knowledge everyone has — that's the whole point.
+
+`IDEAS.md` is what we might build. This is what we now know. Append here whenever
+something is learned the hard way, decided with reasoning, or would make a newcomer say
+"I wish someone had told me."
+
+**Keep entries short and dated.** Delete or amend entries that turn out to be wrong —
+stale context is worse than none, because people act on it confidently.
+
+## Decisions
+
+Things settled, with the reasoning — so they don't get relitigated every month.
+
+```
+### YYYY-MM-DD — <decision>
+- **Chose:** what we went with
+- **Over:** the alternative
+- **Because:** the reasoning
+- **By:** who
+```
+
+## Ideas we said no to (and why)
+
+`PRIORITIES.md` gets rewritten on every triage, so reject reasoning kept only there
+vanishes. It belongs here instead — otherwise the same idea gets proposed, debated, and
+rejected again every few weeks, which wears people down faster than almost anything else.
+
+Not permanent: if circumstances change, reverse it deliberately and note what changed.
+
+```
+### <idea>  (proposed by <name>, decided YYYY-MM-DD)
+- **Verdict:** rejected / deferred until <what>
+- **Because:** the reasoning
+```
+
+## Gotchas and dead ends
+
+Things tried that didn't work, and traps in the codebase or its dependencies. This section
+saves the most time — it stops the second and third person rediscovering the same wall.
+
+```
+### <short title>  (<name>, YYYY-MM-DD)
+What happened, and what to do instead.
+```
+
+## How things work
+
+Domain knowledge, architecture rationale, and anything non-obvious about the setup that
+isn't self-evident from reading the code.
+
+---
+
+_Nothing recorded yet — it fills up as the group works._

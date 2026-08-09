@@ -1,0 +1,11 @@
+# Keep both sides when two people append at once, instead of raising a conflict.
+# Without this, two ideas added at the same time collide at the end of the file and
+# one person's entry gets lost during the rebase — the worst possible failure here.
+IDEAS.md merge=union
+CONTEXT.md merge=union
+TASKS.md merge=union
+
+# Generated files: never merge them, just rebuild. Whoever runs triage/dashboard next
+# regenerates from the markdown, so a textual merge would only create noise.
+PRIORITIES.md -merge
+dashboard.html -merge

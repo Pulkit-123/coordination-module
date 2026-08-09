@@ -154,3 +154,41 @@ checked the HTML contained a script tag, not that a diagram appeared. And emptyi
 `GENERATED_FILES` broke `publish.sh` outright, because `set -u` errors on expanding an
 empty array in macOS bash 3.2; the fix was deleting the mechanism rather than patching it.
 
+### 2026-08-09 — researched what actually goes wrong, then built against it  (pulkit)
+Stopped guessing at features and looked for evidence. The numbers reframed the priorities:
+**63% of people vibe coding have no coding background**, **45–62% of AI-generated code
+ships with vulnerabilities**, privilege-escalation paths are up 322%, and by mid-2026 about
+**8,000 of ~10,000 AI-built startups had needed a rebuild costing $50k–$500k**. Rescue
+engineers report the same seven patterns: exposed keys, fake auth, zero error handling,
+race conditions, broken payments, unvalidated inputs, unmaintainable code.
+
+The mechanism named in the research is a **verification gap** — novices can't detect errors
+in what they accept, so the checks an experienced developer makes by reflex never happen.
+That shifted the emphasis: we'd been optimising for "did we build the right thing" when the
+larger risk for this user is "did we ship something dangerous", with no way to know.
+
+Built three things against that. A **narrow pre-ship check** — real credentials, tracked
+`.env`, Supabase tables without row-level security (the exact mistake that leaked 1.5M
+tokens in Feb 2026), unfiltered drop/truncate, always-true auth — and nothing else, because
+a checker that cries wolf gets ignored and then the real warning is too. Verified: catches
+all five, zero false positives on correct code, and stays quiet on placeholders.
+
+**Plain-English change summaries**, aimed squarely at the verification gap. A non-coder
+can't review a diff, but they can review "anyone with the link can now read every entry."
+The script surfaces signals; the sentence is the review.
+
+**One-way-door flagging.** Early product decisions are path-dependent, and knowing which
+choices are permanent — data model, accounts or not, single vs shared — is precisely the
+experience a beginner lacks. Flag in one line, never gate.
+
+Also discovered that Claude Code **hooks** are the mechanism pulkit had been describing all
+along: deterministic, run unasked, cannot be talked around by reasoning the way `CLAUDE.md`
+can. The guard installs as a hook, backs up existing settings, touches only its own entry,
+and uninstalls cleanly — pulkit's constraint was that people grow, so the training wheels
+must come off without hunting through config.
+
+Separately: the rewrite had **silently dropped the GitHub Issues layer** while leaving the
+decision standing in `CONTEXT.md` — exactly the stale-memory failure this tool exists to
+prevent, caused by me. Restored, but without the `sync` command: ideas fold in during the
+pull that already happens. The capability was worth keeping; the command was not.
+

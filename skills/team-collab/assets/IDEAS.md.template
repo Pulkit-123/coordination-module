@@ -1,0 +1,25 @@
+# Ideas — {{PROJECT_NAME}}
+
+Anyone can add an idea. Append to the bottom, never edit or delete someone else's entry —
+appending is what keeps two people adding ideas at the same time from conflicting in git.
+
+Rough or half-formed ideas are welcome. `team-collab triage` will ask you clarifying
+questions rather than silently dropping them.
+
+**Format:**
+
+```
+### <short title>
+- **From:** <your name>
+- **Date:** YYYY-MM-DD
+- **What:** one or two sentences on the idea
+- **Why:** the problem it solves (optional, but it's what decides priority)
+```
+
+---
+
+### Example — delete this once real ideas land
+- **From:** {{PROJECT_NAME}} setup
+- **Date:** {{DATE}}
+- **What:** Placeholder entry showing the format.
+- **Why:** So the first person to add an idea has something to copy.

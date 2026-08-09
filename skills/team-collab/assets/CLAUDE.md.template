@@ -1,0 +1,47 @@
+# {{PROJECT_NAME}}
+
+## Team collaboration workflow
+
+Several people work on this repo, each running their own Claude Code. These four files
+keep that from turning into chaos. Read them before doing anything substantial.
+
+| File | What it's for |
+|---|---|
+| `IDEAS.md` | Append-only backlog of feature ideas from anyone |
+| `TASKS.md` | Who is actively building what, right now |
+| `PRIORITIES.md` | Ranked build order — generated, do not hand-edit |
+| `dashboard.html` | Static readable snapshot of all three |
+
+### Before starting any work
+
+Check `TASKS.md` first. Someone else's Claude Code may be editing the same files at this
+moment, and git won't warn you about that until there's a conflict. If the work you're
+about to start isn't claimed, add a row claiming it before you begin.
+
+Work on a short-lived branch named in your claim (e.g. `feat/export-csv`). This isn't
+process ceremony — it's the thing that stops two agents from overwriting each other. Merge
+to `main` when the piece works; no formal review is required in this group unless the
+change is risky or touches shared foundations.
+
+### When you have a new idea
+
+Append it to `IDEAS.md` with your name and the date. Don't build it immediately and don't
+reorder `PRIORITIES.md` yourself — the whole point is that the group decides together what
+gets built next. Ideas are cheap to add and that's intentional.
+
+### When deciding what to build next
+
+Read `PRIORITIES.md`. It's regenerated from `IDEAS.md` by running `team-collab triage` in
+Claude Code, which ranks ideas, flags duplicates and contradictions, and raises clarifying
+questions. Because it's generated, hand-edits get wiped on the next triage — put your
+argument in `IDEAS.md` as a new entry instead, where it survives and gets weighed.
+
+### Keeping the dashboard current
+
+`dashboard.html` is a static snapshot, not a live page. Regenerate it with
+`team-collab dashboard` after meaningful changes to the markdown files, and commit it.
+Whoever pulls next sees the update.
+
+---
+
+<!-- Project-specific instructions (architecture, conventions, commands) go below. -->

@@ -56,6 +56,25 @@ python3 "$SKILL_DIR/scripts/check_collisions.py"
 It catches two people claiming the same work, contradictory decisions, and stale claims —
 things that are silently kept by the merge strategy rather than flagged.
 
+### Ideas raised on GitHub
+
+Markdown is a fine list but a poor conversation — you can't reply to one line of a file,
+there are no notifications, and nobody can join in from a phone. GitHub Issues gives all
+three for free, so ideas legitimately arrive there too.
+
+While you're already pulling, fold them in — **no command, nobody has to remember this**:
+
+```bash
+gh issue list --label idea --state all --limit 100 \
+  --json number,title,body,author,state,reactionGroups 2>/dev/null
+```
+
+Add anything not already in `IDEAS.md`, matching on issue number so re-running is safe, and
+keep `- **Issue:** #<n>` on the entry so the discussion stays one click away. If `gh` isn't
+installed or there's no GitHub remote, skip it silently — never make this a setup step.
+
+Closed issues are already-decided; treat them as such rather than resurfacing them.
+
 ## While working: capture without being asked
 
 When something durable comes up in ordinary conversation, write it down and mention it in
@@ -90,6 +109,87 @@ it. There's nobody to collide with.
 
 Never ask twice about the same thing. If they ignore it or say no, drop it for the session.
 If they say stop asking, stop entirely and record silently.
+
+## Before anything ships: the things that can't be undone
+
+Most mistakes are fixable. A few are not, and those are the ones that end up in the news.
+Research on AI-built apps is blunt about this: **45–62% ship with vulnerabilities**, and
+**63% of the people building this way have no coding background** — so they cannot review
+what they're shipping, and the checks an experienced developer does by reflex never happen.
+
+Run this before a commit or push:
+
+```bash
+python3 "$SKILL_DIR/scripts/safety_check.py"
+```
+
+It is deliberately narrow — a real credential about to be committed, a `.env` tracked by
+git, Supabase tables with row-level security never enabled, a migration that drops or
+truncates without a filter, an auth check that returns true unconditionally. Nothing else.
+A checker that cries wolf gets ignored, and then the real warning is ignored too.
+
+**Exit 2 means stop.** A pushed credential is public permanently — deleting the commit does
+not help, only rotating the key does. Say that plainly rather than softening it.
+
+### Making it automatic
+
+The check only helps if it always runs, which means not depending on anyone remembering:
+
+```bash
+bash "$SKILL_DIR/scripts/install_guard.sh"
+```
+
+That adds a hook so every commit and push is checked. Offer it once, when setting a project
+up, and explain both halves honestly: it changes Claude Code's behaviour in **every**
+project on the machine, and it comes off cleanly with `--uninstall` — settings are backed
+up first and nothing else in them is touched. People get better at this over time and
+should be able to remove the training wheels without hunting through config.
+
+If they'd rather not, don't push it. Run the check manually before pushing instead.
+
+## Saying what the code can now do
+
+Someone who can't read code can't review a diff — so the review never happens. The fix
+isn't teaching them to read diffs; it's describing the change in terms they can judge.
+
+```bash
+python3 "$SKILL_DIR/scripts/what_changed.py"
+```
+
+It surfaces the parts that change *what the software can do*: who can get in, what leaves
+the machine, what gets stored or deleted, money, who can be contacted, what runs on its own.
+
+Then turn that into one sentence they could disagree with:
+
+> This now lets anyone with the link read every entry, including other people's.
+
+not:
+
+> Added a GET /entries route with no auth middleware.
+
+The test is whether someone with no coding background could push back on your sentence. If
+they couldn't, it's the wrong sentence. Skip it entirely for refactors and internal
+changes — the script stays quiet on those, and so should you.
+
+## Decisions that are hard to undo
+
+Some choices are cheap to change later and some are near-permanent — and a beginner has no
+way to tell them apart. That's not a knowledge gap you can close by explaining; it's one
+you close by flagging it at the moment it matters.
+
+Hard to undo once there's real data or real users: the data model, whether accounts exist
+at all, single-user vs shared, whether anything is real-time, where data is hosted, and any
+public URL or API other people start depending on.
+
+Easy to change: framework, styling, layout, wording, hosting provider, most library
+choices.
+
+When one of the first kind comes up, say so in one line and then let them decide:
+
+> Worth thirty seconds on this one — whether entries belong to a person or a group is
+> painful to change once people have data. Everything else here we can swap later.
+
+Never turn this into a gate. Flag it, record the reasoning in `CONTEXT.md`, move on.
 
 ## When something breaks: check whether they've solved it before
 

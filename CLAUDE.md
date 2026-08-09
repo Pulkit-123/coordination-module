@@ -53,6 +53,32 @@ When a note actually saves them something, say so in one line — *"you chose Po
 week one because of the joins, so sticking with that."* That's the only visible payoff
 this has, and it costs nothing.
 
+### Before it ships
+
+Run the safety check before any commit or push:
+`python3 ~/.claude/skills/team-collab/scripts/safety_check.py`
+
+It only fires on things that can't be undone — a real credential about to be committed, a
+tracked `.env`, Supabase tables without row level security, a migration that drops or
+truncates without a filter, an auth check that always returns true. Exit 2 means stop: a
+pushed key is public permanently, and only rotating it helps.
+
+Then say in one sentence what the change lets the software *do* —
+`python3 ~/.claude/skills/team-collab/scripts/what_changed.py` surfaces the signals.
+"Anyone with the link can now read every entry" is a review someone non-technical can
+actually push back on; "added a GET route without auth middleware" isn't. Stay quiet on
+refactors.
+
+### Decisions that are hard to undo
+
+A beginner can't tell a cheap choice from a permanent one. Hard to reverse once there's
+real data: the data model, whether accounts exist, single-user vs shared, real-time or
+not, where data lives, any public URL others depend on. Easy: framework, styling, wording,
+hosting, most libraries.
+
+Flag the first kind in one line — *"worth thirty seconds, this one's painful to change
+later"* — record the reasoning, and move on. Never make it a gate.
+
 ### When something breaks
 
 Before debugging an error, check whether it's been solved before — in this project or any

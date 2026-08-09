@@ -61,10 +61,13 @@ the reasoning about live pages, which still stands if it ever comes back._
   already mobile-friendly and gated by the repo's own permissions.
 - **By:** pulkit
 
-### 2026-08-09 — GitHub Issues as the discussion layer
-- **Chose:** ideas can start as an `idea`-labelled issue; `team-collab sync` folds them
-  into `IDEAS.md`, matching on issue number so reruns are safe
-- **Over:** building comment/threading features into the dashboard
+### 2026-08-09 — GitHub Issues as the discussion layer (amended same day)
+- **Chose:** ideas can start as an `idea`-labelled issue; they get folded into `IDEAS.md`
+  automatically during the session-start pull
+- **Over:** building comment/threading features into the dashboard; and over the original
+  `sync` command, which was dropped — it needed the `gh` CLI, a remembered command, and
+  manual labelling, which is the same friction that killed `triage`. The capability was
+  worth keeping, the command was not.
 - **Because:** markdown is a good backlog but a bad conversation — you can't reply to one
   line of a file, and simultaneous edits collide. Issues already give threading,
   👍-as-voting, notifications, and phone access, for free.
@@ -185,6 +188,36 @@ without it._
   effort and stalls beginners. Assumptions must be written *specifically* — "anyone with
   the link can view, no account" gets corrected instantly, "standard permissions" gets
   rubber-stamped — since that is what keeps drafting honest without adding questions.
+- **By:** pulkit
+
+### 2026-08-09 — guard the things that can't be undone
+- **Chose:** a narrow pre-ship check (real credentials, tracked `.env`, Supabase without
+  RLS, unfiltered drop/truncate, always-true auth), offered as a reversible hook
+- **Over:** a broad linter, or nothing
+- **Because:** research on AI-built apps found 45–62% ship with vulnerabilities, and 63% of
+  people building this way have no coding background — so they cannot review what they
+  ship. Rescue engineers name the same seven patterns repeatedly, and by mid-2026 ~8,000 of
+  ~10,000 AI-built startups needed a rebuild costing $50k–$500k. Narrow is deliberate: a
+  checker that cries wolf gets ignored, and then the real warning is too. Reversible is
+  deliberate too — people grow, and the training wheels must come off cleanly.
+- **By:** pulkit
+
+### 2026-08-09 — describe changes by what they let the software do
+- **Chose:** surface who can get in, what leaves the machine, what's stored or deleted —
+  then say it in one sentence a non-coder could disagree with
+- **Over:** expecting them to read a diff
+- **Because:** the documented failure is a verification gap, not laziness. "Anyone with the
+  link can now read every entry" is a review someone non-technical can genuinely perform;
+  "added a GET route without auth middleware" is not.
+- **By:** pulkit
+
+### 2026-08-09 — flag one-way doors, don't gate them
+- **Chose:** name the decisions that are painful to reverse (data model, accounts or not,
+  single vs shared, real-time, where data lives, public URLs) in one line when they arise
+- **Over:** treating all decisions alike, or forcing a review step
+- **Because:** early product decisions are path-dependent — some are branches you cannot
+  climb back down. Knowing which is which is exactly the experience a beginner lacks, and
+  it is cheap to hand over at the right moment.
 - **By:** pulkit
 
 ## Ideas we said no to (and why)

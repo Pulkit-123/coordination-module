@@ -303,6 +303,30 @@ def main():
                         f"run <code>team-collab init</code> to create it.</p>")
         body.append("</section>")
 
+    # Journeys are one file per feature rather than a fixed name, so they're
+    # globbed in. They go last because they're the longest sections, and each
+    # keeps its own heading so the diagram has context.
+    jdir = os.path.join(root, "journeys")
+    if os.path.isdir(jdir):
+        for jname in sorted(os.listdir(jdir)):
+            if not jname.endswith(".md"):
+                continue
+            jpath = os.path.join(jdir, jname)
+            with open(jpath, encoding="utf-8") as fh:
+                content = fh.read().strip()
+            if not content:
+                continue
+            m = re.search(r"^#\s+(.*)", content, re.M)
+            heading = m.group(1).strip() if m else jname[:-3]
+            body.append(
+                f"<section><h2>{html.escape(heading)}</h2>"
+                f"<div class='desc'>Feature journey — "
+                f"<code>journeys/{html.escape(jname)}</code></div>"
+            )
+            body.append(render(content))
+            body.append("</section>")
+            found.append(f"journeys/{jname}")
+
     slug = repo_slug(root)
     if slug:
         base = f"https://github.com/{html.escape(slug)}"

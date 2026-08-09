@@ -55,7 +55,7 @@ footer { color:var(--muted); font-size:.8rem; text-align:center; margin-top:2rem
 </style></head>
 <body><div class="wrap">
 <h1>Coordination Module — team dashboard</h1>
-<div class="sub">Snapshot generated 2026-08-09 18:12</div>
+<div class="sub">Snapshot generated 2026-08-09 18:14</div>
 <div class="note">
 <strong>Just talk to your own Claude Code with this repo open.</strong>
 Say what you mean — "I'll take the CSV export", "that's working now", "it'd be nice if…" —
@@ -538,7 +538,191 @@ other people's updates.</span>
 <p>generalised to <code>team-collab</code> — files changing silently on disk is invisible work, so</p>
 <p>anything worth reading gets opened rather than just mentioned.</p>
 </section>
+<section><h2>Onboard a friend onto a shared project</h2><div class='desc'>Feature journey — <code>journeys/onboard-a-friend.md</code></div>
+<ul>
+<li><strong>Status:</strong> shaping</li>
+<li><strong>Started:</strong> 2026-08-09 by pulkit</li>
+</ul>
+<h3>What this is for</h3>
+<p><strong>When</strong> I&#x27;ve built something with <code>coordination-module</code> and want a friend building with me,</p>
+<p><strong>I want to</strong> get them from &quot;sent a link&quot; to &quot;actually contributing&quot;,</p>
+<p><strong>so I can</strong> stop being the only person who decides and builds things.</p>
+<p><strong>Not in scope:</strong> teaching them git or Claude Code from scratch; managing more than a</p>
+<p>handful of people; anyone who isn&#x27;t already using Claude Code.</p>
+<h3>The flow</h3>
+<div class='mermaid-wrap'><pre class='mermaid'>flowchart TD
+    Start([I decide to add a friend]) --&gt; HasGH{They have a GitHub account?}
+    HasGH --&gt;|No| MakeGH[They create one first]
+    MakeGH --&gt; Invite
+    HasGH --&gt;|Yes| Invite[I add them as a collaborator]
+
+    Invite --&gt; Accept{They accept the invite?}
+    Accept --&gt;|Email missed or in spam| Nudge[I resend or send the direct link]
+    Nudge --&gt; Accept
+    Accept --&gt;|Yes| Install[They run the two install commands]
+
+    Install --&gt; InstOK{Both skills installed?}
+    InstOK --&gt;|&quot;Can&#x27;t find the repo&quot;| SetVar[Tell them to run it from inside the clone]
+    SetVar --&gt; Install
+    InstOK --&gt;|Yes| Restart[They restart Claude Code]
+
+    Restart --&gt; Clone[They clone the project repo]
+    Clone --&gt; Open[They open it in Claude Code]
+    Open --&gt; Sees{Does Claude know the workflow?}
+    Sees --&gt;|&quot;No - didn&#x27;t restart&quot;| RestartAgain[Restart, then reopen]
+    RestartAgain --&gt; Open
+    Sees --&gt;|Yes| CatchUp[Claude catches them up on the project]
+
+    CatchUp --&gt; Empty{Anything to work on yet?}
+    Empty --&gt;|&quot;Nothing claimed or listed&quot;| Suggest[Claude suggests adding an idea instead]
+    Empty --&gt;|Yes| Claim[They say what they&#x27;ll pick up]
+    Claim --&gt; Push{Can they push?}
+    Push --&gt;|&quot;Rejected - not a collaborator&quot;| FixPerm[I check the invite actually went through]
+    FixPerm --&gt; Push
+    Push --&gt;|Yes| Done([They&#x27;re contributing])
+    Suggest --&gt; Done</pre></div>
+<h3>Step by step</h3>
+<h4>1. I add them as a collaborator</h4>
+<ul>
+<li><strong>Arrives here when:</strong> I&#x27;ve decided I want help, and I have their GitHub username.</li>
+<li><strong>I do:</strong> Settings → Collaborators → Add people.</li>
+<li><strong>System does:</strong> Sends them an email invitation.</li>
+<li><strong>They can get it wrong by:</strong> giving me their display name rather than their username →</li>
+</ul>
+<p><strong>prevented by:</strong> telling them to send the URL of their own GitHub profile instead.</p>
+<ul>
+<li><strong>Allowed to do this:</strong> repo owner only.</li>
+</ul>
+<h4>2. They accept the invite</h4>
+<ul>
+<li><strong>Arrives here when:</strong> the email lands.</li>
+<li><strong>Fails by:</strong> the email going to spam, or being ignored for days. This is the single most</li>
+</ul>
+<p>common stall and it&#x27;s invisible to me — GitHub shows the invite as pending, not failed.</p>
+<ul>
+<li><strong>We show:</strong> nothing automatic. <strong>I</strong> need to notice and nudge, so the flow has to loop.</li>
+<li><strong>Assumed:</strong> a nudge is manual. Automating a reminder isn&#x27;t worth it for a handful of</li>
+</ul>
+<p>people.</p>
+<h4>3. They install the skills</h4>
+<ul>
+<li><strong>They do:</strong> paste two commands from <code>GETTING-STARTED.md</code>.</li>
+<li><strong>System does:</strong> clones the tooling repo, copies both skills into <code>~/.claude/skills/</code>.</li>
+<li><strong>Fails by:</strong> running the script from the wrong directory → the &quot;couldn&#x27;t find your clone&quot;</li>
+</ul>
+<p>error, which already tells them exactly how to fix it.</p>
+<ul>
+<li><strong>First time they&#x27;ve seen it:</strong> yes — this is their first contact with the tool, so the</li>
+</ul>
+<p>error messages carry the whole burden of teaching.</p>
+<h4>4. They restart Claude Code</h4>
+<ul>
+<li><strong>Why this step exists at all:</strong> Claude Code reads its skill list once at startup.</li>
+</ul>
+<p>Installing without restarting leaves the skills invisible, and everything downstream</p>
+<p>silently does nothing.</p>
+<ul>
+<li><strong>This is verified, not theoretical</strong> — it happened during development and cost real</li>
+</ul>
+<p>confusion before the cause was clear. It&#x27;s the highest-risk step in the whole flow</p>
+<p>precisely because nothing looks broken.</p>
+<h4>5. They open the project and get caught up</h4>
+<ul>
+<li><strong>System does:</strong> loads <code>CLAUDE.md</code>, reads <code>JOURNAL.md</code>/<code>CONTEXT.md</code>/<code>TASKS.md</code>, and opens</li>
+</ul>
+<p>by saying what&#x27;s happened so far.</p>
+<ul>
+<li><strong>Empty:</strong> a brand-new project has no ideas, no tasks, and no history. Claude should say</li>
+</ul>
+<p>so plainly and suggest adding an idea, rather than presenting an empty status report that</p>
+<p>reads like something is broken.</p>
+<ul>
+<li><strong>One / many:</strong> with one idea it should just point at it; with many it should suggest</li>
+</ul>
+<p><code>triage</code> rather than listing everything.</p>
+<h4>6. They claim something and push</h4>
+<ul>
+<li><strong>Fails by:</strong> push rejected because the invite was never actually accepted. The git error</li>
+</ul>
+<p>is unhelpful here — it talks about permissions, not about invitations.</p>
+<ul>
+<li><strong>We show:</strong> if a push is rejected on a repo they were recently invited to, say &quot;your</li>
+</ul>
+<p>invite may still be pending — check your email&quot; rather than passing the raw git error</p>
+<p>through.</p>
+<h3>Rules</h3>
+<ul>
+<li>[ ] <code>GETTING-STARTED.md</code> states the restart requirement before the install commands, not</li>
+</ul>
+<p>after them</p>
+<ul>
+<li>[ ] <code>update_skill.sh</code> failing to find the repo prints the exact fix, not just an error</li>
+<li>[ ] Opening a freshly-scaffolded project produces a &quot;nothing here yet, add an idea&quot;</li>
+</ul>
+<p>message rather than an empty status</p>
+<ul>
+<li>[ ] A push rejection on a repo with a pending invite is explained in terms of the invite</li>
+<li>[ ] A friend can go from invite to first contribution without asking the owner anything</li>
+</ul>
+<h3>Examples</h3>
+<ul>
+<li>Friend runs the install from their home directory instead of the clone → sees &quot;couldn&#x27;t</li>
+</ul>
+<p>find your clone of the coordination-module repo&quot; plus the <code>TEAM<em>COLLAB</em>REPO=</code> line.</p>
+<ul>
+<li>Friend installs but doesn&#x27;t restart → types &quot;catch me up&quot;, nothing happens, no error.</li>
+</ul>
+<p>This is the bad case: silence rather than a message.</p>
+<ul>
+<li>Friend opens a project scaffolded five minutes ago → &quot;This one&#x27;s just been set up —</li>
+</ul>
+<p>nothing claimed and no ideas yet. Want to add the first one?&quot;</p>
+<h3>Assumptions</h3>
+<ul>
+<li><strong>Nudging about unaccepted invites stays manual</strong> — automating it would need a scheduled</li>
+</ul>
+<p>job for a problem that affects a handful of people once. _Revisit when: more than ~5</p>
+<p>people, or it stalls repeatedly._</p>
+<ul>
+<li><strong>Everyone already has Claude Code installed and working.</strong> _Revisit when: someone tries</li>
+</ul>
+<p>to onboard a person who doesn&#x27;t._</p>
+<ul>
+<li><strong><code>python3</code> exists on their machine.</strong> True on macOS and most Linux; would break on a</li>
+</ul>
+<p>bare Windows install. <em>Revisit when: someone onboards on Windows.</em></p>
+<h3>Open questions</h3>
+<ul>
+<li>[ ] Should a friend be able to <em>read</em> the project without being a collaborator (public</li>
+</ul>
+<p>repo) or is private-only correct? — affects how much friction step 2 causes</p>
+<ul>
+<li>[ ] Is there any way to detect &quot;skills installed but Claude Code not restarted&quot; and say</li>
+</ul>
+<p>so, rather than failing silently? — this is the highest-value fix in the flow</p>
+<h3>First slice</h3>
+<p>The walking skeleton — one friend, one project, end to end:</p>
+<ul>
+<li>Fix the &quot;nothing here yet&quot; empty state on a freshly scaffolded project</li>
+<li>Make push-rejected-with-pending-invite explain itself</li>
+<li>Verify the restart warning is above the install commands in <code>GETTING-STARTED.md</code></li>
+</ul>
+<p><strong>Deferred to later:</strong> Windows support, automated invite nudges, anything for groups</p>
+<p>larger than about five.</p>
+</section>
 <footer>Generated by team-collab · edit the markdown files, not this page</footer>
 </div>
-
+<script type="module">
+try {
+  const m = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+  const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  m.default.initialize({
+    startOnLoad: true,
+    securityLevel: "strict",
+    theme: dark ? "dark" : "default",
+  });
+} catch (e) {
+  // Offline. The diagram source is already on the page in readable form.
+}
+</script>
 </body></html>

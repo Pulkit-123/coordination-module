@@ -1,6 +1,6 @@
 ---
 name: team-collab
-description: Set up and run a lightweight file-based collaboration workflow for a shared code project, where several people each running their own Claude Code jointly propose ideas, triage priorities, claim tasks, and track progress through plain markdown files plus a static HTML dashboard. Use this skill whenever the user wants to collaborate with friends or teammates on a repo, mentions splitting work across multiple people's Claude Code instances, wants to collect and prioritize feature ideas, asks to set up shared planning or coordination files for a project, wants a project dashboard of ideas/tasks/priorities, or says things like "get this repo ready for the team", "triage our ideas", "what should we build next", or "update the dashboard" — even if they don't name this skill or these files explicitly.
+description: Set up and run a lightweight file-based collaboration workflow for a shared code project, where several people each running their own Claude Code jointly propose ideas, triage priorities, claim tasks, and track progress through plain markdown files plus a static HTML dashboard. Use this skill whenever the user wants to collaborate with friends or teammates on a repo, mentions splitting work across multiple people's Claude Code instances, wants to collect and prioritize feature ideas, asks to set up shared planning or coordination files for a project, wants a project dashboard of ideas/tasks/priorities, or says things like "get this repo ready for the team", "what should we build next", or "update the dashboard". Also trigger on these bare one-word or short commands, which the dashboard tells people to type and which mean nothing else in a repo containing IDEAS.md/TASKS.md/PRIORITIES.md - "triage", "refresh", "refresh dashboard", "idea: <something>", "add idea", "claim <something>", "claim task", "done", "what's next", "whats next", "status", "setup team", "team setup".
 ---
 
 # team-collab
@@ -112,6 +112,27 @@ hosted API key and a backend, which is a large jump in cost, complexity, and ris
 group that is already all running Claude Code locally. Instead the page tells readers how
 to refresh it themselves. Don't add fetch calls, polling, or a backend to this page
 unless the user explicitly asks for that tradeoff.
+
+### Quick commands (what people actually type)
+
+The dashboard tells readers to type these bare words into their own Claude Code. Nobody
+should have to remember file names or markdown format to take part — that friction is
+what stops people contributing. Treat these as first-class:
+
+| They type | You do |
+|---|---|
+| `idea: <anything>` / "add idea" | Append to `IDEAS.md` in template format, filling in their name and today's date. Ask for the name only if you can't infer it from git config. Then regenerate the dashboard. |
+| `triage` / "what's next" | Run the `triage` flow below. |
+| `claim <thing>` / "claim task" | Add a row to the In-progress table of `TASKS.md` with their name, today's date, and a suggested branch name. Create the branch if the repo is clean. Regenerate the dashboard. |
+| `done` | Move their in-progress row to the Done section of `TASKS.md` with today's date. Regenerate the dashboard. |
+| `refresh` / "refresh dashboard" | Run the `dashboard` flow below. |
+| `status` | Summarize in chat: what's in progress and by whom, top three priorities, anything blocked. Don't write files. |
+
+After any command that changes a markdown file, regenerate `dashboard.html` and offer to
+commit and push — an update nobody pushes is invisible to the rest of the group, which is
+the most common way this workflow quietly stops working. Commit only when they agree.
+
+Infer the person's name from `git config user.name` rather than asking every time.
 
 ### `update`
 

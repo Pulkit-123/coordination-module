@@ -62,6 +62,21 @@ catch-up read of those files so nobody arrives cold.
 - **`dashboard.html`** — static, generated snapshot of all the files above on one page.
   Not live. Opened locally after a pull — not published (see hosting decision below).
 
+## Second skill: `why`
+
+Answers "why was this rejected / decided / dropped?" by tracing the coordination files
+**and their git history** — including reasoning that was later edited out or deleted,
+which is frequently the exact thing being asked about. Verified: recovers a rejection
+rationale that was deleted months later, and names who removed it.
+
+Separate skill rather than a `team-collab` subcommand because the trigger surface is
+distinct (explaining history vs. managing the workflow) and it's what a newcomer or
+returning person reaches for first.
+
+Its explicit rule is to never fabricate a rationale: if the record is silent, say so.
+A plausible invented reason is indistinguishable from a real one and gets repeated as
+fact, which would destroy the point of keeping a record at all.
+
 ## Skill commands (`team-collab`)
 
 - `init` — scaffold the coordination files + dashboard into the current repo. Skips

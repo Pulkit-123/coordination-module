@@ -12,7 +12,7 @@ of "what changed lately" the group has.
 
 | Who | What | Status | Branch | Claimed |
 |---|---|---|---|---|
-| _(nobody yet)_ | | | | |
+| anirudhdamani | first real test of the friend-onboarding flow | invited | — | 2026-08-09 |
 
 ## Done
 

@@ -18,13 +18,16 @@ questions rather than silently dropping them.
   Wanting the tool to teach the process, not just track it.
 - **Status:** built as the `shape` skill. spec-kit not adopted — see CONTEXT.md.
 
-### Add collaborators and start using this on a real project
+### ~~Add collaborators and start using this on a real project~~ (IN PROGRESS)
 - **From:** pulkit
 - **Date:** 2026-08-09
 - **What:** Invite friends to this repo, then create the first private project repo and
   scaffold the workflow into it.
 - **Why:** Everything so far is verified against simulated collaborators. Nothing is
   proven until real people with their own Claude Code use it at the same time.
+- **Status:** anirudhdamani invited 2026-08-09 (pending acceptance). Their GitHub
+  account is five days old, so they'll walk the exact path the journey maps —
+  including the restart trap, which is the step most likely to lose them.
 
 ### ~~Onboarding checks in the journey~~ (BUILT)
 - **From:** pulkit, 2026-08-09

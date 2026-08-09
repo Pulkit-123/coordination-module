@@ -37,6 +37,26 @@ Claude Code, which ranks ideas, flags duplicates and contradictions, and raises 
 questions. Because it's generated, hand-edits get wiped on the next triage — put your
 argument in `IDEAS.md` as a new entry instead, where it survives and gets weighed.
 
+### The goal: one shared mind, several people
+
+Aim for this to feel like a single agent that has been working on the project continuously
+and happens to talk to several people — not like separate agents who each know a fraction.
+Everything below serves that.
+
+The gap to close is that each person's chat history is private. What one person worked
+through in conversation is invisible to everyone else unless it's written down. So the
+files are the shared memory, and they only work if they're read at the start and written
+during.
+
+**At the start of a session, catch up before doing anything:** `git pull`, then read
+`JOURNAL.md` (what's happened and what's still being argued), `CONTEXT.md` (what's
+settled and why), and `TASKS.md` (who's mid-flight). Then tell the person what changed
+since they were last here — especially any open thread they should weigh in on. Someone
+returning after two days should not have to ask what they missed.
+
+If you're picking up work someone else started, their reasoning is in `JOURNAL.md`. Read
+it before second-guessing their approach.
+
 ### Inherit what others have learned
 
 Read `CONTEXT.md` before making design choices or debugging. It holds what the rest of the
@@ -54,6 +74,13 @@ it down, and a week later the repo has no memory of it. So while working or talk
 
 - Someone floats a feature → append it to `IDEAS.md` under their name, even if it's
   dismissed straight away (log why — otherwise it gets re-proposed forever).
+- A real discussion happens — options weighed, a tradeoff argued, a direction changed →
+  add a `JOURNAL.md` entry with the alternatives considered, not just the outcome. This
+  is the one people skip, and it's the one that matters most: a conclusion without its
+  reasoning gets reversed by accident six weeks later.
+- A question comes up that isn't settled → open a thread in `JOURNAL.md` with the
+  positions so far. Other people can then arrive with the argument already loaded
+  instead of starting it again.
 - Starting real work → claim it in `TASKS.md` **before** the first edit.
 - Finished → move the row to Done. Blocked → mark it and say what it's waiting on.
 - A decision gets made ("Postgres, not SQLite") → append it to `CONTEXT.md` with the

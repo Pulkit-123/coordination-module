@@ -22,8 +22,33 @@ workflow every time a new project starts.
 3. **The `team-collab` skill** (installed locally via skill-creator, pulls templates
    from this meta-repo) scaffolds and maintains the per-project files below.
 
+## The real goal: one shared mind, several people
+
+The target is that it *feels like a single agent* that has worked on the project
+continuously and happens to talk to several people — not N agents each holding a
+fraction. The thing preventing that is that each person's chat history is private, so
+reasoning that happened in one conversation is invisible to everyone else.
+
+Capture is therefore the mechanism, not bookkeeping. Note the split:
+
+- **State** — what exists and who's on it (`IDEAS.md`, `TASKS.md`)
+- **Conclusions** — what's settled and why, incl. why things were rejected (`CONTEXT.md`)
+- **Reasoning** — the discussion itself and arguments still in flight (`JOURNAL.md`)
+
+The third is the one that normally evaporates, and it's what someone needs in order to
+disagree intelligently rather than re-tread settled ground. Every session starts with a
+catch-up read of those files so nobody arrives cold.
+
 ## Per-project files (scaffolded by `team-collab init`)
 
+- **`JOURNAL.md`** — running conversation: reasoning, options weighed, and open threads
+  with each person's position. Read at session start to catch up.
+- **`CONTEXT.md`** — settled understanding: decisions with reasoning, gotchas and dead
+  ends, and *why ideas were rejected or deprioritized* (that last one must live here
+  because `PRIORITIES.md` is overwritten on every triage).
+- **`.gitattributes`** — sets `merge=union` on the append-only files. Verified necessary:
+  without it, two people adding an idea simultaneously collide at end-of-file and git's
+  rebase silently keeps only one.
 - **`CLAUDE.md`** — portable, travels with the repo. Any Claude Code instance that
   opens the project (yours or a friend's) auto-loads it and already knows the
   workflow — no re-explaining needed. This is the actual source of truth for how
@@ -100,5 +125,8 @@ triggers on the bare words: `idea: <x>`, `triage`, `claim <x>`, `done`, `status`
 - [x] Architecture agreed
 - [x] `team-collab` skill built — init / triage / dashboard / sync / update + quick commands
 - [x] Dashboard generator tested (escaping, tables, remote/no-remote link cases)
+- [x] Verified: concurrent two-clone publish keeps both contributions
+- [x] Verified: fresh clone receives CLAUDE.md + .gitattributes (friends get the brief
+      and the merge protection)
 - [ ] First real project scaffolded with it
 - [ ] GitHub repo(s) created, friends added as collaborators — **nothing created yet**

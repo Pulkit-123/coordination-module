@@ -3,6 +3,7 @@
 # one person's entry gets lost during the rebase — the worst possible failure here.
 IDEAS.md merge=union
 CONTEXT.md merge=union
+JOURNAL.md merge=union
 TASKS.md merge=union
 
 # Generated files: never merge them, just rebuild. Whoever runs triage/dashboard next

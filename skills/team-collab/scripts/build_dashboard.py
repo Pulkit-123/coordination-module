@@ -32,6 +32,7 @@ SECTIONS = [
     ("TASKS.md", "Active tasks", "Who is building what right now. Claim before you start."),
     ("IDEAS.md", "Ideas", "Append-only backlog. Anyone can add."),
     ("CONTEXT.md", "Shared understanding", "Decisions, gotchas, and how things work — what the group has learned."),
+    ("JOURNAL.md", "Journal & open threads", "The running conversation — reasoning, arguments in progress, and what settled them."),
 ]
 
 

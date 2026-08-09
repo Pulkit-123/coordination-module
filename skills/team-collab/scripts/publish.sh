@@ -6,7 +6,10 @@
 # branch so half-finished work can't land on everyone else's main.
 set -uo pipefail
 
-FILES=(IDEAS.md CONTEXT.md TASKS.md PRIORITIES.md dashboard.html)
+# CLAUDE.md and .gitattributes are included deliberately: without the first, friends who
+# clone get no workflow brief; without the second, union-merge is off and simultaneous
+# idea entries get silently dropped. Both rarely change, so committing them costs nothing.
+FILES=(CLAUDE.md .gitattributes IDEAS.md CONTEXT.md JOURNAL.md TASKS.md PRIORITIES.md dashboard.html)
 MSG="${1:-coordination: update ideas/tasks/priorities}"
 
 if ! git rev-parse --git-dir >/dev/null 2>&1; then

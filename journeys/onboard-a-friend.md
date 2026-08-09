@@ -24,22 +24,17 @@ flowchart TD
     Invite --> Accept{They accept the invite?}
     Accept -->|Email missed or in spam| Nudge[I resend or send the direct link]
     Nudge --> Accept
-    Accept -->|Yes| Install[They run the two install commands]
+    Accept -->|Yes| Install[They run one install command]
 
-    Install --> InstOK{Both skills installed?}
-    InstOK -->|"Can't find the repo"| SetVar[Tell them to run it from inside the clone]
-    SetVar --> Install
-    InstOK -->|Yes| Restart[They restart Claude Code]
-
-    Restart --> Clone[They clone the project repo]
+    Install --> Restart[They restart Claude Code]
+    Restart --> Check{"Self-test: does it remember?"}
+    Check -->|"No - didn't restart"| Restart
+    Check -->|Yes| Clone[They clone the project repo]
     Clone --> Open[They open it in Claude Code]
-    Open --> Sees{Does Claude know the workflow?}
-    Sees -->|"No - didn't restart"| RestartAgain[Restart, then reopen]
-    RestartAgain --> Open
-    Sees -->|Yes| CatchUp[Claude catches them up on the project]
+    Open --> CatchUp[Claude catches them up on the project]
 
     CatchUp --> Empty{Anything to work on yet?}
-    Empty -->|"Nothing claimed or listed"| Suggest[Claude suggests adding an idea instead]
+    Empty -->|"Nothing recorded yet"| Suggest[Claude says so and asks what they're building]
     Empty -->|Yes| Claim[They say what they'll pick up]
     Claim --> Push{Can they push?}
     Push -->|"Rejected - not a collaborator"| FixPerm[I check the invite actually went through]
@@ -70,10 +65,10 @@ flowchart TD
 
 ### 3. They install the skills
 
-- **They do:** paste two commands from `GETTING-STARTED.md`.
-- **System does:** clones the tooling repo, copies both skills into `~/.claude/skills/`.
-- **Fails by:** running the script from the wrong directory → the "couldn't find your clone"
-  error, which already tells them exactly how to fix it.
+- **They do:** paste **one** command (was two).
+- **System does:** clones the tooling repo and installs all three skills. It passes the
+  clone location through explicitly, so the "couldn't find your clone" failure can't happen
+  any more.
 - **First time they've seen it:** yes — this is their first contact with the tool, so the
   error messages carry the whole burden of teaching.
 
@@ -85,6 +80,10 @@ flowchart TD
 - **This is verified, not theoretical** — it happened during development and cost real
   confusion before the cause was clear. It's the highest-risk step in the whole flow
   precisely because nothing looks broken.
+- **Now mitigated three ways:** the warning appears *above* the command rather than below
+  it, the installer ends with an unmissable block about it, and there's a self-test —
+  *"what can you remember about this project"* — that turns silent failure into a checkable
+  answer. The restart itself can't be removed; only made hard to skip and easy to detect.
 
 ### 5. They open the project and get caught up
 
@@ -106,12 +105,13 @@ flowchart TD
 
 ## Rules
 
-- [ ] `GETTING-STARTED.md` states the restart requirement before the install commands, not
+- [x] `GETTING-STARTED.md` states the restart requirement before the install commands, not
       after them
-- [ ] `update_skill.sh` failing to find the repo prints the exact fix, not just an error
-- [ ] Opening a freshly-scaffolded project produces a "nothing here yet, add an idea"
-      message rather than an empty status
-- [ ] A push rejection on a repo with a pending invite is explained in terms of the invite
+- [x] `update_skill.sh` failing to find the repo prints the exact fix — and the installer
+      now passes the location through, so it can't happen from the install path at all
+- [x] Opening a freshly-scaffolded project produces a "nothing here yet" message rather
+      than an empty status
+- [x] A push rejection on a repo with a pending invite is explained in terms of the invite
 - [ ] A friend can go from invite to first contribution without asking the owner anything
 
 ## Examples
@@ -155,8 +155,10 @@ The walking skeleton — one friend, one project, end to end:
 **Deferred to later:** Windows support, automated invite nudges, anything for groups
 larger than about five.
 
-**Known problem, flagged by `check_journey`:** this flow is about ten steps before someone
-is contributing, which is past the point where people drop out. Most of it is unavoidable
-(they do have to install and restart), but the invite-accept-nudge loop and the
-restart-because-you-forgot loop are both avoidable. Worth attacking before asking anyone to
-go through it.
+**Fixed 2026-08-09, before the first real person tried it.** `check_journey` flagged ten
+steps, past where people drop out. Changes: two install commands became one; the
+"couldn't find your clone" failure was removed at the source; the restart warning moved
+above the command and gained a self-test so it fails loudly instead of silently; and a
+rejected push on a repo you were just invited to now says so rather than reporting a
+permissions error. The remaining steps are genuinely irreducible — someone does have to
+accept an invite, install, restart, and clone.

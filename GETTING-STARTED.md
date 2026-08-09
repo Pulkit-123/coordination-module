@@ -91,7 +91,7 @@ Then it builds. The plan stays in `journeys/` and you never need to open it.
 
 Add them on GitHub: your project → **Settings** → **Collaborators** → **Add people**.
 
-They install the same two commands above, then `git clone` your project. Their Claude
+They run the same one command above (and restart), then `git clone` your project. Their Claude
 starts out knowing everything yours knows.
 
 If you both write notes at the same moment, both are kept. If you both claim the same job,
@@ -111,6 +111,9 @@ collaborator yet, ask whoever owns the repo.
 remember for the session.
 
 **"I want the latest version of this tool"** — rerun the install command, then restart.
+
+**"I installed it but nothing happens and there's no error"** — that's the restart. It's
+always the restart.
 
 ---
 

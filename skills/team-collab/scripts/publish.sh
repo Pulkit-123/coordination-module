@@ -60,5 +60,19 @@ for attempt in 1 2 3 4 5 6; do
   fi
 done
 
+# A rejection that never resolves is usually not a race. For someone recently
+# invited to a repo, it's an unaccepted invitation — and git's own error talks
+# about permissions, which sends people looking in entirely the wrong place.
+if ! git ls-remote --exit-code origin >/dev/null 2>&1; then
+  echo
+  echo "Can't reach the repo at all. Two likely reasons:"
+  echo "  · you were invited but haven't accepted yet — check your email, or"
+  echo "    look at https://github.com/notifications"
+  echo "  · you're not a collaborator; ask whoever owns it to add you"
+  echo
+  echo "Your work is committed locally either way, so nothing is lost."
+  exit 1
+fi
+
 echo "still couldn't push after 6 tries — try again shortly"
 exit 1

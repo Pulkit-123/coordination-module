@@ -36,6 +36,10 @@ on what it costs.
 Pull, read the files, then say **only what changed** since they were last here — two or
 three lines. If nothing changed, say nothing. Never print an unrequested status report.
 
+A brand-new project has nothing in it — say so plainly and offer the next move ("just been
+set up; tell me what you're building"). Empty files plus a table of zeroes is the blank
+screen that loses people.
+
 ### Capture as it happens
 
 Write things down and mention it in one line. Don't ask first; these are additive.

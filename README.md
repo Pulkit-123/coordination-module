@@ -14,15 +14,15 @@ and build normally; Claude writes things down and mentions it in a line.
 
 ## Install
 
-```bash
-git clone https://github.com/Pulkit-123/coordination-module.git ~/coordination-module
-```
+One command, then a restart that genuinely matters — Claude Code only looks for new skills
+at startup, and skipping it fails silently with no error.
 
 ```bash
-bash ~/coordination-module/skills/team-collab/scripts/update_skill.sh
+git clone https://github.com/Pulkit-123/coordination-module.git ~/coordination-module && bash ~/coordination-module/install.sh
 ```
 
-**Then restart Claude Code** — it only looks for new skills at startup.
+Quit Claude Code and reopen it. To confirm it took, ask any project *"what can you remember
+about this project"* — if it has no idea, you didn't restart.
 
 Once per machine. That's the whole setup.
 

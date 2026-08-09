@@ -89,9 +89,21 @@ were last here, and only if it affects them. Something like:
 > Priya finished the CSV export and hit a rate limit on the API — she's noted the
 > workaround. Nothing else moved.
 
-If nothing changed, say nothing at all. Don't announce that you read the files, don't list
-what's in them, and never print a status report nobody asked for. A wall of text at the
-start of every session is precisely the friction this exists to avoid.
+If nothing changed, say nothing at all.
+
+**A brand-new project has nothing in it, and that must not read as an error.** Empty files
+plus a status report of zeroes is the blank-screen problem — the thing that loses 84% of
+people in their first session. Say what it is and offer the one useful next move:
+
+> This one's just been set up — nothing recorded yet. Tell me what you're building and
+> I'll start keeping track.
+
+Same when someone new joins a project that *does* have history: lead with what it is and
+what's currently happening, not with a table.
+
+Otherwise: don't announce that you read anything, don't list what's in the files, and never
+print a status report nobody asked for. A wall of text at the start of every session is
+precisely the friction this exists to remove.
 
 Also run this quietly and mention anything it finds, because git will not:
 

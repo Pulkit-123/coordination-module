@@ -78,30 +78,65 @@ ever complaining — it keeps both sides so nothing is lost, which means nothing
 either. Skim `TASKS.md` and the decisions in `CONTEXT.md` for clashes when you pull, and
 say something when you spot one.
 
-### Record things as they come up — don't wait to be asked
+### Recognize what people mean — never make them remember commands
 
 This workflow fails in one predictable way: something good gets discussed, nobody writes
-it down, and a week later the repo has no memory of it. So while working or talking:
+it down, and a week later the repo has no memory of it. Requiring people to remember
+magic words guarantees that failure, because they won't. **Nobody should ever have to
+know a command exists.** Read intent from ordinary conversation:
 
-- Someone floats a feature → append it to `IDEAS.md` under their name, even if it's
-  dismissed straight away (log why — otherwise it gets re-proposed forever).
-- A real discussion happens — options weighed, a tradeoff argued, a direction changed →
-  add a `JOURNAL.md` entry with the alternatives considered, not just the outcome. This
-  is the one people skip, and it's the one that matters most: a conclusion without its
-  reasoning gets reversed by accident six weeks later.
-- A question comes up that isn't settled → open a thread in `JOURNAL.md` with the
-  positions so far. Other people can then arrive with the argument already loaded
-  instead of starting it again.
-- Starting real work → claim it in `TASKS.md` **before** the first edit.
-- Finished → move the row to Done. Blocked → mark it and say what it's waiting on.
-- A decision gets made ("Postgres, not SQLite") → append it to `CONTEXT.md` with the
-  reasoning, or it gets relitigated next month.
-- You hit a dead end, or discover a trap → `CONTEXT.md` gotchas, so the next person
-  doesn't spend the same afternoon on it.
+| Someone says something like | They probably mean |
+|---|---|
+| "I'll take the CSV export", "let me start on X", "I'm picking up X" | claiming a task |
+| "that's working now", "shipped it", "X is done", tests pass on the thing they claimed | finishing a task |
+| "I'm stuck on X", "waiting on Y before I can finish" | blocked |
+| "it'd be nice if…", "we should probably…", "what if we…", "someone should…" | a new idea |
+| "let's go with Postgres", "ok, we'll do it the second way" | a decision worth recording |
+| "tried X, didn't work because Y", "careful, Z breaks when…" | a gotcha |
+| "I don't think that's worth it because…" | reject reasoning |
+| "what's left?", "where are we?", "anything for me?" | a status summary |
 
-Use judgment: log what someone would want to find later, not every passing thought — an
-unreadable backlog is as useless as an empty one. Say in one line what you recorded, so
-people can correct it if you captured it wrong.
+These are examples of a pattern, not a lookup table — match the meaning, not the wording.
+Someone describing what they're about to go build *is* a claim, however they phrase it.
+
+### Ask before anything other people will see; just do the harmless things
+
+The judgment call is when to interrupt. Two different situations:
+
+**Things only visible in the record → do it, then say so in one line.** Adding an idea,
+noting a gotcha, recording a decision, journaling a discussion. These are additive and
+trivially correctable, so asking permission each time is pure friction. Just mention it —
+*"logged that under CONTEXT.md gotchas"* — so they can correct you if you captured it wrong.
+
+**Things that tell other people something → ask first, in one short question.** Claiming a
+task, marking it done, marking it blocked, and pushing. A wrong claim makes someone else
+skip work that isn't actually being done; a wrong "done" makes the group think a feature
+exists when it doesn't. Those mistakes cost other people's time, so a two-second
+confirmation is worth it:
+
+> You've started on the CSV export — want me to claim it in TASKS.md so nobody doubles up?
+
+> That looks finished. Mark it done and push, so the others see it?
+
+Keep the question to one line and make the default obvious. Don't explain the whole
+workflow again — they've seen it.
+
+### Don't become annoying
+
+An assistant that asks about everything gets ignored, and then the record rots anyway —
+the same failure by a different route. So:
+
+- **Never ask twice about the same thing.** If they say no, or ignore it, drop it for the
+  session. Silence is an answer.
+- **Batch rather than interrupt.** Mid-task is the wrong moment. Wait for a natural pause —
+  work finished, a question answered — and raise everything at once: *"Before you go: want
+  me to log the caching gotcha and mark the export done?"*
+- **Stay quiet about small talk.** "Maybe dark mode someday" while debugging something else
+  is not an idea worth a prompt. Log what someone would want to *find later*; an unreadable
+  backlog is as useless as an empty one.
+- **If they tell you to stop asking, stop** — record silently and mention it in passing
+  instead. Some people want no prompts at all, and that preference should stick for the
+  session.
 
 ### Publishing changes
 

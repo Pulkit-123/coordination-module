@@ -190,8 +190,10 @@ PAGE = """<!doctype html>
 <h1>{title}</h1>
 <div class="sub">Snapshot generated {stamp}</div>
 <div class="note">
-<strong>To do anything here, just type the word into your own Claude Code</strong>
-(with this repo open). No commands to memorize, no files to find.
+<strong>Just talk to your own Claude Code with this repo open.</strong>
+Say what you mean — "I'll take the CSV export", "that's working now", "it'd be nice if…" —
+and it offers to update these files for you. Nothing to memorize.
+Short forms work too, if you prefer them:
 <table class="cmds">
 <tr><td><code>idea: dark mode for settings</code></td><td>adds it to the backlog under your name</td></tr>
 <tr><td><code>triage</code></td><td>re-ranks everything, flags clashes, asks what's unclear</td></tr>

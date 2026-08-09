@@ -1,6 +1,6 @@
 ---
 name: team-collab
-description: Set up and run a lightweight file-based collaboration workflow for a shared code project, where several people each running their own Claude Code jointly propose ideas, triage priorities, claim tasks, and track progress through plain markdown files plus a static HTML dashboard. Use this skill whenever the user wants to collaborate with friends or teammates on a repo, mentions splitting work across multiple people's Claude Code instances, wants to collect and prioritize feature ideas, asks to set up shared planning or coordination files for a project, wants a project dashboard of ideas/tasks/priorities, or says things like "get this repo ready for the team", "what should we build next", or "update the dashboard". Also trigger on these bare one-word or short commands, which the dashboard tells people to type and which mean nothing else in a repo containing IDEAS.md/TASKS.md/PRIORITIES.md - "triage", "refresh", "refresh dashboard", "idea: <something>", "add idea", "claim <something>", "claim task", "done", "what's next", "whats next", "status", "setup team", "team setup", "catch me up", "what did I miss", "sync".
+description: Set up and run a lightweight file-based collaboration workflow for a shared code project, where several people each running their own Claude Code jointly propose ideas, triage priorities, claim tasks, and track progress through plain markdown files plus a static HTML dashboard. Use this skill whenever the user wants to collaborate with friends or teammates on a repo, mentions splitting work across multiple people's Claude Code instances, wants to collect and prioritize feature ideas, asks to set up shared planning or coordination files for a project, wants a project dashboard of ideas/tasks/priorities, or says things like "get this repo ready for the team", "what should we build next", or "update the dashboard". Also trigger on these bare one-word or short commands, which the dashboard tells people to type and which mean nothing else in a repo containing IDEAS.md/TASKS.md/PRIORITIES.md - "triage", "refresh", "refresh dashboard", "idea: <something>", "add idea", "claim <something>", "claim task", "done", "what's next", "whats next", "status", "setup team", "team setup", "catch me up", "what did I miss", "sync". Beyond those exact words, also use this skill when someone in a repo containing IDEAS.md/TASKS.md/CONTEXT.md describes project work in ordinary conversation - saying they will start or pick up a piece of work, that something is finished or shipped or working now, that they are blocked or waiting on something, floating a feature suggestion ("it would be nice if", "we should probably", "someone should"), settling on a technical choice, reporting a dead end or a trap they hit, or asking what is left to do or where things stand. Match the intent, not the wording - people should never need to remember a command.
 ---
 
 # team-collab
@@ -139,11 +139,11 @@ group that is already all running Claude Code locally. Instead the page tells re
 to refresh it themselves. Don't add fetch calls, polling, or a backend to this page
 unless the user explicitly asks for that tradeoff.
 
-### Quick commands (what people actually type)
+### Quick commands (a fast path, not the only path)
 
-The dashboard tells readers to type these bare words into their own Claude Code. Nobody
-should have to remember file names or markdown format to take part — that friction is
-what stops people contributing. Treat these as first-class:
+The dashboard lists these bare words for people who like them. They are a shortcut on
+top of the intent reading above — never a requirement. Treat them as first-class, but
+never imply someone needs them:
 
 | They type | You do |
 |---|---|
@@ -216,6 +216,35 @@ difference between a group that compounds and four people quietly diverging:
 If a project has no Scope section, offer to write one — two lines on what it is and, more
 importantly, what it isn't. Without the second half there's nothing to measure drift
 against.
+
+## Read intent, don't wait for commands
+
+The quick commands below are a fast path for people who like them — they are **not** the
+interface. Requiring anyone to remember a magic word guarantees the record rots, because
+they won't remember. Treat ordinary conversation as the real input.
+
+"I'll take the CSV export", "let me start on the parser", "I'm picking that up" are all
+claims. "That's working now", "shipped it", or simply finishing work they claimed is a
+completion. "It'd be nice if…", "we should probably…", "someone should…" are ideas.
+"Let's go with Postgres" is a decision. "Tried X, it broke because Y" is a gotcha. Match
+the meaning, not the phrasing — someone describing what they're about to build *is*
+claiming it, however they say it.
+
+**When to act silently vs ask**, split by who is affected:
+
+- **Only the record changes → do it and mention it in one line.** Ideas, gotchas,
+  decisions, journal entries. Additive and easy to correct, so asking each time is pure
+  friction. Say *"logged that under gotchas"* so they can fix a bad capture.
+- **Other people are told something → ask first, one short line.** Claiming, marking done,
+  marking blocked, pushing. A wrong claim makes someone skip work that isn't happening; a
+  wrong "done" makes the group believe a feature exists. Those cost other people's time.
+
+> That looks finished — mark it done and push so the others see it?
+
+Then don't nag: never ask twice about the same thing, batch questions at a natural pause
+rather than mid-task, ignore passing small talk, and if someone says stop asking, record
+silently for the rest of the session. An assistant that prompts constantly gets ignored,
+and the record rots anyway.
 
 ## Capture as you go (this is the part that makes it work)
 

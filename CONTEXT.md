@@ -83,6 +83,29 @@ Things settled, with the reasoning — so they don't get relitigated every month
   result, so a human should never be asked to resolve one.
 - **By:** pulkit
 
+### 2026-08-09 — intent recognition over remembered commands
+- **Chose:** read intent from ordinary conversation and offer to act; keep the bare
+  trigger words as an optional shortcut
+- **Over:** requiring people to type `claim`, `done`, `idea:` etc.
+- **Because:** anyone who has to remember a magic word won't, and the record rots — the
+  exact failure the module exists to prevent. Crucially the rules live in `CLAUDE.md`,
+  not just `SKILL.md`: skills only activate when their description matches, so "I'll take
+  the CSV export" might never reach the skill at all, whereas `CLAUDE.md` is auto-loaded
+  every session regardless of phrasing.
+- **By:** pulkit
+
+### 2026-08-09 — ask before anything other people see; act silently otherwise
+- **Chose:** record ideas/gotchas/decisions immediately and mention it in one line; ask a
+  short confirming question before claiming, marking done/blocked, or pushing
+- **Over:** asking about everything, or asking about nothing
+- **Because:** the split is blast radius. A wrong idea entry is trivially corrected, so
+  asking is pure friction. A wrong claim makes someone else skip work that isn't
+  happening, and a wrong "done" makes the group believe a feature exists — those cost
+  other people's time. Paired with anti-nag rules (never ask twice, batch at natural
+  pauses, stop if told to), because an assistant that prompts constantly gets ignored and
+  the record rots anyway.
+- **By:** pulkit
+
 ## Ideas we said no to (and why)
 
 `PRIORITIES.md` gets rewritten on every triage, so reject reasoning kept only there

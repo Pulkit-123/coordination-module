@@ -112,3 +112,16 @@ friend path: fresh clone → `update_skill.sh` → both skills installed with ex
 intact. Then ran the workflow on this repo itself, and seeded these files with the real
 history above — which is both dogfooding and the first genuine test of whether the record
 is usable by someone who wasn't in the conversation.
+
+### 2026-08-09 — the trigger words were the interface, and that was a bug  (pulkit)
+Noticed that the design leaned on people typing exact words. Real conversation doesn't
+work that way: someone says "let's do the CSV export" and means a claim, or finishes work
+and never says "done". Weighed three options — silent auto-capture (surprising, erodes
+trust), keep requiring commands (friction, guarantees the record rots), or infer intent
+and confirm. Chose the third, split by blast radius: additive record-only edits happen
+silently with a one-line mention, anything other people will see gets a one-line
+confirmation first. Added explicit anti-nag rules, since the obvious failure of this
+feature is an assistant that asks about everything and gets tuned out. The structural
+insight was that these rules belong in `CLAUDE.md` rather than `SKILL.md`, because
+`CLAUDE.md` loads every session while a skill only fires when its description matches.
+

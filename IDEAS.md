@@ -241,3 +241,78 @@ not ten independent ones.
 - **What:** when someone sounds discouraged, that's the moment the history is worth
   surfacing — "three weeks ago none of this existed". Only then; never as a progress
   report.
+
+---
+
+## The behaviour types underneath all of this
+
+Twenty-four ideas is a symptom list. The useful question is what generates them, because
+five behaviours with one intervention each is buildable, and twenty-four features is an
+assistant that never shuts up.
+
+The anchor is Chi, Feltovich & Glaser (1981): **novices categorise by surface features,
+experts by deep structure.** Nearly everything below is a consequence.
+
+### 1. They see surface, not structure
+
+A login page, not an authentication boundary. A list screen, not a collection with
+zero/one/many and a loading state. Because the structure is invisible to them, it doesn't
+exist — so it doesn't get built.
+
+*Generates:* no empty or error states, security skipped, data model unconsidered, polish
+before the flow works, "it looks fine to me", accepting output they can't evaluate.
+
+*One intervention:* the agent supplies the structure silently and names it only when a
+choice is genuinely theirs.
+
+### 2. They don't monitor themselves
+
+Experts "monitor their progress and know when to check for inconsistencies". Novices have
+no signal that they're looping, stuck, or drifting — so an afternoon disappears and nobody
+notices until it's gone.
+
+*Generates:* prompting rabbit holes, three-hour ratholes, unverified changes piling up,
+scope quietly growing, never noticing v1 was finished a week ago.
+
+*One intervention:* the agent keeps the meta-view and says something when the shape of the
+work goes wrong — not the content, the shape.
+
+### 3. They externalise nothing
+
+No commits, no notes, no save points. Experts externalise constantly, which is what makes
+experimenting safe and returning cheap.
+
+*Generates:* an hour lost to context reload on every return, no way back to when it worked,
+decisions relitigated, the same wall hit twice in two projects.
+
+*One intervention:* the agent writes things down and commits at working states. This one is
+already built.
+
+### 4. They ask for the whole thing at once
+
+Decomposition is the documented skill gap — "difficulty identifying boundaries for
+components of their plans". So 800 lines arrive and nothing about them can be judged.
+
+*Generates:* big-bang failures, unjudgeable output, debugging made impossible because
+everything changed together, rabbit holes that can't be escaped.
+
+*One intervention:* break it down visibly and build one piece that runs before continuing.
+
+### 5. Activity reads as progress
+
+Building feels productive. Showing someone, or shipping, does not — so neither happens.
+
+*Generates:* 42% no-market-need, features nobody asked for, endless polish, never
+launching, five half-built projects.
+
+*One intervention:* one moment when the thing they defined as v1 is done. Nothing else.
+
+### Why this framing matters for building
+
+Each behaviour needs **one** intervention, and they share a single budget for how often the
+assistant speaks. Built as twenty-four separate features, every one individually justified,
+the result is something nobody can stand to have running.
+
+Worth noting one limit honestly: expertise research finds transfer is narrow — being good
+at one domain doesn't generalise. So this teaches someone to build *products* better. It
+won't make them a better engineer in general, and claiming otherwise would be dishonest.

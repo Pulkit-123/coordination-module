@@ -251,3 +251,34 @@ they're verified, and the rest is how the agent works while the person watches. 
 picked up from watching someone work, so the rule throughout is: do it, narrate it in half
 a sentence, never explain the method.
 
+### 2026-08-09 — the tool learns the person, not the other way round  (pulkit)
+pulkit's framing: this won't make anyone a better engineer, it forces them through a decent
+process, and the habits form from doing it. "Teaching them without teaching them
+explicitly." Researched whether that actually works, and it mostly does — with one real
+correction.
+
+Implicit learning is genuinely effective for complex tacit skills and costs less cognitive
+effort than being taught. Habits form from repetition in a stable context, median 66 days.
+And the **expertise reversal effect** turns fading from a nicety into a requirement:
+guidance that's essential for a novice becomes *actively harmful* to someone experienced,
+because they have to reconcile the explanation against what they already know.
+
+The correction: implicit learning is weakest **precisely for beginners**, and cognitive
+apprenticeship has six components, not three — articulation and reflection exist
+specifically to make learning generalise. Strip them out and you get someone who performs
+well with this tool and can't transfer any of it. So: start explicit, and treat the
+half-sentence narration as articulation at the lowest useful dose. It isn't zero, and that
+turns out to be the point.
+
+Built the per-area learning profile off the back of it. Measurement is stealth-assessment
+style — infer from ordinary activity, never test — and the signal is simply *who raised it
+first*. Levels move independently per area because competence isn't uniform. Fading is
+slow, and decays after a long gap. The file is plain markdown and hand-editable, which also
+supplies the reflection component we had no analogue for: seeing "you'd have missed that a
+month ago" is comparing a past self to a present one.
+
+One bug worth remembering: the parser matched the date column with `[\d-]*`, but rows for
+never-seen areas write an em dash, so **every unseen row silently failed to parse and read
+as zero** — including hand edits, which were being discarded without a word. Matching
+non-pipe and validating afterwards fixed it.
+

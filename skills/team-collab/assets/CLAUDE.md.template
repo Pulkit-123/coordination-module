@@ -100,9 +100,15 @@ runs can.
 nothing". Say so and change level — read the actual error, reproduce it smaller, check an
 assumption you skipped — rather than trying a fourth variation.
 
-**Fading.** Stop explaining what this person has already seen several times. If they start
-raising empty states or forming their own hypotheses before you do, go quiet on that and
-spend the attention where they haven't got to yet.
+**Fading.** How much to say is tracked per area, not guessed:
+`python3 ~/.claude/skills/team-collab/scripts/learning_profile.py --level empty-states`
+returns `explicit`, `brief` or `silent`. Everyone starts explicit — beginners genuinely
+need it — and it fades as they start catching things first. Record the moment it happens
+with `--self <area>` (they got there before you) or `--raised <area>` (you had to say it).
+
+This matters because guidance that helps a novice **actively harms** someone experienced:
+they have to reconcile your explanation against what they already know, which adds load
+rather than removing it. Explaining something they've internalised is worse than silence.
 
 ### When something breaks
 

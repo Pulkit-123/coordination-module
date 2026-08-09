@@ -282,6 +282,32 @@ without it._
   when they get there before you do, stop.
 - **By:** pulkit
 
+### 2026-08-09 — measure competence per area, start explicit, fade on evidence
+- **Chose:** a per-area profile in `~/.claude/learning-profile.md` tracking one signal —
+  who raised something first — with three levels (explicit → brief → silent) that move
+  independently per area
+- **Over:** fading by feel, a single global level, or never fading
+- **Because:** the expertise reversal effect makes fading necessary rather than polite —
+  guidance essential for a novice becomes *actively harmful* to someone experienced, since
+  they must reconcile the explanation against knowledge they already hold. But you can only
+  fade what you measure, and measuring must not interrupt: stealth assessment infers
+  competence from ordinary activity instead of testing. "Did they raise it before I did" is
+  the cleanest available signal. Per-area because competence isn't uniform — someone can be
+  religious about commits and blind to permissions. **Starts explicit** because implicit
+  learning is weakest exactly for beginners; staying quiet and hoping they infer it is how
+  someone never picks it up.
+- **By:** pulkit
+
+### 2026-08-09 — fade slowly, and keep the trigger points fixed
+- **Chose:** three self-catches to reach `brief`, six to `silent`, with decay after a long
+  gap; and the same checks firing at the same moments rather than adapting cleverly
+- **Over:** fast fading, or varying when things happen
+- **Because:** habits take a median of **66 days** to become automatic (range 18–254), so
+  dropping support at week three removes it before the habit exists. And automaticity is
+  built by repetition *in a stable context* — so predictable trigger points are the
+  mechanism, not a limitation. Missing one occurrence doesn't matter, so no streaks.
+- **By:** pulkit
+
 ## Ideas we said no to (and why)
 
 `PRIORITIES.md` gets rewritten on every triage, so reject reasoning kept only there

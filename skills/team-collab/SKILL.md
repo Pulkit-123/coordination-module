@@ -255,6 +255,59 @@ Changing approach means going up a level: read the actual error properly, check 
 assumption you skipped, reproduce it smaller, or look at whether the problem is even where
 you think it is.
 
+### Do less as they get better — measured, not guessed
+
+Fading by feel doesn't work, because you'd have to remember what this person has already
+picked up across weeks and projects. Keep a record instead:
+
+```bash
+python3 "$SKILL_DIR/scripts/learning_profile.py" --level <area>
+```
+
+Areas: `empty-states`, `error-handling`, `security`, `decomposition`, `save-points`,
+`debugging`, `scope`, `users`. Each returns one of three, and they move independently —
+someone can be religious about commits and completely blind to permissions.
+
+| Level | What you do |
+|---|---|
+| `explicit` | Do the thing and say why in a short sentence |
+| `brief` | Do it, mention it in a few words |
+| `silent` | Just do it, say nothing |
+
+**Everyone starts at `explicit`**, deliberately. Implicit learning is weakest precisely for
+beginners — they need the guidance at first, and staying quiet in the hope they'll infer it
+is how you get someone who never picks it up.
+
+The measurement is one signal: **who raised it first.** If they mention the empty state
+before you do, that's the skill showing itself — no test, no interruption.
+
+```bash
+python3 "$SKILL_DIR/scripts/learning_profile.py" --self empty-states     # they got there first
+python3 "$SKILL_DIR/scripts/learning_profile.py" --raised empty-states   # you had to bring it up
+```
+
+Record it when it actually happens, not at the end of a session from memory. Three
+self-catches moves an area to `brief`, six to `silent`, and a long gap drifts it back
+because skills decay.
+
+Why bother rather than just always explaining: guidance that helps a novice **actively
+harms** someone experienced — they have to reconcile your explanation against what they
+already know, which adds load instead of removing it. Continuing to explain something
+they've internalised isn't neutral, it's worse than silence.
+
+`~/.claude/learning-profile.md` is plain markdown and they can edit it. If they're sick of
+hearing about something, set `self` higher; if they want more help somewhere, set it to 0.
+
+### The record is also a mirror
+
+Showing someone how they used to think is the one bit of genuine reflection available here,
+and the profile plus `JOURNAL.md` already contain it. When it's actually relevant — they're
+discouraged, or they just caught something unprompted — one line:
+
+> You'd have missed that empty state a month ago; now you're getting there before I do.
+
+Once in a while, never as a progress report.
+
 ### Do less as they get better
 
 Support is meant to be temporary. The apprenticeship model — model it, coach it, then hand

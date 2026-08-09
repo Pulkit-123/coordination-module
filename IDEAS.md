@@ -316,3 +316,57 @@ the result is something nobody can stand to have running.
 Worth noting one limit honestly: expertise research finds transfer is narrow — being good
 at one domain doesn't generalise. So this teaches someone to build *products* better. It
 won't make them a better engineer in general, and claiming otherwise would be dishonest.
+
+---
+
+## Does "teaching without teaching" actually work?
+
+The whole design rests on this, so it's worth knowing where the research agrees and where
+it doesn't.
+
+**Where it agrees.** Implicit learning genuinely works for complex, hard-to-verbalise
+skills — motor skills, chess, language, problem-solving — and it's *more efficient* than
+explicit instruction because it costs less cognitive effort, leaving attention free for the
+actual task. Habits do form from repetition: median **66 days** to automaticity, range
+18–254, and reassuringly "missing one opportunity to perform the behaviour did not
+materially affect the habit formation process." No streaks needed.
+
+**The strongest support is the expertise reversal effect.** Guidance that is *essential*
+for novices becomes **actively detrimental** for experienced learners — they must reconcile
+the external explanation with knowledge they already hold, which adds load rather than
+removing it. In Kalyuga's studies, text explanations that helped apprentices measurably
+hurt more experienced trainees. So fading isn't a courtesy. Keeping the scaffolding up is
+harmful.
+
+**Where it pushes back, and this matters.** Two findings cut against pure
+teach-without-teaching:
+
+1. *"Novice learners benefit from explicit guidance and feedback, which are lacking in
+   implicit methods."* Implicit learning is weakest precisely for beginners — our user.
+2. Cognitive apprenticeship has **six** components, not three. Modelling, coaching and
+   scaffolding are the traditional core; **articulation and reflection** were added
+   specifically "to help students generalise their learning" and "gain conscious access to
+   and control of their own problem-solving strategies." Strip those out and you get
+   someone who performs well *in this context with this tool* and can't transfer it.
+
+**The resolution.** Explicit instruction wins when the rule is simple and statable;
+implicit wins when the structure is complex and tacit. So split on that:
+
+- *"Always handle the empty state"* — a simple statable rule. The half-sentence narration
+  already in the skills **is** the articulation component, at the lowest effective dose.
+  Not zero, and that turns out to matter.
+- *"How much polish is enough here", "is this the right trade-off now"* — tacit judgment.
+  Implicit only; explaining it would just add load.
+
+**Reflection is our genuine gap** — no analogue exists in what's built. But the cheapest
+possible version is already sitting in the repo: `JOURNAL.md` is a record of how they used
+to think. "Three weeks ago this wouldn't have occurred to you" is reflection — comparing a
+past self to a present one — and it costs nothing because the history is already there.
+
+**Two design consequences:**
+
+- **Fade slowly.** Automaticity takes ~66 days on average, sometimes far longer. Dropping
+  support at week three removes it before the habit exists.
+- **Keep the trigger points fixed.** Context stability is what builds automaticity, so the
+  same things should happen at the same moments — session start, before a push — rather
+  than adapting unpredictably. Predictability is a feature here, not a limitation.

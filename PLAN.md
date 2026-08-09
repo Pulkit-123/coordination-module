@@ -75,6 +75,35 @@ catch-up read of those files so nobody arrives cold.
 - `update` — explicit, manual pull of the latest templates/skill logic from this
   meta-repo. Not automatic on every invocation (predictability > silent drift).
 
+## Verified failure modes (4-person stress test)
+
+Simulated four clones on a "Huddl" project with overlapping and offset work. Three real
+bugs found and fixed; two limits accepted and delegated to the agent.
+
+**Fixed — would have broken the group:**
+1. *Multi-person deadlock.* `dashboard.html` is generated, so it differed on every
+   machine and conflicted on every concurrent push. With `-merge` set, the rebase aborted
+   and **three of four people were permanently blocked** — only the first pusher ever
+   landed. Generated files are now auto-resolved and rebuilt, never merged.
+2. *Silent data loss.* The first fix used `git rebase --skip` on a stuck rebase, which
+   discards the **entire commit** — a whole decision vanished. Now skips only when the
+   commit is genuinely empty.
+3. *Lost ideas.* Two people appending simultaneously collided at end-of-file and git kept
+   one. Fixed by `merge=union`.
+
+**Accepted limits — union-merge hides clashes, so a detector is required.**
+Keeping both sides means git reports success to everyone and never flags the collision.
+`check_collisions.py` catches the lexical cases (duplicate claims, contradictory
+`Chose:` lines, stale claims, near-identical titles, tension pairs, scope words).
+It cannot catch semantic ones — "push notifications when a plan changes" vs "alert
+members if the plan is updated" share no words and are one feature; "team billing"
+only violates "not multi-tenant SaaS" if you understand both. Those are delegated
+explicitly to the agent's semantic pass at catch-up and triage.
+
+**Scope drift.** `CONTEXT.md` now opens with what the project *is* and *isn't*. The
+"isn't" half is what makes drift detectable — each person only sees their own slice, so
+nothing feels wrong from the inside.
+
 ## Key decision: GitHub Issues as the discussion layer
 
 Markdown is a fine backlog but a bad conversation — you can't reply to one line of a
@@ -129,5 +158,6 @@ triggers on the bare words: `idea: <x>`, `triage`, `claim <x>`, `done`, `status`
 - [x] Verified: concurrent two-clone publish keeps both contributions
 - [x] Verified: fresh clone receives CLAUDE.md + .gitattributes (friends get the brief
       and the merge protection)
+- [x] Stress-tested with 4 simulated collaborators; 3 bugs found and fixed
 - [ ] First real project scaffolded with it
 - [ ] GitHub repo(s) created, friends added as collaborators — **nothing created yet**

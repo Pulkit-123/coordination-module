@@ -21,6 +21,10 @@ Recently settled: **SDLC toolkit vs spec-kit** — resolved 2026-08-09 in favour
 journey-first `shape` skill covering the front half only; spec-kit not adopted. Reasoning
 and the research behind it are in `CONTEXT.md` decisions and the log entry below.
 
+## Where we left off
+
+_2026-08-09_ — all 8 remaining backlog items built and tested; next is a real session with a person, which is the only thing still unverified
+
 ## Log
 
 Newest at the bottom. One short entry per meaningful exchange — what was discussed, what

@@ -25,7 +25,8 @@ TROUBLE = (
     "no", "not", "none", "empty", "error", "fail", "invalid", "denied", "reject",
     "missing", "expired", "offline", "timeout", "too large", "too many", "retry",
     "cancel", "unauthor", "forbidden", "duplicate", "conflict", "wrong", "zero",
-    "unavailable", "limit", "refus", "block",
+    "unavailable", "limit", "refus", "block", "miss", "spam", "stuck",
+    "broke", "break", "lost", "skip", "abandon", "pending",
 )
 
 
@@ -198,6 +199,18 @@ def check(path):
             f"{len(rules)} rules is a lot for one journey — worth splitting into "
             f"separate features."
         )
+    # Real assumptions are often written with a bold lead-in, so excluding every
+    # bold line skips them all. Exclude the marker line specifically.
+    assumptions = re.findall(r"^\s*-\s+(.+)", section(md, "Assumptions"), re.M)
+    real = [a for a in assumptions
+            if not a.strip().startswith("<") and not a.startswith("**Riskiest:")]
+    if len(real) > 1 and "**Riskiest:**" not in md:
+        notes.append(
+            f"{len(real)} assumptions, none marked riskiest. Two axes decide which to "
+            f"check: how badly it hurts if wrong, and how little evidence there is. The "
+            f"overlap is worth ten minutes before building on top of it."
+        )
+
     if not section(md, "First slice").strip():
         notes.append("No first slice identified — nothing says what to build first.")
 

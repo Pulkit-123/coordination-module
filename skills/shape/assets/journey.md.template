@@ -70,6 +70,12 @@ assumption that quietly hardens into a requirement is how features end up subtly
 
 - <what was assumed> — <why that default> — _revisit when: <what would settle it>_
 
+**Riskiest:** <the one that would hurt most if wrong AND that we have least evidence for>
+
+Those are two different axes and both matter. Something important you're confident about
+isn't a risk; something shaky that doesn't matter isn't either. It's the overlap that's
+worth ten minutes of checking before building on top of it.
+
 ## Open questions
 
 Things nobody can answer yet. Leave them here rather than guessing — a guess written as a

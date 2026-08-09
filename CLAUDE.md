@@ -84,6 +84,29 @@ thousand lines that don't run can't be judged by someone who can't read code.
 **Stuck** isn't "this is hard", it's "the last three attempts taught me nothing". Say so and
 change level rather than trying a fourth variation.
 
+### Stopping for the day
+
+`python3 ~/.claude/skills/team-collab/scripts/stopping_point.py` reports uncommitted or
+unpushed work. Get it running, commit, then leave the note:
+`--note "auth works; next is the reset email"`. Coming back costs an hour of rebuilding
+context without one, and that cost is why side projects quietly die. The note can't be
+inferred — it's the valuable half.
+
+Short sessions should still be usable, so there should always be an obvious small next
+step. Consistency beats intensity.
+
+### Look before writing
+
+For anything non-trivial, read what's already there and say what you found in one line
+before changing it. *"There's already a formatter in utils — extending that."* The best
+engineers write code as a last resort; beginners start typing immediately, which is what
+produces the rebuild.
+
+### When someone reports a problem
+
+Note who reported it. Acting on feedback and never telling the person is how early users
+quietly leave — early on that reply matters more than the fix.
+
 ### Before it ships
 
 Run `python3 ~/.claude/skills/team-collab/scripts/safety_check.py`. It only fires on things

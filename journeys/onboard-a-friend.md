@@ -133,6 +133,10 @@ flowchart TD
 - **`python3` exists on their machine.** True on macOS and most Linux; would break on a
   bare Windows install. _Revisit when: someone onboards on Windows._
 
+**Riskiest:** that everyone already has Claude Code installed and working. It's untested,
+it blocks every later step, and there's no evidence either way — the other two assumptions
+only cost a small fix if wrong.
+
 ## Open questions
 
 - [ ] Should a friend be able to *read* the project without being a collaborator (public
@@ -150,3 +154,9 @@ The walking skeleton — one friend, one project, end to end:
 
 **Deferred to later:** Windows support, automated invite nudges, anything for groups
 larger than about five.
+
+**Known problem, flagged by `check_journey`:** this flow is about ten steps before someone
+is contributing, which is past the point where people drop out. Most of it is unavoidable
+(they do have to install and restart), but the invite-accept-nudge loop and the
+restart-because-you-forgot loop are both avoidable. Worth attacking before asking anyone to
+go through it.

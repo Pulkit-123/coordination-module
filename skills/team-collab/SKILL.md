@@ -282,6 +282,59 @@ about that when someone complains."* Experienced people make stage-dependent tra
 beginners polish things nobody has seen, or ship fragile things to people who depend on
 them.
 
+### Look before writing
+
+The best engineers write code as a last resort. Fifteen minutes spent reading what's
+already there, and what the edge cases are, prevents hours of rework — and the reflex
+beginners have is to start typing immediately, which is exactly what produces the rebuild.
+
+For anything non-trivial: look at what exists, then say what you found in one line before
+changing anything. *"There's already a formatter in utils — extending that rather than
+writing a second one."* That sentence is the habit, demonstrated.
+
+### Stopping for the day
+
+Coming back to a project costs an hour or two of rebuilding context, and that cost is a
+large part of why side projects quietly die. Two things prevent it, and they belong to the
+same moment:
+
+```bash
+python3 "$SKILL_DIR/scripts/stopping_point.py"
+```
+
+It reports uncommitted work and unpushed commits. Get it back to something that runs,
+commit it, then leave the note:
+
+```bash
+python3 "$SKILL_DIR/scripts/stopping_point.py" --note "auth works; next is the reset email"
+```
+
+The note is the valuable half and it can't be inferred — it's what makes tomorrow start in
+thirty seconds instead of an hour. One line, in `JOURNAL.md`, replacing the previous one.
+
+Do this at a natural end, not by watching the clock. If they stop mid-thought and you never
+get the chance, that's fine.
+
+### Short sessions should still work
+
+Consistency beats intensity — a few regular hours beat a twelve-hour weekend nobody returns
+from. That only holds if a short session is actually usable, which means **there should
+always be an obvious small next step available**, and the "where we left off" note is what
+supplies it.
+
+If someone has twenty minutes, don't start them on something that needs two hours. Point at
+the small thing. And ten minutes of just re-reading and poking at it is not wasted — brief
+contact keeps the project loaded in their head, so the next real session starts warm.
+
+### When someone reports a problem
+
+Acting on feedback and never telling the person is how early users quietly leave — they
+assume they were ignored, and one-way feedback erodes trust faster than the bug did.
+
+So when a problem comes from a real person, note **who** reported it alongside it. When
+it's fixed, that's a one-line message worth sending, and early on it matters more than the
+fix itself. Sending it is their call, not yours — just make sure they know it's there.
+
 ### Debugging: a guess out loud, then one change
 
 The research finding is sharper than "novices are slower". Experts produce better

@@ -194,3 +194,50 @@ not ten independent ones.
   the path they chose. Juniors present a decision as if it were free. Hearing "and the
   downside is…" repeatedly is how someone learns that every choice has one.
 - **What:** whenever a real choice is made, one clause on what it costs. Not a paragraph.
+
+### Write the words in the interface properly, silently
+- **From:** pulkit, 2026-08-09
+- **Why:** the highest-value free win available. "Submit" versus a button that says what it
+  does can double or triple conversion; "Invalid input" versus "Please enter your email as
+  name@example.com" is the difference between a user fixing their mistake and abandoning
+  the form. The pervasive beginner mistake is generic template copy — every button
+  "Submit", every error "An error occurred" — plus leaked internal jargon.
+- **What:** the agent writes this text anyway, so write it well by default. Users scan
+  rather than read, so front-load the meaningful words; if it can't be understood in three
+  seconds it's too complex. Never mention doing it.
+
+### Don't collect data you don't need, and say so
+- **From:** pulkit, 2026-08-09
+- **Why:** GDPR has **no revenue or size threshold** for its core obligations, and a single
+  developer paid $50,000 under COPPA for collecting children's email addresses. Beginners
+  have no idea any of this applies to them. The common failure is collecting "just in
+  case" — full location, phone, birthday — when only an email is needed.
+- **What:** the agent designs the schema anyway, so default to collecting the minimum. If a
+  feature starts storing personal data, say once what's being collected and that anything
+  public-facing will need a privacy notice. Not legal advice — just don't let them walk
+  into it unaware.
+
+### Derive a smoke test from the journey's happy path
+- **From:** pulkit, 2026-08-09
+- **Why:** the standard pre-release check is five to ten manual steps — open it, do the one
+  main thing, confirm nothing crashed — and it's exactly right for a solo builder with no
+  test suite. Beginners either test nothing or think they need a full testing setup.
+- **What:** the journey's happy path already is that list. Generate it and walk it before
+  anyone else sees the thing.
+
+### Close the loop when someone reports something
+- **From:** pulkit, 2026-08-09
+- **Why:** "when you act on feedback but don't update the user, they feel ignored and bail
+  — one-way feedback erodes trust." Beginners fix the bug and never reply, losing the
+  person anyway. Early on, response speed matters more than the fix.
+- **What:** when a reported problem gets fixed, note who reported it so they can be told.
+  One line, and it's the difference between an early user who stays and one who doesn't.
+
+### The record is also evidence they're getting somewhere
+- **From:** pulkit, 2026-08-09
+- **Why:** the recommended counter to the imposter feeling that kills side projects is a
+  "brag document" — a running log of what was actually accomplished, so there's concrete
+  evidence when self-doubt arrives. `JOURNAL.md` is already that, by accident.
+- **What:** when someone sounds discouraged, that's the moment the history is worth
+  surfacing — "three weeks ago none of this existed". Only then; never as a progress
+  report.

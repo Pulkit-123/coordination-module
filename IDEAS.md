@@ -9,15 +9,6 @@ questions rather than silently dropping them.
 **Format:**
 
 ```
-### <short title>
-- **From:** <your name>
-- **Date:** YYYY-MM-DD
-- **What:** one or two sentences on the idea
-- **Why:** the problem it solves (optional, but it's what decides priority)
-```
-
----
-
 ### ~~SDLC toolkit — skills for the whole product development cycle~~ (BUILT)
 - **From:** pulkit
 - **Date:** 2026-08-09
@@ -35,7 +26,7 @@ questions rather than silently dropping them.
 - **Why:** Everything so far is verified against simulated collaborators. Nothing is
   proven until real people with their own Claude Code use it at the same time.
 
-### Onboarding checks in the journey
+### ~~Onboarding checks in the journey~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** 84% of users who hit a blank state with no contextual help abandon in the first
   session, and 70–80% of users are lost within three days — most before any value lands.
@@ -51,7 +42,7 @@ questions rather than silently dropping them.
   (do we know, or are we guessing?) — which points at the single thing worth checking.
 - **What:** mark one assumption per journey as "check this before building".
 
-### Attribute to convention, never to their omission
+### ~~Attribute to convention, never to their omission~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** unsolicited help produces measurable self-threat — it challenges competence and
   autonomy, and reduces willingness to use the tool again. Same information, different
@@ -59,7 +50,7 @@ questions rather than silently dropping them.
 - **What:** "added the empty state, that's the one everyone forgets" — never "you forgot
   the empty state".
 
-### A shipping moment
+### ~~A shipping moment~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** side projects have no external forcing function, so the improvement phase
   expands indefinitely and nothing ships. Perfectionism turns "onboarding emails" into "a
@@ -90,7 +81,7 @@ questions rather than silently dropping them.
 - **What:** for anything non-trivial, look at what's already there and say what you found
   before changing anything.
 
-### Commit hygiene, demonstrated not taught
+### ~~Commit hygiene, demonstrated not taught~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** the documented beginner pattern is vague messages ("update", "changes"),
   fear of committing at all, working directly on main, and committing untested work. All
@@ -98,7 +89,7 @@ questions rather than silently dropping them.
 - **What:** commit in logical chunks with messages saying what and why; branch for anything
   risky. Do it visibly rather than explaining it.
 
-### One project at a time
+### ~~One project at a time~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** the multi-project trap — new projects feel exciting, so a backlog of half-built
   things accumulates and none ship. "90% done syndrome". Enforced monotasking increases the
@@ -140,7 +131,7 @@ comments constantly. Whatever gets built needs one shared budget for how often i
 not ten independent ones.
 
 
-### Notice the prompting rabbit hole and break it
+### ~~Notice the prompting rabbit hole and break it~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** the signature failure of a beginner's first session. They prompt, it's wrong,
   they rephrase, it's wrong differently, they rephrase again — "the feature that should
@@ -151,7 +142,7 @@ not ten independent ones.
   the last working state, break the problem smaller, and attack one piece. The signal is
   repetition without new information — "still not working", "that's not what I meant".
 
-### Keep save points so there's always a way back
+### ~~Keep save points so there's always a way back~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** the top practitioner advice for exactly this failure is "save each point where
   it got things right, so if something goes wrong you can go back to the last working
@@ -161,7 +152,7 @@ not ten independent ones.
   message. Then "put it back how it was an hour ago" is always available, which is what
   makes experimenting safe.
 
-### Get the actual error, don't guess from "it's not working"
+### ~~Get the actual error, don't guess from "it's not working"~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** a beginner's entire bug report is "it's not working" — they don't know that the
   red text matters, or which part of it. Guessing from that is what starts the rabbit hole,
@@ -169,7 +160,7 @@ not ten independent ones.
 - **What:** ask for what's actually on screen before changing anything. One question, and
   it teaches the habit by needing it.
 
-### Decompose out loud, build one piece
+### ~~Decompose out loud, build one piece~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** novices "have difficulty identifying boundaries for components of their plans
   and underspecify their plans" — the documented skill gap is decomposition, not syntax. A
@@ -179,7 +170,7 @@ not ten independent ones.
 - **What:** say the breakdown in one line before starting, build the first piece, show it
   working, then continue. The beginner absorbs the decomposition by watching it happen.
 
-### Name the stage, so effort goes to the right thing
+### ~~Name the stage, so effort goes to the right thing~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** experienced people make stage-dependent trade-offs — speed over polish before
   product-market fit, quality over speed once there's traction. Beginners don't know which
@@ -188,14 +179,14 @@ not ten independent ones.
 - **What:** one line when it's relevant — "nobody's used this yet, so rough is fine; worry
   about that when someone complains."
 
-### Say the downside of each choice
+### ~~Say the downside of each choice~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** the clearest tell of an experienced product person is that they name the cost of
   the path they chose. Juniors present a decision as if it were free. Hearing "and the
   downside is…" repeatedly is how someone learns that every choice has one.
 - **What:** whenever a real choice is made, one clause on what it costs. Not a paragraph.
 
-### Write the words in the interface properly, silently
+### ~~Write the words in the interface properly, silently~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** the highest-value free win available. "Submit" versus a button that says what it
   does can double or triple conversion; "Invalid input" versus "Please enter your email as
@@ -206,7 +197,7 @@ not ten independent ones.
   rather than read, so front-load the meaningful words; if it can't be understood in three
   seconds it's too complex. Never mention doing it.
 
-### Don't collect data you don't need, and say so
+### ~~Don't collect data you don't need, and say so~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** GDPR has **no revenue or size threshold** for its core obligations, and a single
   developer paid $50,000 under COPPA for collecting children's email addresses. Beginners
@@ -233,7 +224,7 @@ not ten independent ones.
 - **What:** when a reported problem gets fixed, note who reported it so they can be told.
   One line, and it's the difference between an early user who stays and one who doesn't.
 
-### The record is also evidence they're getting somewhere
+### ~~The record is also evidence they're getting somewhere~~ (BUILT)
 - **From:** pulkit, 2026-08-09
 - **Why:** the recommended counter to the imposter feeling that kills side projects is a
   "brag document" — a running log of what was actually accomplished, so there's concrete

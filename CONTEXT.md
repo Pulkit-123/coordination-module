@@ -348,6 +348,26 @@ Not permanent: if circumstances change, reverse it deliberately and note what ch
 
 ## Gotchas and dead ends
 
+### Three real bugs found only by running against a real project  (pulkit, 2026-08-09)
+Every synthetic test passed. Pointing `safety_check.py` at an actual Next.js + Supabase
+project found all three of these within minutes:
+
+1. **`.env.local` was never scanned.** `os.path.splitext(".env.local")` returns `.local`,
+   which isn't in the text-extension list — so the file where Next.js actually keeps
+   secrets was skipped in silence. Match on the basename, not just the extension.
+2. **`sb_secret_…` wasn't a known pattern.** Supabase replaced JWT service-role keys with
+   this format, so the most dangerous credential in the project was invisible. Note that
+   `sb_publishable_` must *not* be flagged — it's public by design.
+3. **Worst of the three: a false positive that would have blocked a legitimate push.**
+   The checker flagged a key sitting inside `.env.local` — which is exactly where a key
+   belongs, and it was properly gitignored. Blocking correct work is how a tool teaches
+   people to ignore it, which then costs them the real warning later. Env files are no
+   longer content-scanned; what's checked instead is whether git is ignoring them.
+
+The lesson worth keeping: synthetic fixtures test what you thought of. Real projects test
+what you didn't.
+
+
 Things tried that didn't work, and traps in the codebase or its dependencies. This section
 saves the most time — it stops the second and third person rediscovering the same wall.
 

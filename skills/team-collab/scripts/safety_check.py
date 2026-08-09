@@ -45,6 +45,16 @@ SECRETS = [
     (r"xox[baprs]-[0-9A-Za-z-]{10,}", "a Slack token"),
     (r"sk_live_[0-9A-Za-z]{20,}", "a live Stripe secret key"),
     (r"rk_live_[0-9A-Za-z]{20,}", "a live Stripe restricted key"),
+    # Supabase replaced JWT service-role keys with these. Found by running this
+    # against a real project whose most dangerous credential was invisible to
+    # every pattern above. `sb_publishable_` is deliberately public and is NOT
+    # listed — flagging it would be a false alarm.
+    (r"sb_secret_[A-Za-z0-9_-]{16,}", "a Supabase secret key (full database access)"),
+    (r"gsk_[A-Za-z0-9]{30,}", "a Groq API key"),
+    (r"hf_[A-Za-z0-9]{30,}", "a Hugging Face token"),
+    (r"xai-[A-Za-z0-9]{30,}", "an xAI API key"),
+    (r"pplx-[A-Za-z0-9]{30,}", "a Perplexity API key"),
+    (r"glpat-[A-Za-z0-9_-]{15,}", "a GitLab personal access token"),
     (r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----", "a private key"),
     (r"eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}",
      "a JWT (check whether it's a real service token)"),
@@ -90,7 +100,14 @@ def files_to_check(check_all):
 def readable(path):
     if not os.path.isfile(path):
         return None
-    if os.path.splitext(path)[1] not in TEXT_EXT:
+    base = os.path.basename(path)
+    # Extension matching alone misses the single most important file: for
+    # `.env.local` splitext returns `.local`, so the place Next.js actually keeps
+    # secrets was being skipped silently. Check the name too.
+    env_like = base.startswith(".env") or base in (
+        "credentials", "secrets", ".npmrc", ".netrc", ".pypirc",
+    )
+    if not env_like and os.path.splitext(path)[1] not in TEXT_EXT:
         return None
     try:
         if os.path.getsize(path) > 400_000:
@@ -101,7 +118,20 @@ def readable(path):
         return None
 
 
+def is_env_file(path):
+    b = os.path.basename(path)
+    return b.startswith(".env") or b in ("credentials", "secrets", ".npmrc",
+                                         ".netrc", ".pypirc")
+
+
 def check_secrets(path, text, stop, warn):
+    # An env file is *where secrets are supposed to live*. Flagging one for
+    # containing a key blocks correct work, which is how a checker teaches people
+    # to ignore it — verified against a real project whose keys were properly
+    # stored and gitignored. The genuine risk is the file being committed, and
+    # that's checked separately.
+    if is_env_file(path):
+        return
     for pattern, what in SECRETS:
         for m in re.finditer(pattern, text):
             line_no = text[:m.start()].count("\n") + 1
@@ -116,6 +146,29 @@ def check_secrets(path, text, stop, warn):
                 f"      and make sure .env is in .gitignore."
             )
             return
+
+
+def check_env_unignored(stop):
+    """An env file git isn't ignoring is one bad `git add .` from being public."""
+    if not in_repo():
+        return
+    for dp, dn, fn in os.walk("."):
+        dn[:] = [d for d in dn if d not in SKIP_DIRS and not d.startswith(".")]
+        for f in fn:
+            if not is_env_file(f) or "example" in f or "sample" in f or "template" in f:
+                continue
+            path = os.path.join(dp, f)
+            out = run("git", "check-ignore", path).strip()
+            if out:
+                continue
+            if run("git", "ls-files", "--error-unmatch", path).strip():
+                continue  # already tracked; reported by the other check
+            stop.append(
+                f"{path} is not in .gitignore.\n"
+                f"      It holds your keys and git isn't ignoring it, so one `git add .`\n"
+                f"      puts them on GitHub permanently. Add this line to .gitignore:\n"
+                f"        {f}"
+            )
 
 
 def check_env_tracked(stop):
@@ -199,6 +252,7 @@ def main():
     stop, warn = [], []
 
     check_env_tracked(stop)
+    check_env_unignored(stop)
     for path in files_to_check(check_all):
         text = readable(path)
         if text is None:

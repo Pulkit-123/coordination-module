@@ -59,18 +59,19 @@ catch-up read of those files so nobody arrives cold.
 - **`PRIORITIES.md`** — output of the triage pass: ranked build order, flagged
   duplicate/contradicting ideas, rejects with reasoning, clarifying questions for
   ideas that need more detail.
-- **`dashboard.html`** — static, generated snapshot of the three files above
-  (ideas / tasks / priorities). Not live. Optionally published via free GitHub
-  Pages so anyone has a read-only shareable link without cloning.
+- **`dashboard.html`** — static, generated snapshot of all the files above on one page.
+  Not live. Opened locally after a pull — not published (see hosting decision below).
 
 ## Skill commands (`team-collab`)
 
-- `init` — scaffold the four files + dashboard into the current repo. Skips files
-  that already exist (safe to rerun).
+- `init` — scaffold the coordination files + dashboard into the current repo. Skips
+  files that already exist (safe to rerun).
 - `triage` — read `IDEAS.md`, write a ranked build order + conflict flags + reject
   reasoning + clarifying questions into `PRIORITIES.md`.
-- `dashboard` — regenerate `dashboard.html` from the current state of the three
-  markdown files.
+- `dashboard` — regenerate `dashboard.html` from the current markdown files.
+- `sync` — pull GitHub `idea`-labelled issues into `IDEAS.md`.
+- Quick commands people actually type: `idea: <x>`, `triage`, `claim <x>`, `done`,
+  `status`, `catch me up`, `refresh`.
 - `update` — explicit, manual pull of the latest templates/skill logic from this
   meta-repo. Not automatic on every invocation (predictability > silent drift).
 

@@ -53,6 +53,79 @@ def has_trouble_branch(src):
     return any(w in joined for w in TROUBLE)
 
 
+# Where products actually die, with numbers attached. 84% of people who hit a
+# blank screen with no guidance leave in that first session; 70-80% are gone
+# within three days, most before anything of value has happened. Forcing an
+# account before the user has seen anything work is the single most expensive
+# mistake available, and past roughly seven steps conversion drops measurably.
+GATE = re.compile(r"\b(sign\s?up|signup|register|create an account|log\s?in|login|"
+                  r"sign\s?in|authenticate|verify your email|subscribe|payment|"
+                  r"credit card|paywall)\b", re.I)
+VALUE = re.compile(r"\b(see|view|browse|try|use|create|add|make|start|explore|"
+                   r"result|works|preview|demo)\b", re.I)
+BLANK_OK = re.compile(r"\b(empty|nothing yet|no .{0,20} yet|first one|get started|"
+                      r"add your first|sample|example|placeholder|onboard)\b", re.I)
+
+
+def check_onboarding(md, out):
+    """Does a first-time user reach anything worthwhile before being asked for something?"""
+    src = "".join(mermaid_blocks(md))
+    if not src:
+        return
+
+    # id -> (text, is_decision). Decisions are branch points, not steps a user
+    # performs, so they don't count toward the length of the path.
+    nodes = {}
+    ordered = []
+    for m in re.finditer(r"([A-Za-z_][\w-]*)\s*(\(\[|\[|\{|\()\s*[\"']?(.+?)[\"']?\s*"
+                         r"(?:\]\)|\]|\}|\))", src):
+        nid, brack, text = m.group(1), m.group(2), m.group(3).strip()
+        if nid not in nodes:
+            nodes[nid] = (text, brack == "{")
+            ordered.append(text)
+    if len(ordered) < 3:
+        return
+
+    gate_at = next((i for i, s in enumerate(ordered) if GATE.search(s)), None)
+    value_at = next((i for i, s in enumerate(ordered) if VALUE.search(s)), None)
+
+    if gate_at is not None and (value_at is None or gate_at < value_at):
+        out.append(
+            f"GATE BEFORE VALUE: \"{ordered[gate_at]}\" comes before the user has seen "
+            f"anything work.\n  Asking for an account, payment or verification before "
+            f"delivering value is the most expensive onboarding mistake there is — most "
+            f"of the people who leave do so in the first session, before anything "
+            f"happened. Let them see it work first if there's any way to."
+        )
+
+    # Count only the path a user walks when things go right. Counting every node
+    # would penalise a journey for handling failures well, which is precisely
+    # backwards — the error branches are the part we want more of.
+    trouble_words = re.compile("|".join(TROUBLE), re.I)
+    off_path = {tgt for lbl, tgt in re.findall(
+        r"-->\s*\|([^|]+)\|\s*([A-Za-z_][\w-]*)", src) if trouble_words.search(lbl)}
+    happy = [text for nid, (text, is_decision) in nodes.items()
+             if nid not in off_path
+             and not is_decision
+             and not trouble_words.search(text)]
+
+    if len(happy) > 9:
+        out.append(
+            f"LONG PATH: about {len(happy)} steps before the user is done, not counting "
+            f"the failure branches.\n  Conversion drops measurably past roughly seven, and "
+            f"each extra step is another place to lose someone. Worth asking which of "
+            f"these could happen later, or not at all."
+        )
+
+    if not BLANK_OK.search(md):
+        out.append(
+            "NO EMPTY STATE: nothing here says what a first-time user sees before there "
+            "is any data.\n  84% of people who hit a blank screen with no guidance "
+            "abandon in that first session — it is the highest-leverage screen in the "
+            "whole flow, and the one most reliably forgotten."
+        )
+
+
 def section(md, name):
     m = re.search(rf"^##\s+{name}\s*$(.*?)(?=^##\s|\Z)", md, re.M | re.S)
     return m.group(1) if m else ""
@@ -66,6 +139,7 @@ def check(path):
         return [f"can't read {path}: {e}"], []
 
     problems, notes = [], []
+    check_onboarding(md, problems)
     blocks = mermaid_blocks(md)
 
     if not blocks:

@@ -308,6 +308,16 @@ without it._
   mechanism, not a limitation. Missing one occurrence doesn't matter, so no streaks.
 - **By:** pulkit
 
+### 2026-08-09 — one speech budget shared across every behaviour
+- **Chose:** roughly one unprompted remark per stretch of work, ranked — unrecoverable
+  first, then about-to-waste-time, then things others need to know, then everything else
+- **Over:** each behaviour deciding independently when it's worth speaking
+- **Because:** thirty behaviours, each individually justified, add up to an assistant nobody
+  can stand to have running — and then none of it lands, including the parts that matter.
+  Timing beats content: the same remark is measurably helpful at a pause and intrusive
+  mid-task, with identical wording.
+- **By:** pulkit
+
 ## Ideas we said no to (and why)
 
 `PRIORITIES.md` gets rewritten on every triage, so reject reasoning kept only there

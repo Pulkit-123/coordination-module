@@ -34,7 +34,7 @@ No server, no API keys, no build step, no accounts. Plain files and plain git.
 ## Install
 
 ```bash
-git clone https://github.com/<owner>/coordination-module.git
+git clone https://github.com/Pulkit-123/coordination-module.git
 cd coordination-module && bash skills/team-collab/scripts/update_skill.sh
 ```
 

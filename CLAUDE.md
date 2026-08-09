@@ -1,187 +1,67 @@
 # coordination-module
 
-## Team collaboration workflow
+## Project memory
 
-Several people work on this repo, each running their own Claude Code. These files keep
-that from turning into chaos. Read them before doing anything substantial.
+This repo keeps notes so Claude Code doesn't forget things between sessions. **The person
+working here should never have to do anything to maintain them.** No commands, no files to
+open, no process. They talk and build normally; you keep the notes.
 
-| File | What it's for |
+| File | What's in it |
 |---|---|
-| `JOURNAL.md` | The running conversation — reasoning, and arguments still open |
-| `journeys/*.md` | One per feature: the user's flow, the spec, and open questions |
-| `CONTEXT.md` | Scope, decisions, gotchas — what the group has settled and learned |
-| `IDEAS.md` | Append-only backlog of feature ideas from anyone |
-| `TASKS.md` | Who is actively building what, right now |
-| `PRIORITIES.md` | Ranked build order — generated, do not hand-edit |
-| `dashboard.html` | Static readable snapshot of all of the above |
+| `CONTEXT.md` | Decisions and why, dead ends already hit, what the project is and isn't |
+| `JOURNAL.md` | How things were reasoned through, and arguments still unresolved |
+| `IDEAS.md` | Things someone wanted, not yet built |
+| `TASKS.md` | Who's working on what right now |
+| `journeys/*.md` | One per feature: the flow as a diagram, plus what it must do |
 
-### Before starting any work
+### Start of a session
 
-Check `TASKS.md` first. Someone else's Claude Code may be editing the same files at this
-moment, and git won't warn you about that until there's a conflict. If the work you're
-about to start isn't claimed, add a row claiming it before you begin.
+Pull, read those files, then say **only what changed** since they were last here, in two or
+three lines. If nothing changed, say nothing. Don't announce that you read anything, and
+never print an unrequested status report — that's the friction this is meant to remove.
 
-Work on a short-lived branch named in your claim (e.g. `feat/export-csv`). This isn't
-process ceremony — it's the thing that stops two agents from overwriting each other. Merge
-to `main` when the piece works; no formal review is required in this group unless the
-change is risky or touches shared foundations.
+### While working
 
-### Before building a feature, shape it
+When something durable comes up, write it down and mention it in **one line**. Don't ask
+first — these are additive and easy to correct.
 
-If a feature isn't obvious, work out what it should do before writing code — say
-something like "help me plan this" and the `shape` skill walks through the user's flow,
-turning it into a diagram, acceptance rules, and tasks in `journeys/<slug>.md`.
+- A choice settled → `CONTEXT.md`, **with the reasoning**, or it gets relitigated
+- A dead end or trap → `CONTEXT.md` gotchas, so the next person doesn't lose the same hour
+- An idea floated → `IDEAS.md`
+- A real back-and-forth about approach → `JOURNAL.md`, including what was rejected
+- An unresolved disagreement → `JOURNAL.md`, with both positions
 
-Read the journey file first if one exists. It records the failure and empty states someone
-already thought through, which is the part most easily missed when reading only the code.
+Match meaning, not wording. Someone saying "I'll take the export" is claiming it; "that
+works now" is finishing it; "tried X, it broke" is a gotcha. Nobody should need to know a
+command exists.
 
-### When you have a new idea
+Use judgment — keep what someone would want to find later, not every passing remark.
 
-Append it to `IDEAS.md` with your name and the date. Don't build it immediately and don't
-reorder `PRIORITIES.md` yourself — the whole point is that the group decides together what
-gets built next. Ideas are cheap to add and that's intentional.
+### The only two things worth asking about
 
-### When deciding what to build next
+Claiming work and marking it done, because those tell *other people* something and a wrong
+one wastes their time. One short line: *"want me to note you're on this so nobody doubles
+up?"*
 
-Read `PRIORITIES.md`. It's regenerated from `IDEAS.md` by running `team-collab triage` in
-Claude Code, which ranks ideas, flags duplicates and contradictions, and raises clarifying
-questions. Because it's generated, hand-edits get wiped on the next triage — put your
-argument in `IDEAS.md` as a new entry instead, where it survives and gets weighed.
+If nobody else has access to this repo, don't even ask — just note it.
 
-### The goal: one shared mind, several people
+Never ask twice about the same thing. If they say stop, record silently from then on.
 
-Aim for this to feel like a single agent that has been working on the project continuously
-and happens to talk to several people — not like separate agents who each know a fraction.
-Everything below serves that.
+### Let the memory prove itself
 
-The gap to close is that each person's chat history is private. What one person worked
-through in conversation is invisible to everyone else unless it's written down. So the
-files are the shared memory, and they only work if they're read at the start and written
-during.
+When a note actually saves them something, say so in one line — *"you chose Postgres in
+week one because of the joins, so sticking with that."* That's the only visible payoff
+this has, and it costs nothing.
 
-**At the start of a session, catch up before doing anything:** `git pull`, then read
-`JOURNAL.md` (what's happened and what's still being argued), `CONTEXT.md` (what's
-settled and why), and `TASKS.md` (who's mid-flight). Then tell the person what changed
-since they were last here — especially any open thread they should weigh in on. Someone
-returning after two days should not have to ask what they missed.
+### Before building something non-trivial
 
-If you're picking up work someone else started, their reasoning is in `JOURNAL.md`. Read
-it before second-guessing their approach.
+Check `journeys/` for an existing flow, and read `CONTEXT.md` for decisions that constrain
+it. If it's a real feature and no journey exists, draft one first — the flow, what happens
+when it's empty, and what happens when it fails. That's what stops a rebuild.
 
-### Inherit what others have learned
+### Publishing
 
-Read `CONTEXT.md` before making design choices or debugging. It holds what the rest of the
-group already worked out — decisions and their reasoning, dead ends someone already hit,
-and non-obvious details about how things work. The value of several people each running
-their own Claude Code only compounds if what one person learns reaches the others; without
-this file, everyone rediscovers the same walls independently.
+Push notes as they're made; an update nobody can see is no update. Expect rejections when
+several people are active — pull with `--rebase` and retry rather than force-pushing.
 
-When you learn something durable, append it there — see below.
-
-Also check the **Scope** section before starting anything new: it says what the project
-is and isn't. Work that quietly drifts outside it is one of the easier ways for four
-people to end up building different products, since each person only ever sees their own
-slice and nothing feels wrong from inside it.
-
-Two people can also claim the same task, or record contradictory decisions, without git
-ever complaining — it keeps both sides so nothing is lost, which means nothing is flagged
-either. Skim `TASKS.md` and the decisions in `CONTEXT.md` for clashes when you pull, and
-say something when you spot one.
-
-### Recognize what people mean — never make them remember commands
-
-This workflow fails in one predictable way: something good gets discussed, nobody writes
-it down, and a week later the repo has no memory of it. Requiring people to remember
-magic words guarantees that failure, because they won't. **Nobody should ever have to
-know a command exists.** Read intent from ordinary conversation:
-
-| Someone says something like | They probably mean |
-|---|---|
-| "I'll take the CSV export", "let me start on X", "I'm picking up X" | claiming a task |
-| "that's working now", "shipped it", "X is done", tests pass on the thing they claimed | finishing a task |
-| "I'm stuck on X", "waiting on Y before I can finish" | blocked |
-| "it'd be nice if…", "we should probably…", "what if we…", "someone should…" | a new idea |
-| "let's go with Postgres", "ok, we'll do it the second way" | a decision worth recording |
-| "tried X, didn't work because Y", "careful, Z breaks when…" | a gotcha |
-| "I don't think that's worth it because…" | reject reasoning |
-| "what's left?", "where are we?", "anything for me?" | a status summary |
-
-These are examples of a pattern, not a lookup table — match the meaning, not the wording.
-Someone describing what they're about to go build *is* a claim, however they phrase it.
-
-### Show people the files you change
-
-These markdown files are the actual product, and they're easy to miss — a file changes on
-disk and nobody notices anything happened. Open the ones worth looking at in the side
-panel rather than only mentioning them, so the work is visible as it happens:
-`SendUserFile(files=["PRIORITIES.md"], display="render")`. Markdown renders there with
-tables and mermaid diagrams drawn.
-
-Do it for things worth reading — a fresh triage, a new or substantially changed journey,
-the dashboard after setup. Don't do it for a one-line idea append or a status flipping to
-done, where saying so in a sentence is already the full story. A panel that opens
-constantly gets ignored just as fast as an assistant that asks too many questions.
-
-### Ask before anything other people will see; just do the harmless things
-
-The judgment call is when to interrupt. Two different situations:
-
-**Things only visible in the record → do it, then say so in one line.** Adding an idea,
-noting a gotcha, recording a decision, journaling a discussion. These are additive and
-trivially correctable, so asking permission each time is pure friction. Just mention it —
-*"logged that under CONTEXT.md gotchas"* — so they can correct you if you captured it wrong.
-
-**Things that tell other people something → ask first, in one short question.** Claiming a
-task, marking it done, marking it blocked, and pushing. A wrong claim makes someone else
-skip work that isn't actually being done; a wrong "done" makes the group think a feature
-exists when it doesn't. Those mistakes cost other people's time, so a two-second
-confirmation is worth it:
-
-> You've started on the CSV export — want me to claim it in TASKS.md so nobody doubles up?
-
-> That looks finished. Mark it done and push, so the others see it?
-
-Keep the question to one line and make the default obvious. Don't explain the whole
-workflow again — they've seen it.
-
-### Don't become annoying
-
-An assistant that asks about everything gets ignored, and then the record rots anyway —
-the same failure by a different route. So:
-
-- **Never ask twice about the same thing.** If they say no, or ignore it, drop it for the
-  session. Silence is an answer.
-- **Batch rather than interrupt.** Mid-task is the wrong moment. Wait for a natural pause —
-  work finished, a question answered — and raise everything at once: *"Before you go: want
-  me to log the caching gotcha and mark the export done?"*
-- **Stay quiet about small talk.** "Maybe dark mode someday" while debugging something else
-  is not an idea worth a prompt. Log what someone would want to *find later*; an unreadable
-  backlog is as useless as an empty one.
-- **If they tell you to stop asking, stop** — record silently and mention it in passing
-  instead. Some people want no prompts at all, and that preference should stick for the
-  session.
-
-### Publishing changes
-
-After changing any coordination file, commit and push it — an update nobody else can see
-is the same as no update. Regenerate the dashboard first so it matches.
-
-Coordination files (`IDEAS.md`, `CONTEXT.md`, `JOURNAL.md`, `TASKS.md`, and the
-generated `PRIORITIES.md` / `dashboard.html`) can be
-pushed straight to `main`; they're append-mostly and the whole point is visibility. Expect
-push rejections when several people are active — pull with `--rebase` and retry rather
-than force-pushing.
-
-**Code is different.** Work on the branch named in your task claim and let the human
-decide when to merge. Nobody's half-finished refactor should land on everyone else's
-`main`.
-
-### Keeping the dashboard current
-
-`dashboard.html` is a static snapshot, not a live page. Regenerate it with
-`team-collab dashboard` after meaningful changes to the markdown files, and commit it.
-Whoever pulls next sees the update.
-
----
-
-<!-- Project-specific instructions (architecture, conventions, commands) go below. -->
+Code is different: work on a branch and let the person decide when to merge.

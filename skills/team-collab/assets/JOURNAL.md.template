@@ -1,43 +1,13 @@
-# Journal — {{PROJECT_NAME}}
+# How we got here — {{PROJECT_NAME}}
 
-The running conversation of the project, so that everyone's Claude Code starts from the
-same understanding. Read this first in a new session — it's the "what happened while I
-was away" file.
-
-`CONTEXT.md` holds settled conclusions. This holds the **reasoning and the arguments**,
-including the ones still in progress. Both matter: a conclusion without its reasoning
-gets reversed by accident, and a debate nobody recorded gets restarted from zero.
+`CONTEXT.md` holds what was decided. This holds the reasoning, and anything still being
+argued — the part that otherwise disappears when a chat window closes.
 
 ## Open threads
 
-Questions actively being argued. Keep the positions and who holds them — an unresolved
-debate is the single most valuable thing to hand another person, because it's where they
-can actually contribute. Move a thread to `CONTEXT.md` decisions once it settles, leaving
-a one-line pointer here.
-
-```
-### <question>  (opened by <name>, YYYY-MM-DD)
-- **<name>:** their position and reasoning
-- **<name>:** the counter-position
-- **Still unresolved:** what would settle it
-```
-
-_None yet._
+_None._
 
 ## Log
 
-Newest at the bottom. One short entry per meaningful exchange — what was discussed, what
-options were weighed, what was chosen or left open. Include the alternatives that were
-rejected in passing; those are the ones people otherwise re-propose.
-
-Don't transcribe everything. Write what someone joining tomorrow would need in order to
-disagree intelligently.
-
-```
-### YYYY-MM-DD — <topic>  (<who was involved>)
-What came up, the options considered, and where it landed (or that it's still open).
-```
-
----
-
-_Nothing logged yet._
+### YYYY-MM-DD — <topic>
+What came up, the options weighed, where it landed.

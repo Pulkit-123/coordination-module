@@ -16,22 +16,15 @@ SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE_FILES=(CLAUDE.md .gitattributes IDEAS.md CONTEXT.md JOURNAL.md TASKS.md)
 # Journey files live in a directory, so glob them in rather than naming each one.
 for j in journeys/*.md; do [ -e "$j" ] && SOURCE_FILES+=("$j"); done
-# Regenerated from the files above. A conflict here is meaningless — rebuilding
-# always produces the correct result, so never make a person resolve one. This
-# matters more than it sounds: leaving these to git blocked everyone but the
-# first pusher, because generated files differ on every machine.
-GENERATED_FILES=(PRIORITIES.md dashboard.html)
+# Nothing is generated any more — the dashboard was removed because nobody opened
+# it. Kept as an empty list so the conflict-resolution path below still compiles.
+GENERATED_FILES=()
 
 MSG="${1:-coordination: update}"
 
 if ! git rev-parse --git-dir >/dev/null 2>&1; then
   echo "not a git repo — skipping publish"; exit 0
 fi
-
-regen_dashboard() {
-  [ -f "$SKILL_DIR/scripts/build_dashboard.py" ] || return 0
-  python3 "$SKILL_DIR/scripts/build_dashboard.py" --dir . >/dev/null 2>&1 || true
-}
 
 TRACKED=()
 for f in "${SOURCE_FILES[@]}" "${GENERATED_FILES[@]}"; do
@@ -113,10 +106,6 @@ for attempt in 1 2 3 4 5 6; do
     fi
   fi
 
-  # Merged sources may differ from what we generated before rebasing.
-  regen_dashboard
-  git add -- "${GENERATED_FILES[@]}" 2>/dev/null || true
-  git diff --cached --quiet || git commit -q --amend --no-edit
 done
 
 echo "still couldn't push after 6 tries — the repo is unusually busy, try again shortly"

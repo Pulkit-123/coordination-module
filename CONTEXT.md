@@ -12,16 +12,20 @@ stale context is worse than none, because people act on it confidently.
 
 ## Scope
 
-**coordination-module is** a set of Claude Code skills for a small trusted group building
-a shared project where each person runs their own Claude Code. Two halves: working out
-**what** to build (the user's flow, the spec, what to build first), and keeping everyone
-aligned **while** building it (ideas, decisions, reasoning, task claims) — all in plain
-markdown so nobody works from a stale picture.
+**coordination-module is** a memory for a project, so Claude Code stops forgetting it
+between sessions: decisions and their reasoning, dead ends already hit, and — if more than
+one person is involved — who is doing what. Plus `shape`, which drafts a plan before
+building so the thing doesn't get built twice. All in plain markdown that any Claude Code
+opening the repo reads automatically.
 
-**coordination-module is not** a hosted service or web app, not a chat tool, not a
-replacement for GitHub Issues (it links to them rather than reimplementing them), and
-covers only the front half of the development cycle — testing, review and deployment are
-left to Claude Code's existing capabilities.
+**The user does nothing to maintain it.** That constraint outranks every feature idea: a
+dashboard, a ranking command and a list of words to type were all built and then deleted
+because each one required the person to do something extra.
+
+**coordination-module is not** a dashboard, a project-management tool, a hosted service, a
+chat tool, or a replacement for GitHub Issues. It covers only the front half of the
+development cycle — testing, review and deployment are left to Claude Code. And it is not
+worth installing for a one-afternoon script.
 
 _Scope revised 2026-08-09 — it previously excluded spec work entirely. See the decision
 below; the earlier wording is in git history._
@@ -34,7 +38,10 @@ breaks that unless the payoff is very large.
 
 Things settled, with the reasoning — so they don't get relitigated every month.
 
-### 2026-08-09 — dashboard is a static snapshot, not a live page
+### ~~2026-08-09 — dashboard is a static snapshot, not a live page~~ (SUPERSEDED)
+_The dashboard was deleted entirely later the same day — nobody opens one. Kept for
+the reasoning about live pages, which still stands if it ever comes back._
+
 - **Chose:** `dashboard.html` regenerated locally from the markdown files, with buttons
   that tell you which word to type into your own Claude Code
 - **Over:** a live page whose buttons call an LLM API directly
@@ -80,7 +87,11 @@ Things settled, with the reasoning — so they don't get relitigated every month
   someone's contribution is the fastest way to make them stop contributing.
 - **By:** pulkit
 
-### 2026-08-09 — generated files are rebuilt, never merged
+### ~~2026-08-09 — generated files are rebuilt, never merged~~ (SUPERSEDED)
+_No generated files remain. The rebase-conflict handling in `publish.sh` still exists
+and the failure it fixed is real — see Gotchas — so don't reintroduce generated files
+without it._
+
 - **Chose:** `publish.sh` auto-resolves conflicts in `dashboard.html` and `PRIORITIES.md`
   by taking either side and regenerating
 - **Over:** treating them like any other file
@@ -90,8 +101,8 @@ Things settled, with the reasoning — so they don't get relitigated every month
 - **By:** pulkit
 
 ### 2026-08-09 — intent recognition over remembered commands
-- **Chose:** read intent from ordinary conversation and offer to act; keep the bare
-  trigger words as an optional shortcut
+- **Chose:** read intent from ordinary conversation and act; the trigger-word list was
+  dropped altogether when the command surface was deleted
 - **Over:** requiring people to type `claim`, `done`, `idea:` etc.
 - **Because:** anyone who has to remember a magic word won't, and the record rots — the
   exact failure the module exists to prevent. Crucially the rules live in `CLAUDE.md`,
@@ -144,6 +155,36 @@ Things settled, with the reasoning — so they don't get relitigated every month
   risk from the API-key-plus-billing case the original rule was written against. It
   degrades cleanly: offline you see readable source, not a broken page. Pages without a
   diagram still get no script at all.
+- **By:** pulkit
+
+### 2026-08-09 — deleted the dashboard, triage and the command list
+- **Chose:** remove `dashboard.html`, `PRIORITIES.md`, the `triage` command and the table
+  of words to type; keep only what the agent maintains silently
+- **Over:** keeping them and making them nicer
+- **Because:** every one of them required the user to do something extra — open a page,
+  run a command, remember a word. That is the one thing an impatient person will never do,
+  so those features were never going to be used regardless of quality. Ranking five ideas
+  for four friends is also something you do in your head in ten seconds. ~1,100 lines
+  removed.
+- **By:** pulkit
+
+### 2026-08-09 — the pitch is memory, not coordination
+- **Chose:** lead with "Claude Code forgets your project between sessions; this fixes it"
+- **Over:** leading with team coordination
+- **Because:** coordination needs friends, invitations and weeks before any payoff, and the
+  old install was six steps before anything good happened. The repetition problem is felt
+  daily by one person alone, on day one. Coordination is then a side effect of the notes
+  living in a shared repo, rather than something to sell.
+- **By:** pulkit
+
+### 2026-08-09 — draft the plan instead of interviewing
+- **Chose:** `shape` writes the whole journey from one sentence using conventional
+  defaults, shows it, and asks "what's wrong?"
+- **Over:** asking a sequence of questions per step
+- **Because:** correcting a draft costs seconds; producing one from nothing costs real
+  effort and stalls beginners. Assumptions must be written *specifically* — "anyone with
+  the link can view, no account" gets corrected instantly, "standard permissions" gets
+  rubber-stamped — since that is what keeps drafting honest without adding questions.
 - **By:** pulkit
 
 ## Ideas we said no to (and why)

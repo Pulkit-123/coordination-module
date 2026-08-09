@@ -1,93 +1,82 @@
 # Coordination Module
 
-> **New here? Read [GETTING-STARTED.md](GETTING-STARTED.md) instead.** It's a plain-language
-> walkthrough — install, first project, and daily use — with no jargon. This page is the
-> technical overview.
+**Claude Code forgets your project between sessions. This fixes that.**
 
-Two Claude Code skills for a small group building a project together, where **each person
-runs their own Claude Code**.
+You spend an hour working out why Postgres and not SQLite, what that API does when the list
+is empty, why the obvious approach failed. Next session Claude knows none of it — so you
+explain it again, or you don't and it rebuilds the thing you already rejected.
 
-The problem it solves isn't writing code — it's that each person's chat history is
-private. Reasoning that happened in one person's conversation is invisible to everyone
-else, so the group slowly diverges: the same idea gets proposed twice, a decision made on
-Monday gets contradicted on Tuesday, and two people build the same feature without
-noticing.
+This keeps those notes in the repo. Every Claude Code that opens the project reads them
+automatically.
 
-The fix is plain markdown files in the project repo. Every Claude Code that opens the repo
-reads them automatically, so what one person works out becomes what everyone knows.
-
-No server, no API keys, no build step, no accounts. Plain files and plain git.
-
-## What you get
-
-**`team-collab`** — sets up and runs the workflow:
-
-| File | What it holds |
-|---|---|
-| `CLAUDE.md` | The workflow brief, auto-loaded by anyone's Claude Code |
-| `JOURNAL.md` | The running conversation — reasoning, and arguments still open |
-| `CONTEXT.md` | Scope, decisions with reasoning, gotchas, why ideas were declined |
-| `IDEAS.md` | Append-only backlog, attributed |
-| `TASKS.md` | Who is building what, right now |
-| `PRIORITIES.md` | Ranked build order (generated) |
-| `journeys/*.md` | One per feature: the flow, the spec, open questions |
-| `dashboard.html` | Static single-page view (generated) |
-
-**`shape`** — works out *what* to build, before any code. Walks through the user's flow
-step by step, turning it into a mermaid diagram, acceptance rules and a first slice in
-`journeys/<slug>.md`. Built on established practice (Patton's story mapping, job stories,
-Hurff's UI Stack, Example Mapping) rather than an invented methodology.
-
-**`why`** — answers "why was this rejected / decided / dropped?" by tracing those files
-*and their git history*, including reasoning that was later edited out or deleted.
+**You don't do anything to maintain it.** No commands, no dashboard, no process. You talk
+and build normally; Claude writes things down and mentions it in a line.
 
 ## Install
 
 ```bash
-git clone https://github.com/Pulkit-123/coordination-module.git
-cd coordination-module && bash skills/team-collab/scripts/update_skill.sh
+git clone https://github.com/Pulkit-123/coordination-module.git ~/coordination-module
 ```
 
-That copies both skills into `~/.claude/skills/`. Re-run it any time to update.
+```bash
+bash ~/coordination-module/skills/team-collab/scripts/update_skill.sh
+```
+
+**Then restart Claude Code** — it only looks for new skills at startup.
+
+Once per machine. That's the whole setup.
 
 ## Use
 
-Open your project in Claude Code and type `setup team`. After that, people just type
-what they want — no commands to memorize:
+Open a project and say *"remember things about this project"*. After that, just work.
 
-| Type this | What happens |
+What changes:
+
+- Start a session and you get two lines on what's different, not a status report
+- Decide something and the reasoning gets kept, so it isn't relitigated next month
+- Hit a dead end and it's noted, so you don't lose the same hour twice
+- Say *"I want to build X"* and you get a flow diagram and a plan before code gets written,
+  which is usually cheaper than rebuilding twice
+
+## Working with other people
+
+Add them as collaborators on GitHub. They run the install once and clone the repo — the
+notes travel with it, so their Claude Code starts with everything yours knows.
+
+Their chat history is private to them, which is exactly the problem this solves. Two people
+writing notes at the same moment both get kept, and if you both claim the same job you get
+told, because git won't tell you.
+
+## What's in the repo
+
+| File | What's in it |
 |---|---|
-| `idea: dark mode for settings` | Added to the backlog under your name |
-| `triage` | Re-ranks everything, flags clashes, asks what's unclear |
-| `claim csv export` | Marks you as working on it, creates the branch |
-| `done` | Moves your task to finished |
-| `status` / `catch me up` | What changed, who's on what, what needs your view |
-| `why was offline mode dropped?` | Traces the decision and its reasoning |
-| `help me plan the export feature` | Shapes it into a journey, spec and tasks |
+| `CONTEXT.md` | Decisions and why, dead ends, what the project is and isn't |
+| `JOURNAL.md` | Reasoning, and arguments still open |
+| `IDEAS.md` | Things someone wanted |
+| `TASKS.md` | Who's on what |
+| `journeys/*.md` | One per feature: the flow as a diagram, plus what it must do |
 
-## How access works
+Plain markdown, plain git. No server, no API keys, no build step. It renders on GitHub if
+you ever want to look, and you mostly won't need to.
 
-This tooling repo is public — anyone can use it. Your **project** repo is separate and can
-be private. The skills run locally under your own git credentials, so whether you can read
-or push is decided entirely by that project repo's own collaborator settings. There's no
-account, no service, and nothing here ever sees your project's contents.
+## Is this for you?
 
-Private repos with unlimited collaborators are free on GitHub, and markdown renders
-natively in the web UI — so a private repo already gives you a mobile-friendly, access-
-controlled view of the coordination files with no hosting at all.
+Worth it if the project outlives a weekend, or someone else is working on it, or you've
+already lost time re-explaining things.
 
-## Notes from building it
+Not worth it for a one-afternoon script. It's overhead, and you'd be right to skip it.
+
+## Notes
 
 `PLAN.md` has the design rationale and the failure modes found while stress-testing four
-simulated collaborators — including three real bugs, two of which broke the workflow
-entirely at four people while working fine at two. Worth reading before changing how
-merging or publishing works.
+simulated collaborators. Two things to know before changing how merging works:
 
-Two things to know if you extend it:
+- **`merge=union` on the notes files is load-bearing.** Without it, two people writing at
+  once collide and git silently keeps one.
+- **That hides collisions in exchange**, so `check_collisions.py` exists to find them. It's
+  lexical only — semantically-identical entries need the model's judgment.
 
-- **`merge=union` on the append-only files is load-bearing.** Without it, two people
-  adding an idea at the same moment collide at end-of-file and git silently keeps one.
-- **Union-merge hides collisions in exchange.** Git reports success to everyone and never
-  flags the clash, so `check_collisions.py` exists to find them. It's lexical only —
-  semantically-identical ideas and scope drift need the model's judgment, and the skill
-  instructs it accordingly.
+An earlier version had a dashboard, a priority-ranking command, and a table of commands to
+type. All removed: they required the user to do something extra, which is the one thing
+that guarantees a tool goes unused.

@@ -1,5 +1,9 @@
 # Coordination Module
 
+> **New here? Read [GETTING-STARTED.md](GETTING-STARTED.md) instead.** It's a plain-language
+> walkthrough — install, first project, and daily use — with no jargon. This page is the
+> technical overview.
+
 Two Claude Code skills for a small group building a project together, where **each person
 runs their own Claude Code**.
 

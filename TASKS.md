@@ -12,10 +12,10 @@ of "what changed lately" the group has.
 
 | Who | What | Status | Branch | Claimed |
 |---|---|---|---|---|
-| pulkit | publish repo + dogfood the workflow on it | done | main | 2026-08-09 |
+| _(nobody yet)_ | | | | |
 
 ## Done
 
 | Who | What | Merged |
 |---|---|---|
-| | | |
+| pulkit | publish repo + dogfood the workflow on it | 2026-08-09 |

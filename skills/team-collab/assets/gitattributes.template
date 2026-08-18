@@ -6,8 +6,15 @@ CONTEXT.md merge=union
 JOURNAL.md merge=union
 TASKS.md merge=union
 
-# Journey files are edited in place, not appended to. Union-merging a flowchart
-# duplicates nodes and produces a diagram that renders as nonsense, so these
-# conflict normally on purpose — two people rewriting the same flow should talk.
-journeys/*.md -merge=union
+# Journey files are deliberately NOT listed here. They're edited in place rather
+# than appended to, so union-merging a flowchart would duplicate nodes and produce
+# a diagram that renders as nonsense — two people rewriting the same flow should
+# get a real conflict and talk to each other.
+#
+# The union rules above are per-file, so journeys already fall through to git's
+# normal text merge, which is exactly what's wanted. An earlier version wrote
+# `journeys/*.md -merge=union` intending "don't union-merge these". That actually
+# UNSETS the merge attribute, which makes git treat the file as binary and refuse
+# to merge it at all — "Cannot merge binary files", no conflict markers, nothing a
+# person or Claude can resolve. Don't reintroduce it.
 

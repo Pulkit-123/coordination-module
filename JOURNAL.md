@@ -286,3 +286,34 @@ never-seen areas write an em dash, so **every unseen row silently failed to pars
 as zero** — including hand edits, which were being discarded without a word. Matching
 non-pipe and validating afterwards fixed it.
 
+### 2026-08-09 — external critique, and what it was right about  (pulkit)
+Ran the whole thing past Gemini for an independent review. Most of it landed.
+
+**Accepted, and one produced a real bug.** Its claim that git states would strand a
+non-developer was worth testing rather than believing. Half wrong — the tool aborts the
+rebase cleanly and leaves work intact. But the test surfaced `Cannot merge binary files`
+on journey conflicts: `-merge=union` unsets the merge attribute rather than declining union
+merging, so git refused to merge at all. Fixed, and written up in gotchas.
+
+**Accepted without a fix — the sharpest point.** Enforcement is asymmetric in the wrong
+direction. `safety_check` is a deterministic hook that cannot be reasoned around. The
+speech budget, the fading, the phrasing rules — everything governing whether this is
+tolerable to live with — is prompt text, and LLMs drift from subtle instructions as
+sessions lengthen. So the constraint that decides whether anyone keeps using it is the
+least enforced thing in the system. Defensible on stakes (a leaked key is irreversible,
+an annoying remark isn't) but it does mean the most likely cause of abandonment has no
+mechanical backstop. Recorded rather than solved, because solving it means more
+infrastructure and the same critique says stop building.
+
+**Accepted: over-built.** ~3,400 lines and 16 scripts before a single real user. I'd
+already deleted a dashboard and trimmed `CLAUDE.md` twice for exactly this reason and kept
+going anyway.
+
+**Partly wrong.** It marked prior art as MISSING; spec-kit, BMAD, OpenSpec, Agent OS and
+Kiro were researched and the rejection reasoning is in the decisions above — Gemini didn't
+have the file. But its reframing is a better question than the one I asked, and I never
+asked it: could a bare `CLAUDE.md` plus GitHub Issues get 80% of this with 5% of the code?
+Genuinely unanswered. The honest test is to strip back, not to argue.
+
+**Its recommendation — freeze and go find a real user — is correct.**
+

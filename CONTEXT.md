@@ -348,6 +348,20 @@ Not permanent: if circumstances change, reverse it deliberately and note what ch
 
 ## Gotchas and dead ends
 
+### `-merge=union` makes git treat a file as BINARY  (pulkit, 2026-08-09)
+`.gitattributes` had `journeys/*.md -merge=union`, intending "don't union-merge these".
+That isn't what it means. It **unsets** the merge attribute, so git treats the file as
+unmergeable and refuses: *"Cannot merge binary files"* — no conflict markers, nothing a
+person or Claude can resolve.
+
+Worse, the line was never needed: the union rules are per-file (`IDEAS.md`, `CONTEXT.md`,
+`JOURNAL.md`, `TASKS.md`), so journeys already fell through to git's normal text merge.
+Unnecessary *and* harmful. Removed; conflicts now produce real markers.
+
+Found by testing an external critique's claim that git states would strand a
+non-developer, rather than accepting or dismissing it.
+
+
 ### Three real bugs found only by running against a real project  (pulkit, 2026-08-09)
 Every synthetic test passed. Pointing `safety_check.py` at an actual Next.js + Supabase
 project found all three of these within minutes:
